@@ -97,3 +97,4 @@
 .textcontent p b, pre b{color:blue; cursor:pointer}
 .textcontent p i, pre i{color:#3279b2; cursor:pointer}
 .textcontent p u, pre u{text-decoration:none; color:#2A8109; font-style:italic;cursor:pointer}
+.tblack {color:black !important; cursor:default !important;}
