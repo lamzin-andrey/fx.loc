@@ -606,12 +606,17 @@
 		
 		//
 		function onKeywordClick() {
-			
+			var s = keyMap[$(this).text()].hl;
+			if (keyMap[$(this).text()].pl != $(this).attr('title')) {
+				s = $(this).attr('title');
+			}
+			$('#keywordLog').html('<pre style="white-space: pre-wrap; padding:10px;">' + s + '</pre>');
+			appWindow('keywordLogWrap', lang['information']);
 		}
-		
-		$('pre b').each(
+		var dC = 0;
+		$('.textcontent pre b').each(
 			function (i, b) {
-				if (keyMap[b]) {
+				if (keyMap[$(b).text()]) {
 					if ($(b).attr('title') == '') {
 						$(b).attr('title', keyMap[i].pl);
 					}

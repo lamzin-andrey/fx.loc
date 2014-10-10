@@ -76,6 +76,10 @@
 				<div id="qsBrLoader" class="brloaderplace">
 					<img src="<?=WEB_ROOT ?>/img/ploader.gif" />
 				</div>
+				
+				<div id="keywordLogWrap" class="hide">
+					<div id="keywordLog" style="max-width:800px"></div>
+				</div>
 	
 			</div>
 		</div>
