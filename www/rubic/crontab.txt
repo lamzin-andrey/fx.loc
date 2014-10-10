@@ -1,0 +1,5 @@
+MAILTO=lamzin80@mail.ru
+1	0	*	*	*	~/subdomains/my/httpsdocs/cron/scanbasesdir.php
+1	0	*	*	*	~/subdomains/my/httpsdocs/cron/bkp.sh
+*	*	*	*	*	~/subdomains/my/httpsdocs/cron/u.sh
+*	*	*	*	*	~/subdomains/my/httpsdocs/cron/user_files_backup.sh

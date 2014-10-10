@@ -1,0 +1,117 @@
+.clearfix {clear:both;}
+.right {float:right;}
+.left {float:left;}
+.scroll-y {overflow-y:scroll;}
+.center {background-color: white; margin:0 auto; padding:0px 0px;}
+.hide {display:none !important}
+.bg-rose {background-color: #FFB0B9; color:#5F3F14;}
+.bg-light-green {background-color: #B0FFC2; color:green}
+.bg-dark-blue {background-color: #9cb0ca;color:black;}
+ul.inline {padding:0; margin:0;}
+ul.inline li{display:inline}
+ul.inline-block {padding:0; margin:0;}
+ul.inline-block li{display:inline-block}
+.dbg {border: 1px #ff0000 solid}
+.red {color:red}
+.green {border-color:green !important}
+.blue {border-color:blue !important}
+.block {display:inline-block}
+.middle {vertical-align:middle}
+.btn {cursor:pointer}
+.tcenter {text-align:center;}
+.w100 {width:100%}
+
+/* custom */
+/* страница консоли */
+/* страница консоли общее*/
+html {height:100%;}
+body {height:100%; padding:0px 4px; margin:0px;
+	  font-family:Geneva,Verdana, arial;
+	  background-color:#242C57;
+	  background-image: url(/programming_fundamentals/img/back_text.png);
+}
+.main {height:100%; max-width:1200px;box-shadow:0 0 16px 10px #35369b;}
+.tasklist {width:28%; height:95%;max-width:257px; margin-right:10px; margin-top:4px;
+	box-shadow:10px 0 48px 10px #c0c0c0;
+}
+.page_content{
+	position:relative;
+	width:72%;
+	margin:4px 14px 0 0; float:right;
+}
+.console {width:100%;  min-height:520px; background-color:black; color:white;}
+#console {height:500px; scrollbar-base-color:#000000;padding:0 6px;min-width:800px;}
+#console::-webkit-scrollbar {background-color:#000000;}
+#console p{margin:2px 0;}
+.tasklist ul li {list-style-type:none; margin-bottom:8px;}
+.tasklist ul li a{ color: #3279b2; display: inline-block; font-size: 11pt; height: 30px; vertical-align: middle;}
+.tasklist ul {height:80%;}
+.qbtn {
+	border:solid #C3D1D7 1px;
+	padding:4px 8px;
+	text-decoration:none;
+	border-radius: 4px;
+	background:linear-gradient(to right bottom, #ffffff, #ffffff,  #C3D1D7);
+	cursor:pointer;
+}
+.addscript, .text-right {
+	text-align:right;
+}
+.addscript input[type="button"] {
+    background: linear-gradient(to top, #ecedff, white) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-radius: 0;
+    float: right;
+    margin-bottom: 6px;
+}
+/*форма аплоада*/
+#execute_block fieldset, .uploadFormInputs{
+	margin: 8px 10px 0;
+}
+#scriptDisplayName, #scriptDisplayNameQs {
+	width:100%;
+}
+.relative {
+	position:relative;
+}
+#tooltip {
+	opacity: 0.0;
+	position:absolute;
+	right:0px;
+	z-index:2;
+	border-radius:8px;
+	padding:8px;
+	font-weight:bold;
+	font-size:11pt;
+}
+#tooltip p{
+	margin:2px 8px;
+}
+
+.acticons {
+	line-height:24px;
+	display:inline-block;
+	vertical-align:middle;
+}
+.acticons img{
+	border:none
+}
+/**toolbar*/
+.toolbar {
+	background:#f0f0f0;
+	/*background:linear-gradient(to  bottom, #C3D1D7,  #ffffff,  #C3D1D7);*/
+	background:linear-gradient(to  bottom, #F0F0F0,  #F0F0F0,  #C0c0c0);
+	/*background:linear-gradient(to  bottom, #DADEE9,  #DADEE9,  #B3C0DF);*/
+	margin-bottom:0px;
+	box-shadow:0px 0px 10px 0px #c0c0c0;
+}
+.toolbar ul{	margin: 10px 6px 6px;}
+.toolbar ul li a{color:black; font-weight:bold; }
+/**upload**/
+.upopup fieldset{
+	border-color:#6F93CF;
+	color:#1455C0;
+}
+.upopup fieldset p{
+	color:black;
+}
+.file-view-imgs {width:85px;}

@@ -1,0 +1,99 @@
+.textcontent {
+	max-height:500px;
+}
+.qs_editor_place {
+	height:100%;
+}
+#qs_editor_s {
+	width:100%;
+	margin-top:0px;
+	resize:none;
+	-moz-tab-size:4;
+	tab-size:4;
+	-ms-tab-size:2;
+	-o-tab-size:2;
+}
+.qs_editor_s_tbar img {
+	width:32px;
+	height:32px;
+}
+.fixed_con {
+	position:fixed;
+	top:70px;
+	right:100px;
+	width:1px;
+	opacity:0.01;
+}
+.cfname {border:1px solid #BCC2DA;}
+.cfnameli {
+	display: inline-block !important;
+    height: 25px;
+    padding-top: 7px;
+    vertical-align: top;
+}
+.status_bar {font-size:10pt}
+.file_actions {width: 18px;}
+.file_actions img{border:1px solid #DEE3F3}
+
+.br-file-title {
+	width: 120px;
+	font-size:10pt;
+	text-align:center;
+}
+.qs_file_browser {
+	min-width:400px;
+	min-height:300px;
+	position:relative;
+}
+.file_view {
+	width:120px;
+	height: 120px;
+    overflow: hidden;
+}
+.qs-br-rename-layer {
+	position:absolute;
+	width:100%;
+	height:100%;
+	background: url("/programming_fundamentals/img/popup-bg.png") repeat;
+	z-index:5;
+	left:0px;
+	top:0px;
+}
+.qs-br-rename-dlg {
+	height: 100%;
+    text-align: center;
+    width: 100%;
+    z-index: 6;
+}
+#qsEditTitle {
+	min-width:350px;
+}
+.qs-br-rename-dlg-middle {
+	padding-top: 10%;
+}
+.file-names-filter {
+	/*width:100%;*/
+	position:absolute;
+	background-color:white;
+}
+.qs-br-search-btn {vertical-align:middle}
+.brloaderplace {
+	position: absolute;
+    top: 0;
+    width: 66px;
+    z-index: 4;
+}
+.no-file{display:block !important}
+.space32 {height:48px;}
+
+.textcontent p{
+	line-height:20pt;
+	text-indent:12px;
+}
+.textcontent a{
+	color:#3279b2;
+}
+.ainfo {border: 1px dashed #3279b2; color:#505050; padding:8px;}
+.textcontent p  b{color:blue;}
+.textcontent p  i{color:#3279b2;}
+.textcontent p  u{text-decoration:none; color:#7AEA50; font-style:italic;}
