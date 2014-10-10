@@ -323,8 +323,15 @@
 		}
 		//Запуск скрипта
 		function execNow() {
+			function showExecuteError(s) {
+				alert(s);
+			}
 			appWindow('fixcon', lang['Output']);
-			eval('(' + $(mid).val() + ')()');
+			try {
+				eval('(' + $(mid).val() + ')()');
+			} catch(E) {
+				showExecuteError(lang['on_execute_your_script_was_errors'] + ' ' + E.message + ' ' + lang['delete_errors_and_try_again']);
+			}
 		}
 		//Save as , fail
 		function onFailSaveNew() {

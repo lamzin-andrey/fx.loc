@@ -57,3 +57,5 @@ $lang['load_file_fail'] = 'Не удалось загрузить файл. Во
 //quick_start
 $lang['intro'] = 'Что это';
 $lang['wtf'] = 'Как этим пользоваться';
+$lang['delete_errors_and_try_again'] = "\n-----------------\nудалите ошибки и попробуйте снова";
+$lang['on_execute_your_script_was_errors'] = "При попытке запустить вашу программу возникли проблемы:\n-----------------\n";
