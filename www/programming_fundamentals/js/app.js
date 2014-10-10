@@ -610,7 +610,7 @@
 			if (keyMap[$(this).text()].pl != $(this).attr('title')) {
 				s = $(this).attr('title');
 			}
-			$('#keywordLog').html('<pre style="white-space: pre-wrap; padding:10px;">' + s + '</pre>');
+			$('#keywordLog').html('<pre style="white-space: pre-wrap; padding:10px; tab-size:4;-moz-tab-size: 4">' + s + '</pre>');
 			appWindow('keywordLogWrap', lang['information']);
 		}
 		var dC = 0;
