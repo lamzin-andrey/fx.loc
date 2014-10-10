@@ -2,12 +2,13 @@
 	var guid = '';
 	var lang = window.appLang;
 	$(document).ready(
-		function (){
+		function(){
 			initGuid();
 			initConsole();
 			initUserTaskList();
 			initWinFunctions();
 			initTooltipFunctions();
+			initKeywordsHelp();
 			initSampleTextEditor();
 		}
 	);
@@ -569,6 +570,11 @@
 		}
 	}
 //============ / Простой редактор кода===================================
+//====== Словарь кейвордов
+	function initKeywordsHelp() {
+	}
+//====== /Словарь кейвордов
+	
 	/**
 	 * @desc Уведомления в стиле ubuntu
 	 * */

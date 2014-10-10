@@ -3,7 +3,17 @@
 		<div class="console">
 			<div id="console" class="scroll-y"></div>
 		</div>
-	</div>	
+	</div><?
+		$aUrl = explode('?', $_SERVER['REQUEST_URI']);
+		$url = $aUrl[0];
+		if (strpos($url, '/quick_start') !== false && strpos($url, '/quick_start/keywords') === false) {?>
+			<div class="hide">
+			<?
+			include APP_ROOT . '/files/quick_book/keyworddiv.php';?>
+			</div>
+			<?
+		}
+	?>
 		<div class="textcontent scroll-y">
 			<? include APP_ROOT . "/files/quick_book/" . $handler->book_tpl . '.php';?>
 		</div>
