@@ -132,7 +132,7 @@
 					}
 					//console.log('j = ' + j + ', pos = ' + pos);
 					for (i = j; i < pos; i++) {
-						if (s.charAt(i) == '\t' || s.charAt(i) == '\s' || s.charAt(i) == ' ') {
+						if (s.charAt(i) == '\t' || s.charAt(i) == ' ') {
 							spaces += s.charAt(i);
 						} else {
 							break;
