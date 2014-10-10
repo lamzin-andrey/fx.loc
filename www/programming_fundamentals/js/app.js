@@ -572,6 +572,53 @@
 //============ / Простой редактор кода===================================
 //====== Словарь кейвордов
 	function initKeywordsHelp() {
+		var keyMap = {}, keys = [], sKeys = '', i, j, list, q, key, content, saveContent;
+		// инициализация keyMap
+		$('#keywords pre b').each(
+			function(i, item) {
+				key = $(item).text(), content = $(item).attr('title');
+				keys.push(key);
+				keyMap[key] = content;
+			}
+		);
+		sKeys = '|' +  keys.join('|');
+		for (i in keyMap) {
+			saveContent = content = keyMap[i];
+			list = content.split('\n');
+			for (j = 0; j < list.length; j++) {
+				list[j] = 'QSTAB ' + list[j];
+			}
+			content = 'function ' + i + 'Example() {QSNEW_LINE ' + list.join('QSNEW_LINE ') + 'QSNEW_LINE }';
+			content = content.replace(/\t/gim, 'QSTAB ');
+			list = content.split(/\s/);
+			for (j = 0; j < list.length; j++) {
+				if (sKeys.indexOf('|' + list[j]) != -1) {
+					list[j] = '<b>' + list[j] + '</b>';
+				}
+			}
+			content = list.join(' ');
+			content = content.replace(/QSTAB /gim, '\t');
+			content = content.replace(/QSNEW_LINE /gim, '\n');
+			keyMap[i] = {hl:content, pl:saveContent};
+		}
+		
+		//добавление подсказки и обработки клика всем кейвордам на странице в примерах кода
+		
+		//
+		function onKeywordClick() {
+			
+		}
+		
+		$('pre b').each(
+			function (i, b) {
+				if (keyMap[b]) {
+					if ($(b).attr('title') == '') {
+						$(b).attr('title', keyMap[i].pl);
+					}
+					$(b).click(onKeywordClick);
+				}
+			}
+		);
 	}
 //====== /Словарь кейвордов
 	
