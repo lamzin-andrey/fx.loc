@@ -581,7 +581,7 @@
 				keyMap[key] = content;
 			}
 		);
-		sKeys = '|' +  keys.join('|');
+		sKeys = '|' +  keys.join('|') + '|';
 		for (i in keyMap) {
 			saveContent = content = keyMap[i];
 			list = content.split('\n');
@@ -592,7 +592,7 @@
 			content = content.replace(/\t/gim, 'QSTAB ');
 			list = content.split(/\s/);
 			for (j = 0; j < list.length; j++) {
-				if (sKeys.indexOf('|' + list[j]) != -1) {
+				if (sKeys.indexOf('|' + list[j] + '|') != -1) {
 					list[j] = '<b>' + list[j] + '</b>';
 				}
 			}
