@@ -17,8 +17,10 @@
 <p>
 <? include APP_ROOT . '/files/quick_book/keyworddiv.php';?>
 </p>
+<p> Если этот текст случиться читать человеку занимающийся профессионально веб-разработкой, он скорее всего тут же спросит, где XMLHttpRequest, почему его нет в списке, хотя там есть Array, String и прочие им подобные.</p>
+<p> Ответ прост: этот сайт предназначен для освоения человеком азов программирования вообще, а не программирования для web. Если получиться, я добавлю "курс" азов web-программирования на JavaScript, но это в очень оталенной перспективе.</p>
 <div style="width:96%">
-<div class="left"><a href="<?=WEB_ROOT?>/quick_start/wtf">Назад - <?=$lang['wtf']?></a></div>
+<div class="left"><a href="<?=WEB_ROOT?>/quick_start/security">Назад - <?=$lang['security']?></a></div>
 <div class="right"><a href="<?=WEB_ROOT?>/quick_start/keywords">Далее - <?=$lang['keywords']?></a></div>
 <div class="clearfix"></div>
 </div>

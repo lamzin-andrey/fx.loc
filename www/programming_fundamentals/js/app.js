@@ -543,6 +543,7 @@
 		//Инициализация
 		$(mid).keydown(onKeyDown);
 		$(mid).keyup(onKeyUp);
+		$(mid).click(setMenuIconState);
 		$(mid).click(showTextCursorCoord);
 		$('#scriptFileQsButton').click(sendSaveAs);
 		$('#qsEditorSaveAs').click(showSaveAs);
@@ -586,10 +587,15 @@
 			saveContent = content = keyMap[i];
 			list = content.split('\n');
 			for (j = 0; j < list.length; j++) {
-				list[j] = 'QSTAB ' + list[j];
+				list[j] = ' QSTAB ' + list[j];
 			}
-			content = 'function ' + i + 'Example() {QSNEW_LINE ' + list.join('QSNEW_LINE ') + 'QSNEW_LINE }';
-			content = content.replace(/\t/gim, 'QSTAB ');
+			content = 'function ' + i + 'Example() { QSNEW_LINE ' + list.join(' QSNEW_LINE ') + ' QSNEW_LINE }';
+			content = content.replace(/\t/gim, ' QSTAB ');
+			content = content.replace(/,/gim, ' QSZP ');
+			content = content.replace(/:/gim, ' QSDP ');
+			content = content.replace(/\./gim, ' QSDOT ');
+			content = content.replace(/\(/gim, ' QSBRCK ');
+			content = content.replace(/;/gim, ' QSENDOP ');
 			list = content.split(/\s/);
 			for (j = 0; j < list.length; j++) {
 				if (sKeys.indexOf('|' + list[j] + '|') != -1) {
@@ -597,8 +603,14 @@
 				}
 			}
 			content = list.join(' ');
-			content = content.replace(/QSTAB /gim, '\t');
-			content = content.replace(/QSNEW_LINE /gim, '\n');
+			content = content.replace(/ QSTAB /gim, '\t');
+			content = content.replace(/ QSNEW_LINE /gim, '\n');
+			
+			content = content.replace(/ QSZP /gim, ',');
+			content = content.replace(/ QSDP/gim, ':');
+			content = content.replace(/ QSDOT /gim, '.');
+			content = content.replace(/ QSBRCK /gim, '(');
+			content = content.replace(/ QSENDOP /gim, ';');
 			keyMap[i] = {hl:content, pl:saveContent};
 		}
 		
@@ -610,7 +622,7 @@
 			if (keyMap[$(this).text()].pl != $(this).attr('title')) {
 				s = $(this).attr('title');
 			}
-			$('#keywordLog').html('<pre style="white-space: pre-wrap; padding:10px; tab-size:4;-moz-tab-size: 4">' + s + '</pre>');
+			$('#keywordLog').html('<pre style="white-space: pre-wrap; padding:10px; tab-size:2;-moz-tab-size: 2; -o-tab-size:2;">' + s + '</pre>');
 			appWindow('keywordLogWrap', lang['information']);
 		}
 		var dC = 0;
