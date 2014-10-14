@@ -18,4 +18,8 @@ class QuickStartHandler extends CBaseHandler{
 		}
 		parent::__construct();
 	}
+	static public function part($key) {
+		$lang = utils_getCurrentLang();
+		return '<li><a class="" href="'. WEB_ROOT. '/quick_start/'. $key .'/">'. $lang[$key] . '</a></li>';
+	}
 }
