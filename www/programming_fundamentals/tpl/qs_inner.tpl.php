@@ -35,7 +35,7 @@
 				<li class="cfnameli" >
 					<span class="cfname"><span id="currentFileName">Несохраненный_файл</span><span>.js</span></span>
 				</li>
-			</div>
+			</ul>
 			<textarea id="qs_editor_s" rows="15" spellcheck="false"></textarea>
 			<div class="status_bar right"><?=$lang['Line']?>: <span id="qsline">0</span>, <?=$lang['Column']?>: <span id="qscol">0</span></div>
 			<input type="button" style='width:1px;height:1px;' value='' />
