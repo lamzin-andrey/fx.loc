@@ -60,6 +60,8 @@ $lang['wtf'] = 'Как этим пользоваться';
 $lang['security'] = 'Про безопасность на этом сервисе';
 $lang['keywords'] = 'Ключевые слова языка';
 $lang['variables'] = 'Переменные';
+$lang['datatypes'] = 'Типы данных';
+$lang['functions'] = 'Функции';
 
 $lang['delete_errors_and_try_again'] = "\n-----------------\nудалите ошибки и попробуйте снова";
 $lang['on_execute_your_script_was_errors'] = "При попытке запустить вашу программу возникли проблемы:\n-----------------\n";

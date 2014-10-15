@@ -15,6 +15,7 @@ ul.inline-block li{display:inline-block}
 .red {color:red}
 .green {border-color:green !important}
 .blue {border-color:blue !important}
+.boldblack {color:black !important; font-weight:bold;}
 .block {display:inline-block}
 .middle {vertical-align:middle}
 .btn {cursor:pointer}

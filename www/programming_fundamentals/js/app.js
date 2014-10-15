@@ -577,7 +577,7 @@
 		// инициализация keyMap
 		$('#keywords pre b').each(
 			function(i, item) {
-				key = $(item).text(), content = $(item).attr('title');
+				key = $(item).text(), content = $(item).attr('title');;
 				keys.push(key);
 				keyMap[key] = content;
 			}
@@ -625,12 +625,11 @@
 			$('#keywordLog').html('<pre style="white-space: pre-wrap; padding:10px; tab-size:2;-moz-tab-size: 2; -o-tab-size:2;">' + s + '</pre>');
 			appWindow('keywordLogWrap', lang['information']);
 		}
-		var dC = 0;
 		$('.textcontent pre b').each(
 			function (i, b) {
 				if (keyMap[$(b).text()]) {
-					if ($(b).attr('title') == '') {
-						$(b).attr('title', keyMap[i].pl);
+					if (!$(b).attr('title') || $(b).attr('title') == '') {
+						$(b).attr('title', keyMap[$(b).text()].pl);
 					}
 					$(b).click(onKeywordClick);
 				}

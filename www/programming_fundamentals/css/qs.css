@@ -94,7 +94,14 @@
 	color:#3279b2;
 }
 .ainfo {border: 1px dashed #3279b2; color:#505050; padding:8px;}
-.textcontent p b, pre b{color:blue; cursor:pointer}
-.textcontent p i, pre i{color:#3279b2; cursor:pointer}
-.textcontent p u, pre u{text-decoration:none; color:#2A8109; font-style:italic;cursor:pointer}
+
+.textcontent  pre b{color:blue; cursor:pointer}
+.textcontent  pre i{color:#3279b2; cursor:pointer}
+.textcontent  pre u{text-decoration:none; color:#2A8109; font-style:italic;cursor:pointer}
+
+b {color:blue;}
+i{color:#3279b2;}
+u{text-decoration:none; color:#2A8109; font-style:italic;}
+
+.textcontent pre {tab-size:4;-moz-tab-size: 4; -o-tab-size:4;}
 .tblack {color:black !important; cursor:default !important;}

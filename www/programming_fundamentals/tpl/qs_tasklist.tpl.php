@@ -4,6 +4,8 @@
 	<li><a class="" href="<?=WEB_ROOT?>/quick_start/security/"><?=$lang['security']?></a></li>
 	<li><a class="" href="<?=WEB_ROOT?>/quick_start/keywords/"><?=$lang['keywords']?></a></li>
 	<?=QuickStartHandler::part('variables')?>
+	<?=QuickStartHandler::part('datatypes')?>
+	<?=QuickStartHandler::part('functions')?>
 	
 </ul>
 
