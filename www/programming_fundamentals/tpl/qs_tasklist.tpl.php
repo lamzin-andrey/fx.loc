@@ -8,5 +8,6 @@
 	<?=QuickStartHandler::part('functions')?>
 	<?=QuickStartHandler::part('begin')?>
 	<?=QuickStartHandler::part('arithmetic')?>
+	<?=QuickStartHandler::part('branching')?>
 </ul>
 
