@@ -856,17 +856,20 @@
 	 * */
 	function initConsole() {
 		window.writeln = function(s) {
-			if (s === null) {
+			if (s == Infinity || (!s && s !== 0 && s !== '0')) {
 				s = '';
 			}
-			s = s.replace(/\n/g, "<br>");
+			s = String(s).replace(/\n/g, "<br>");
 			$('#console').html( $('#console').html() + '<p>' + s + '</p>' );
 			$('#console')[0].scrollTop = 1000000;
 		}
 		window.readln = function(msg) {
 			writeln(msg);
-			var s = prompt(msg, '');
+			var s = prompt(msg, ''), n = parseFloat(s);
 			writeln(s);
+			if (n.toString() === s) {
+				s = n;
+			}
 			return s;
 		}
 	}

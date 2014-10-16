@@ -6,6 +6,7 @@
 	<?=QuickStartHandler::part('variables')?>
 	<?=QuickStartHandler::part('datatypes')?>
 	<?=QuickStartHandler::part('functions')?>
-	<?=QuickStartHandler::part('exception')?>
+	<?=QuickStartHandler::part('begin')?>
+	<?=QuickStartHandler::part('arithmetic')?>
 </ul>
 
