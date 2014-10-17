@@ -1,7 +1,7 @@
 <? if(sess('uid')):?>
 <ul class="inline left">
 	<li><a href="#" onclick="alert('In process...')"><?=$lang['CurrentTask']?></a></li>
-	<li><a href="#" onclick="alert('In process...')"><?=$lang['TaskList']?></a></li>
+	<li><a href="<?=WEB_ROOT?>/tasklist"><?=$lang['TaskList']?></a></li>
 	<li><a href="#" onclick="alert('In process...')"><?=$lang['QuickStart']?></a></li>
 </ul>
 <div class="right">
@@ -13,7 +13,7 @@
 <div class="clearfix"></div>
 <? else: ?>
 <ul class="inline left">
-	<li><a href="#" onclick="alert('In process...')"><?=$lang['TaskList']?></a></li>
+	<li><a href="<?=WEB_ROOT?>/tasklist"><?=$lang['TaskList']?></a></li>
 	<li><a href="<?=WEB_ROOT?>/quick_start/"><?=$lang['QuickStart']?></a></li>
 </ul>
 <div class="right">

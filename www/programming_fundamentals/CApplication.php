@@ -19,6 +19,9 @@ class CApplication {
 			case 'programming_fundamentals/quick_start':
 				$this->_quickStartActions();
 				break;
+			case 'programming_fundamentals/tasklist':
+				$this->_tasklistActions();
+				break;
 			case 'programming_fundamentals/editor':
 				$this->_editorActions();
 				break;
@@ -28,6 +31,9 @@ class CApplication {
 			default:
 				if (strpos($url, 'programming_fundamentals/quick_start/') !== false) {
 					$this->_quickStartActions();
+				}
+				if (strpos($url, 'programming_fundamentals/tasklist/') !== false) {
+					$this->_tasklistActions();
 				}
 		}
 	}
@@ -39,6 +45,12 @@ class CApplication {
 		if (is_ajax()) {
 			$h->ajaxAction();
 		}
+	}
+	/**
+	 * @desc Обработка возможных действий на странице списка задач
+	**/
+	private function _tasklistActions() {
+		$this->handler = $h = $this->_load('TasklistHandler');
 	}
 	/**
 	 * @desc Обработка возможных действий на главной странице
