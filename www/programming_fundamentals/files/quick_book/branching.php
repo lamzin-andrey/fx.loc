@@ -131,7 +131,11 @@
 			<b>break</b>;<span class="strcolor">//Если не ставить break и surname == "Путин" то alert "Не знаю, кто это." тоже будет выведен</span>
 		<b>default</b>:
 			<u>writeln</u>(<span class="strcolor">'Не знаю, кто это.'</span>);<span class="strcolor">//alert "Не знаю, кто это." будет выведен если surname не "Путин" и не "Гагарин"</span>
-			<b>break</b>;
 	}
 }
 </pre>
+<div style="width:96%">
+<div class="left"><a href="<?=WEB_ROOT?>/quick_start/arithmetic">Назад - <?=$lang['arithmetic']?></a></div>
+<div class="right"><a href="<?=WEB_ROOT?>/quick_start/cycles">Далее - <?=$lang['cycles']?></a></div>
+<div class="clearfix"></div>
+</div>

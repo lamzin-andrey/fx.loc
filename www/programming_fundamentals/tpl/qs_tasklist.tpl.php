@@ -9,5 +9,6 @@
 	<?=QuickStartHandler::part('begin')?>
 	<?=QuickStartHandler::part('arithmetic')?>
 	<?=QuickStartHandler::part('branching')?>
+	<?=QuickStartHandler::part('cycles')?>
 </ul>
 
