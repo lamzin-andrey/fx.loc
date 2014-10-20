@@ -3,11 +3,12 @@
 </header>
 <h4>Использование for </h4>
 <p>Составить программу для проверки утверждения: «Результатами вычислений по формуле х<sup>2</sup> + х + 41  при 0 <= х <= 40 являются простые числа. Все результаты вывести на экран.</p>
-<p>Если не знаем, что такое простые числа, открываем поисковую систему yandex или google и пишем эти два слова. Находится также легко как и все остальное.</p>
+<p>Если не знаем, что такое простые числа, открываем поисковую систему yandex или google и пишем эти два слова. Находится так же легко как и все остальное.</p>
 <p>Если знаем, то вспоминаем, что это число которое делится без остатка только на 1 и на само себя.</p>
 <p>Для организации цикла можно использовать операторы <b>for</b> или <b>while</b></p>
 <pre>
 <b>function</b> checkSimpleNumber() {
+	<span class="strcolor">"use strict"</span>
 	<b>var</b> s = <span class="strcolor">''</span>, x = 0, n, j, ctrl1, ctrl2;
 	<b>for</b> (x; x <= 40; x = x + 1) {
 		n = x*x + x + 41;
@@ -50,6 +51,7 @@
 <p>при a не равном 1</p>
 <pre>
 <b>function</b> endingSum() {
+	<span class="strcolor">"use strict"</span>
 	<b>var</b> a = <i>parseInt</i>( <u>readln</u>(<span class="strcolor">'Введите a'</span>) ),
 		sum = 1 / a, n = 2, prevSum = sum;
 	<b>if</b>(<i>isNaN</i>(a) || a == 1 ) {<span class="strcolor">//если a не число или равен 1
@@ -74,6 +76,7 @@
 <p>Следующий простой код позволит убедиться, что это действительно так:</p>
 <pre>
 <b>function</b> infinityExample() {
+	<span class="strcolor">"use strict"</span>
 	<b>var</b> n = 1 / 0; <span class="strcolor">//Получили бесконечность
 </span>	<u>writeln</u>(<span class="strcolor">'n = '</span> + n); <span class="strcolor">//Убедились, что это так
 </span>	<u>writeln</u>(<span class="strcolor">'1 / n = '</span> + (1 / n)); <span class="strcolor">//Убедились, что единица деленная на бесконечность равна  0
@@ -90,7 +93,8 @@
 <p><?=QuickStartHandler::tim(24, 3, 3) ?></p>
 <p>Данный пример очень похож на предыдущий, но с той поправкой, что элемент ряда никогда не станет равен 0 и нам дано значение точности, при достижении котрого нам надо прекратить вычисления.</p>
 <pre>
-<b>function</b> precisionSum() {
+<b>function</b> <u title="precision - точность">precisionSum</u>() {
+	<span class="strcolor">"use strict"</span>
 	<b>var</b> e = 0.001,
 		sum = 0, n = 1, prevSum = sum;
 	<b>function</b> <u title="Программа вычисления факториала">factorial</u>(n) {
