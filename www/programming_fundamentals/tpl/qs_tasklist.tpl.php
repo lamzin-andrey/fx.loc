@@ -10,5 +10,6 @@
 	<?=QuickStartHandler::part('arithmetic')?>
 	<?=QuickStartHandler::part('branching')?>
 	<?=QuickStartHandler::part('cycles')?>
+	<?=QuickStartHandler::part('strings')?>
 </ul>
 

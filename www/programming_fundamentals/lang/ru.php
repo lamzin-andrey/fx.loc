@@ -68,6 +68,7 @@ $lang['begin'] = 'Начинаем выполнять примеры';
 $lang['arithmetic'] = 'Арифметические операции';
 $lang['branching'] = 'Ветвление';
 $lang['cycles'] = 'Циклы';
+$lang['strings'] = 'Строки';
 
 
 $lang['delete_errors_and_try_again'] = "\n-----------------\nудалите ошибки и попробуйте снова";
