@@ -23,7 +23,7 @@
 </pre>
 <p>Если вы разобрались с предыдущими примерами, этот вряд ли станет для вас непонятным.</p>
 <p>Я объявил массив с именем array, поместил туда какие-то произвольные числа. Количество элементов в массиве можно получить используя свойство переменной (объекта типа) <b>Array</b> length. Элементы массива нумеруются от 0 до (array.length - 1). </p>
-<p>Так как для решения задачи не имеет значения, проходить массив от начала к хвосту или наоборот, я иду от конца к началу. Это позволяет проверять, прекращать ди цикл, сравнивая i с нулем. Я уже упоминал рассматривая циклы о поведении операции i++, i-- ведет себя также. Если вы пропустили этот фрагмент читая про циклы, я приведу его еще раз:</p>
+<p>Так как для решения задачи не имеет значения, проходить массив от начала к хвосту или наоборот, я иду от конца к началу. Это позволяет проверять, прекращать ли цикл, сравнивая i с нулем. Я уже упоминал рассматривая циклы о поведении операции i++, i-- ведет себя также. Если вы пропустили этот фрагмент читая про циклы, я приведу его еще раз:</p>
 <pre>
 <b>function</b> <u title="Поведение ++">plusPlusBehavior</u>() {
 	<b>var</b> a, d, b = 1, c = 1;
@@ -39,24 +39,113 @@
 <h4>Вторая задача</h4>
 <p>Ввести координаты ферзя и коня и определить: если конь ходит первым, то бьёт ли он ферзя.</p>
 <p>Сначала напишу программку, а потом разберем ее, читайте такж комментарии в коде</p>
-function chessStep() {
-	var chessBoard = [],//Это будет шахматная доска
-	knightCoordinates = readln('Введите позицию коня'), 
-	queenCoordinates  = readln('Введите позицию ферзя'),
-	i = 0, //для цикла
-	errorMessage = "Введите позиции фигур как принято в шахматах, например e2 или  e4",
-	messageSuccess = "Конь съел ферзя!",
-	messageFail    = "Конь не волк, в поле убежал",
-	letters = 'abcdefgh'; //буквы, используемые на доске для обозначения клеток
-	if (knightCoordinates.length != 2 || queenCoordinates.length != 2) {
-		writeln(errorMessage);
-		return;
+<pre>
+
+<b>function</b> chessStep() {
+	<b>var</b> chessBoard = [],<span class="strcolor">//Это будет шахматная доска
+</span>	knightCoordinates = <u>readln</u>(<span class="strcolor">'Введите позицию коня'</span>), 
+	queenCoordinates  = <u>readln</u>(<span class="strcolor">'Введите позицию ферзя'</span>),
+	i, j, <span class="strcolor">//для цикла и для преобразования координат фигур из "шахматного" формата в цифровой
+</span>	newI, newJ, <span class="strcolor">//для хранения новых координат коня
+</span>	errorMessage = <span class="strcolor">"Введите позиции фигур как принято в шахматах, например e2 или  e4"</span>,
+	successMessage = <span class="strcolor">"Конь съел ферзя!"</span>,
+	failMessage    = <span class="strcolor">"Конь не волк, в поле убежал"</span>,
+	letters = <span class="strcolor">'abcdefgh'</span>; <span class="strcolor">//буквы, используемые на доске для обозначения клеток
+</span>	<b>if</b> (knightCoordinates.length != 2 || queenCoordinates.length != 2) {
+		<u>writeln</u>(errorMessage);
+		<b>return</b>;
 	}
-	for (i; i < 8; i++) { //Чтобы можно было обращаться например  chessBoard[0][1]
-		chessBoard.push( [''] ); //сделаем каждый элемент массива массивом с одним элементом
+	<span class="strcolor">//создаем в оперативной памяти шахматную доску )
+</span>	<b>for</b> (i = 0; i < 8; i++) { <span class="strcolor">//Чтобы можно было обращаться например  chessBoard[0][1]
+</span>		chessBoard.push( [] ); <span class="strcolor">//сделаем каждый элемент массива массивом с одним элементом
+</span>		<b>for</b> (j = 0; j < 8; j++) {
+			chessBoard[i].push(<span class="strcolor">''</span>); <span class="strcolor">//Забиваю пустыми значениями
+</span>		}
 	}
-	
+	<span class="strcolor">//Установим ферзя
+	queenCoordinates = queenCoordinates.<i title="Возвращает строку как queenCoordinates, но все символы строчные">toLowerCase()</i>;
+</span>	i = letters.<i>indexOf</i>( queenCoordinates.<i>charAt</i>(0) );
+	j = <i>parseInt</i>(queenCoordinates.<i>charAt</i>(1), 10) - 1;
+	<b>if</b> (i < 0 || <i>isNaN</i>(j) || j < 0 || j > 7) {<span class="strcolor">//координаты фигур по вертикали и горизонтали должны быть в пределах [0-7]
+</span>		<u>writeln</u>(errorMessage);
+		<b>return</b>;
+	}
+	chessBoard[i][j] = <span class="strcolor">'Q'</span>;<span class="strcolor">//Записали в клетку, что там стоит ферзь. Цвет фигур в задаче необязательно учитывать
+</span>	<span class="strcolor">//Установим коня
+</span>	i = letters.<i>indexOf</i>( knightCoordinates.<i>charAt</i>(0) );
+	j = <i>parseInt</i>(knightCoordinates.<i>charAt</i>(1), 10) - 1;
+	<b>if</b> (i < 0 || <i>isNaN</i>(j) || j < 0 || j > 7) {<span class="strcolor">//координаты фигур по вертикали и горизонтали должны быть в пределах [0-7]
+</span>		<u>writeln</u>(errorMessage);
+		<b>return</b>;
+	}
+	<span class="strcolor">//И проверяем все возможные позиции коня, "сверху" и по часовой стрелке.
+</span>	newI = i + 1;
+	newJ = j + 2;
+	<b>if</b> (newI < 8 && newJ < 8) {<span class="strcolor">//не вышли ли за пределы доски?
+</span>		<b>if</b> (chessBoard[newI][newJ] == <span class="strcolor">'Q'</span>) {<span class="strcolor">//Если там стоит ферзь
+</span>			<u>writeln</u>(successMessage);
+			<b>return</b>;
+		}
+	}
+	newI = i + 2;
+	newJ = j + 1;
+	<b>if</b> (newI < 8 && newJ < 8) {<span class="strcolor">//не вышли ли за пределы доски?
+</span>		<b>if</b> (chessBoard[newI][newJ] == <span class="strcolor">'Q'</span>) {<span class="strcolor">//Если там стоит ферзь
+</span>			<u>writeln</u>(successMessage);
+			<b>return</b>;
+		}
+	}
+	newI = i + 2;
+	newJ = j - 1;
+	<b>if</b> (newI < 8 && newJ > -1) {<span class="strcolor">//не вышли ли за пределы доски?
+</span>		<b>if</b> (chessBoard[newI][newJ] == <span class="strcolor">'Q'</span>) {<span class="strcolor">//Если там стоит ферзь
+</span>			<u>writeln</u>(successMessage);
+			<b>return</b>;
+		}
+	}
+	newI = i + 1;
+	newJ = j - 2;
+	<b>if</b> (newI < 8 && newJ > -1) {<span class="strcolor">//не вышли ли за пределы доски?
+</span>		<b>if</b> (chessBoard[newI][newJ] == <span class="strcolor">'Q'</span>) {<span class="strcolor">//Если там стоит ферзь
+</span>			<u>writeln</u>(successMessage);
+			<b>return</b>;
+		}
+	}
+	newI = i - 1;
+	newJ = j - 2;
+	<b>if</b> (newI > -1 && newJ > -1) {<span class="strcolor">//не вышли ли за пределы доски?
+</span>		<b>if</b> (chessBoard[newI][newJ] == <span class="strcolor">'Q'</span>) {<span class="strcolor">//Если там стоит ферзь
+</span>			<u>writeln</u>(successMessage);
+			<b>return</b>;
+		}
+	}
+	newI = i - 2;
+	newJ = j - 1;
+	<b>if</b> (newI > -1 && newJ > -1) {<span class="strcolor">//не вышли ли за пределы доски?
+</span>		<b>if</b> (chessBoard[newI][newJ] == <span class="strcolor">'Q'</span>) {<span class="strcolor">//Если там стоит ферзь
+</span>			<u>writeln</u>(successMessage);
+			<b>return</b>;
+		}
+	}
+	newI = i - 2;
+	newJ = j + 1;
+	<b>if</b> (newI > -1 && newJ < 8) {<span class="strcolor">//не вышли ли за пределы доски?
+</span>		<b>if</b> (chessBoard[newI][newJ] == <span class="strcolor">'Q'</span>) {<span class="strcolor">//Если там стоит ферзь
+</span>			<u>writeln</u>(successMessage);
+			<b>return</b>;
+		}
+	}
+	newI = i - 1;
+	newJ = j + 2;
+	<b>if</b> (newI > -1 && newJ < 8) {<span class="strcolor">//не вышли ли за пределы доски?
+</span>		<b>if</b> (chessBoard[newI][newJ] == <span class="strcolor">'Q'</span>) {<span class="strcolor">//Если там стоит ферзь
+</span>			<u>writeln</u>(successMessage);
+			<b>return</b>;
+		}
+	}
+	<u>writeln</u>(failMessage);
 }
+</pre>
 <p></p>
 <div style="width:96%">
 <div class="left"><?=QuickStartHandler::aback("strings")?></div>
