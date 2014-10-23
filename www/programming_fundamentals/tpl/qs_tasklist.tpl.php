@@ -11,5 +11,6 @@
 	<?=QuickStartHandler::part('branching')?>
 	<?=QuickStartHandler::part('cycles')?>
 	<?=QuickStartHandler::part('strings')?>
+	<?=QuickStartHandler::part('arrays')?>
 </ul>
 

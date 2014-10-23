@@ -25,4 +25,15 @@ class QuickStartHandler extends CBaseHandler{
 	static public function tim($variant, $task, $subtask) {
 		return '<img src="'.WEB_ROOT.'/files/tasks/'.$variant.'/'.$task.'.'.$subtask.'.png" />';
 	}
+	static public function a($href, $text, $blank = true) {
+		return '<a href="'.$href . ($blank ? ' target="_blank" ' : '') .'">'.$text.'</a>';
+	}
+	static public function aback($keyword) {
+		$lang = utils_getCurrentLang();
+		return '<a href="'. WEB_ROOT. '/quick_start/'.$keyword.'">Назад - ' . $lang[$keyword]. '</a>';
+	}
+	static public function anext($keyword) {
+		$lang = utils_getCurrentLang();
+		return '<a href="'. WEB_ROOT. '/quick_start/'.$keyword.'">Далее - ' . $lang[$keyword]. '</a>';
+	}
 }
