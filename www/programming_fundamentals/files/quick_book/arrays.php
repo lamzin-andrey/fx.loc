@@ -6,6 +6,7 @@
 <p>Найти сумму элементов, больших данного числа А (А вводится с клавиатуры).</p>
 <pre>
 <b>function</b> sumElementsGreatThanA() {
+	<span class="strcolor">"use strict"</span>
 	<b>var</b> array = [0,5,8,98,256,56,1,-265,0,696], <span class="strcolor">//Абсолютно наобум придумал себе массив
 </span>		A = <i>parseFloat</i>(<u>readln</u>(<span class="strcolor">"Введите А"</span>)), i = array.length, sum = 0;
 	<b>if</b> (<i>isNaN</i>(A)) {
@@ -58,7 +59,7 @@ function chessStep() {
 }
 <p></p>
 <div style="width:96%">
-<div class="left"><a href="<?=WEB_ROOT?>/quick_start/cycles">Назад - <?=$lang['cycles']?></a></div>
+<div class="left"><?=QuickStartHandler::aback("strings")?></div>
 <div class="right"><a href="<?=WEB_ROOT?>/quick_start/arrays">Далее - <?=$lang['arrays']?></a></div>
 <div class="clearfix"></div>
 </div>
