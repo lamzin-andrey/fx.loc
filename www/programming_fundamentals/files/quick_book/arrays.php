@@ -38,13 +38,13 @@
 <p>В условном операторе я сравниваю i-тый элемент массива с A после чего, если он больше чем A прибавляю его к сумме. В конце вывожу сумму. Все просто и прозаично.</p>
 <h4>Вторая задача</h4>
 <p>Ввести координаты ферзя и коня и определить: если конь ходит первым, то бьёт ли он ферзя.</p>
-<p>Сначала напишу программку, а потом разберем ее, читайте такж комментарии в коде</p>
+<p>Сначала напишу программку, а потом разберем ее, читайте также комментарии в коде. Потом я немного усложню (или скорее упрощу, так как станет меньше кода) реализацию.</p>
 <pre>
 
-<b>function</b> chessStep() {
+<b>function</b> <u>chessStep</u>() {
 	<b>var</b> chessBoard = [],<span class="strcolor">//Это будет шахматная доска
-</span>	knightCoordinates = <u>readln</u>(<span class="strcolor">'Введите позицию коня'</span>), 
-	queenCoordinates  = <u>readln</u>(<span class="strcolor">'Введите позицию ферзя'</span>),
+</span>	knightCoordinates = <u>readln</u>(<span class="strcolor">'Введите позицию коня, например e2 или h8'</span>), 
+	queenCoordinates  = <u>readln</u>(<span class="strcolor">'Введите позицию ферзя, например a1 или f5'</span>),
 	i, j, <span class="strcolor">//для цикла и для преобразования координат фигур из "шахматного" формата в цифровой
 </span>	newI, newJ, <span class="strcolor">//для хранения новых координат коня
 </span>	errorMessage = <span class="strcolor">"Введите позиции фигур как принято в шахматах, например e2 или  e4"</span>,
@@ -57,10 +57,12 @@
 	}
 	<span class="strcolor">//создаем в оперативной памяти шахматную доску )
 </span>	<b>for</b> (i = 0; i < 8; i++) { <span class="strcolor">//Чтобы можно было обращаться например  chessBoard[0][1]
-</span>		chessBoard.push( [] ); <span class="strcolor">//сделаем каждый элемент массива массивом с одним элементом
+</span>		chessBoard.push( [] ); <span class="strcolor">//сделаем каждый элемент массива пустым массивом
 </span>		<b>for</b> (j = 0; j < 8; j++) {
-			chessBoard[i].push(<span class="strcolor">''</span>); <span class="strcolor">//Забиваю пустыми значениями
-</span>		}
+			chessBoard[i].push(<span class="strcolor">''</span>); <span class="strcolor">//Забиваю пустыми строками
+</span>
+
+		}
 	}
 	<span class="strcolor">//Установим ферзя
 	queenCoordinates = queenCoordinates.<i title="Возвращает строку как queenCoordinates, но все символы строчные">toLowerCase()</i>;
@@ -146,6 +148,129 @@
 	<u>writeln</u>(failMessage);
 }
 </pre>
+<p>От ключевого слова <b>var</b> до первой точки с запятой вам должно быть уже все понятно, объявляю переменные, в комментариях рядом пишу, зачем они нужны. В переменной chessBoard буду хранить информацию о позициях фигур на доске, но для начала я определяю её (инициализую её) пустым массивом. К требуемой мне в работе инициализации этого массива я приступаю после того, как убеждаюсь что позиции коня и ферзя заданы строками, состоящими из двух символов. В цикле я добавляю в наш пустой массив восемь массивов, состоящих из восьми элементов - пустых строк. Это позволит записывать в эти элементы информацию о том, какая фигура стоит на данной позиции, например я мог бы записать туда словосочетание "белый конь". Правда, в реальной программе я скорее всего присвоил каждой фигуре уникальный номер (с учетом цвета) и записывал бы его. </p>
+<p>После того, как "доска"готова, я устанавливаю на ней ферзя. Программа ожидает, что пользователь будет вводить позиции фигур так, как это принято записывать в шахматах, например "a2". Но ничто не мешает ввести пользователю вместо "h5" "H5", поэтому я привожу введенную строку к нижнему регистру (то есть все прописные буквы заменяю строчными), воспользовавшись для этого методом <b>String</b> <i>toLowerCase</i>. В полученном значении я получаю первый (точнее нулевой) символ методом <b>charAt</b> и смотрю, есть ли такой символ в строке letters, содержащей допустимые для ввода буквы. Второй символ переменной queenCoordinates ожидаем как число, поэтому я использую функцию <b>parseInt</b>. </p>
+<p>Таким образом, я преобразовал строку из queenCoordinates в два целых значения и поместил их в переменные i  и j. Значения этих переменных должны быть от нуля до семи включительно (элементы массива нумеруются с нуля), и я проверяю это с помощью условного оператора <b>if</b>, выводя в случае несоответствия диапазону строку, хранящуюся в переменной errorMessage, после чего завершаю выполнение программы с помощью служебного слова <b>return</b>. Если значения укладываются в нужный мне диапазон, продолжаем выполнение программы, записываем в соответствующую клетку доски значение 'Q'. Это будет нам говорить о том, что на данной клетке стоит ферзь.</p>
+<p>Далее, абсолютно аналогично тому, как это делалось для ферзя, получаем координаты коня. Если они также укладываются в диапазон от нуля до семи, начинаю последоватенльно вычислять все возможные ходы конем по часовой стрелке. Если после одного из вычислений в ячейке массива newJ, newI записан символ 'Q', можно завершить вычисления - ферзь "съеден". Иначе - ферзь не может быть взят конем, вывожу соответствующее сообщение и на этом все.</p>
+<p>Программка работает, однако, здесь у меня много повторяющегося кода. Преобразовании позиции фигур в координаты массива chessBoard просится в отдельную функцию, с восемью очень похожими друг на друга участками кода проверки не вышел ли конь за пределы доски и не съел ли ферзя тоже неадо что-то делать.</p>
+<p>Я введу вспомогательный массив steps и перепишу свое решение так:</p>
+<pre>
+
+<b>function</b> <u>chessStep</u>() {
+	<span class="strcolor">"use strict"</span>
+	<b>var</b> chessBoard = [],<span class="strcolor">//Это будет шахматная доска
+</span>	knightCoordinates = <u>readln</u>(<span class="strcolor">'Введите позицию коня, например e2 или h8'</span>), 
+	queenCoordinates  = <u>readln</u>(<span class="strcolor">'Введите позицию ферзя, например a1 или f5'</span>),
+	i, j, m, n,  <span class="strcolor">//для цикла и для преобразования координат фигур из "шахматного" формата в цифровой
+</span>	newI, newJ, <span class="strcolor">//для хранения новых координат коня
+</span>	errorMessage = <span class="strcolor">"Введите позиции фигур как принято в шахматах, например e2 или  e4"</span>,
+	successMessage = <span class="strcolor">"Конь съел ферзя!"</span>,
+	failMessage    = <span class="strcolor">"Конь не волк, в поле убежал"</span>,
+	letters = <span class="strcolor">'abcdefgh'</span>, <span class="strcolor">//буквы, используемые на доске для обозначения клеток
+</span>	steps = [-2, -1, 1, 2]; <span class="strcolor">//буду использовать для проверки "ходов конем"
+</span>	<b>if</b> (knightCoordinates.length != 2 || queenCoordinates.length != 2) {
+		<u>writeln</u>(errorMessage);
+		<b>return</b>;
+	}
+	<span class="strcolor">//создаем в оперативной памяти шахматную доску )
+</span>	<b>for</b> (i = 0; i < 8; i++) { <span class="strcolor">//Чтобы можно было обращаться например  chessBoard[0][1]
+</span>		chessBoard.push( [] ); <span class="strcolor">//сделаем каждый элемент массива пустым массивом
+</span>		<b>for</b> (j = 0; j < 8; j++) {
+			chessBoard[i].push(<span class="strcolor">''</span>); <span class="strcolor">//Забиваю пустыми строками
+</span>		}
+	}
+	<b>function</b> <u title="Установить фигуру">setFigure</u>(figureCoordinates, letter) {
+</span>		figureCoordinates = figureCoordinates.<i title="Возвращает строку как figureCoordinates, но все символы строчные">toLowerCase</i>();
+		i = letters.<i>indexOf</i>( figureCoordinates.<i>charAt</i>(0) );
+		j = <i>parseInt</i>(figureCoordinates.<i>charAt</i>(1), 10) - 1;
+		<b>if</b> (i < 0 || <i>isNaN</i>(j) || j < 0 || j > 7) {<span class="strcolor">//координаты фигур по вертикали и горизонтали должны быть в пределах [0-7]
+</span>			<u>writeln</u>(errorMessage);
+			<b>return</b> <b>false</b>;
+		}
+		chessBoard[i][j] = letter;<span class="strcolor">//Записали в клетку, что там стоит ферзь. Цвет фигур в задаче необязательно учитывать
+</span>		<b>return</b> <b>true</b>;
+	}
+	<span class="strcolor">//Установим ферзя
+</span>	<b>if</b> ( !<u title="Установить фигуру">setFigure</u>(queenCoordinates, <span class="strcolor">'Q'</span>) ) { <span class="strcolor">//не удалось установить фигуру
+</span>		<b>return</b>; <span class="strcolor">//выходим
+</span>	}
+	<span class="strcolor">//Установим коня
+</span>	<b>if</b> ( !<u title="Установить фигуру">setFigure</u>(knightCoordinates, <span class="strcolor">'K'</span>) ) { <span class="strcolor">//не удалось установить фигуру
+</span>		<b>return</b>; <span class="strcolor">//выходим
+</span>	}
+	<span class="strcolor">//И проверяем все возможные позиции коня, "сверху" и по часовой стрелке.
+</span>	<b>for</b> (m = 0; m < steps.length; m++) {
+		newI = steps[m];  <span class="strcolor">//сюда пока что поместим "приращение"
+</span>		<b>for</b> (n = 0; n < steps.length; n++) {
+			newJ = steps[n];  <span class="strcolor">//сюда пока что поместим "приращение"
+</span>			<b>if</b> ( <b>Math</b>.<i title="Модуль аргумента">abs</i>(newI) == <b>Math</b>.<i title="Модуль аргумента">abs</i>(newJ) ) { <span class="strcolor">//конь ходит буквой 'Г', значит приращения не могут быть равны
+</span>				<b>continue</b>;
+			}
+			<span class="strcolor">//прибавим приращения к позиции коня
+</span>			newI = i + newI;
+			newJ = j + newJ;
+			<b>if</b> (newI > -1 && newJ < 8 && newI < 8 && newJ > -1) {<span class="strcolor">//не вышли ли за пределы доски?
+</span>				<b>if</b> (chessBoard[newI][newJ] == <span class="strcolor">'Q'</span>) {<span class="strcolor">//Если там стоит ферзь
+</span>					<u>writeln</u>(successMessage);
+					<b>return</b>;
+				}
+			}
+			
+		}
+	}
+	<u>writeln</u>(failMessage);
+}
+</pre>
+<p>Добавленный цикл по элементам массива steps делает всю ту же работу, которую раньше выполняли восемь блоков <b>if</b>. Я поместил один из таких блоков внутрь вложенного цикла и сделал проверку диапазона значений newJ, newI более универсальной. В остальном код этого цикла достаточно прост для понимания, вопросов быть не должно.</p>
+<p>О функции setFigure. Так как она определена внутри функции chessStep, это дает возможность использовать все переменные, определенные внутри chessStep. Вам может показаться, что я противоречу своему же совету всюду использовать слово <b>var</b>. Но это не так, ведь я не определяю внутри setFigure ни одной новой переменной. </p>
+<p>Однако я еще вернусь к этой функции, когда буду решать пример по теме "Подпрограммы". </p>
+<p>Перехожу к третьей подзадаче</p>
+<h4>Удаление элементов</h4>
+<p>Задание: удалить строку с номером k и столбец с номером m.</p>
+<p>Очевидно, речь идет о двумерном массиве, таком как наша шахматная доска. Чтобы было визуально видно, что мы действительно удалим строку и столбец, добавим функции вывода элементов массива на экран, а сами элементы на этот раз заполним не пустыми строками</p>
+<pre>
+<b>function</b> <u title="Пример удаления строки">removeRowExample</u>() {
+	<b>var</b> array = [], i, j, 
+		k, m,
+		ARRAY_SIZE = 8; <span class="strcolor">//По привычке оставшейся от прошлого примера взял размерность 8 на 8
+</span>	<span class="strcolor">//заполним массив случайными цифрами от 0 до 9
+</span>	<b>for</b> (i = 0; i < ARRAY_SIZE; i++) {
+		array.push([]);
+		<b>for</b> (j = 0; j < ARRAY_SIZE; j++) {
+			m = <b>String</b>( <b>Math</b>.<i title="Возвращает случайное дробное число от 0 до 1">random</i>() );
+			m = m.<i>charAt</i>(3) ? m.<i>charAt</i>(3) : <span class="strcolor">'0'</span>; <span class="strcolor">//Почему именно третий? На самом деле от фонаря, мне ведь не важно что конкретно будт в массиве
+</span>			array[i].push(m);
+		}
+	}
+	<b>function</b> <u title="Печать массива">printArray</u>() {
+		<b>var</b> i, j, s = <span class="strcolor">""</span>, L = array.length; <span class="strcolor">//чтобы не переписывать неожиданно значения i j во внешней функции
+</span>		<b>for</b> (i = 0; i < L; i++) {
+			<b>for</b> (j = 0; j < array[i].length; j++) {
+				s += array[i][j] + <span class="strcolor">' '</span>;
+			}
+			s += <span class="strcolor">"\n"</span>;
+		}
+		<u>writeln</u>(s);
+	}
+	k = <i>parseInt</i>( <u>readln</u>(<span class="strcolor">"Введите номер строки k, строки нумеруются с нуля"</span>) );
+	m = <i>parseInt</i>( <u>readln</u>(<span class="strcolor">"Введите номер столбца m, столбцы нумеруются с нуля"</span>) );
+	<b>if</b> (<i>isNaN</i>(k) || <i>isNaN</i>(m) || m < 0 || k < 0 || k > ARRAY_SIZE - 1 || m > ARRAY_SIZE - 1) {
+		<u>writeln</u>(<span class="strcolor">"Размер масива "</span> + ARRAY_SIZE + <span class="strcolor">" на "</span> + ARRAY_SIZE  + <span class="strcolor">", заданые вами индексы выходят за его пределы"</span>);
+		<b>return</b>;
+	}
+	<u>writeln</u>(<span class="strcolor">"Массив до удаления"</span>);
+	<u title="Печать массива">printArray</u>();
+	<span class="strcolor">//удалаем сначала строку, так как это позволит делать меньше итераций при удалении столбца
+</span>	array.<i title="Удалить в массиве элементы от индекса k один">splice</i>(k, 1);
+	//удаляем столбец
+	<b>for</b> (i = 0; i < array.length; i++) {
+		array[i].<i title="Удалить в массиве элементы от индекса m один">splice</i>(m, 1);
+	}
+	<u>writeln</u>(<span class="strcolor">"Массив после удаления"</span>);
+	<u title="Печать массива">printArray</u>();
+}
+
+</pre><p></p>
 <p></p>
 <div style="width:96%">
 <div class="left"><?=QuickStartHandler::aback("strings")?></div>
