@@ -12,5 +12,6 @@
 	<?=QuickStartHandler::part('cycles')?>
 	<?=QuickStartHandler::part('strings')?>
 	<?=QuickStartHandler::part('arrays')?>
+	<?=QuickStartHandler::part('function_tasks')?>
 </ul>
 
