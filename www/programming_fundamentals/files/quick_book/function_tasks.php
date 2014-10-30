@@ -5,7 +5,7 @@
 <h4>Первая задача</h4>
 <p>Составить функцию для нахождения наименьшего нечетного натурального делителя k (k != 1) любого заданного натурального числа n. </p>
 <pre>
-<b>function</b> example_6_1() {
+<b>function</b> <u>example_6_1</u>() {
 	<b>var</b> n = <i>parseInt</i>( <u>readln</u>(<span class="strcolor">'Введите целое число N'</span>) ), r;
 	<b>if</b> (<i>isNaN</i>(n)) {
 		<u>writeln</u>(<span class="strcolor">'Недопустимое значение'</span>);
@@ -205,13 +205,16 @@
 <p>Первый вызов функции</p>
 <p class="tred">1,2,3,4, ...</p>
 <p>Следующий вызов функции:</p>
+<p>1,<span class="tred">2,3,4, ...</span></p>
+<p>Следующий вызов функции:</p>
 <p>1,2,<span class="tred">3,4, ...</span></p>
 <p>Следующий вызов функции:</p>
 <p>1,2,3,<span class="tred">4, ...</span></p>
-<p>И так далее...</p>
-<p></p>
+<p>И так далее, пока переставлять будет нечего. Остается вопросом, как именно переставлять элементы. Попробовав несколько способов 
+я остановился на таком, при котором на место каждого элемента ставится правый от него, а на место крайнего правого ставится тот, что был 
+первым слева до начала перестановки. Начну с реализации такой перестановки, без рекурсивных вызовов.</p>
 <pre>
-<b>function</b> combinations() {
+<b>function</b> <u title="Комбинации">combinations</u>() {
 	<b>var</b> s = <b>String</b>(<u>readln</u>(<span class="strcolor">"Введите несколько чисел разделяя их запятой"</span>)),
 		array = s.<i>split</i>(<span class="strcolor">","</span>), i, ctrl;
 	<b>for</b> (i = 0; i < array.length; i++) {
@@ -221,38 +224,147 @@
 			<b>return</b>;
 		}
 	}
-	<b>function</b> writeVariants(array, n) {
+	<b>function</b> <u title="Записать (то есть вывести) вариант">writeVariants</u>(array, n) {
 		<b>if</b> (!n) {
 			n = 0;
 		}
 		<b>var</b> lim, i, j, b;
-		lim = (array.length - n) * (array.length - n - 1) + (array.length - n - 1);
-		<b>if</b> (array.length - n < 2) {
-			<b>return</b>;
-		}
-		<span class="strcolor">//writeln("Вывод: (lim = " + lim + ")");
-</span>		<b>for</b> (i = 0, j = n; i <= lim; i++, j++) {
-			<b>if</b> (j == array.length - 1) {
-				array[j] = b;
-				<b>if</b> (i < lim || n == 0) {
-					<u>writeln</u>(array.<i>toString</i>());
-				}
-				writeVariants(array, n + 1);
-				j = n - 1;
-				<b>continue</b>;
-			}
+		lim = (array.length - n) * (array.length - n);
+		<b>for</b> (i = 0, j = n; i < lim; i++, j++) {
 			<b>if</b> (j == n) {
 				b = array[j];
 			}
+			<b>if</b> (j == array.length - 1) {
+				array[j] = b;
+				<u>writeln</u>(array.<i>toString</i>());
+				j = n - 1;
+				<b>continue</b>;
+			}
 			array[j] = array[j + 1];
-			
-			<span class="strcolor">//writeln('"' + array.toString() + '"');
-</span>		}
+		}
 	}
 	<u>writeln</u>(<span class="strcolor">"Сочетания:"</span>);
-	writeVariants(array);
+	<u title="Записать (то есть вывести) варианты">writeVariants</u>(array);
+}
+
+</pre>
+<p>В начале определения функции combinations происходит проверка корректности ввода. Если данные корректны, они помещаются в массив array. Затем следует определение функции writeVariants 
+в которой и будет порисходить вывод сочетаний. Так как в дальнейшем функция будет вызываться рекурсивно, я добавил второй аргумент n. В него будет передаваться смещение от начала массива. Элементы части массива от этого смещения и до конца будут перестанавливаться при вызове функции, но пока что я этого не далаю. В функции 
+writeVariants определен цикл, внутри которого происходит перестановка элементов. Чтобы сдвинуть все элементы массива влево, помещая вышедшей за пределы массива элемент в конец, нужно пройти по массиву из N элементов N*N раз. 
+Как только индекс массива выходит за пределы длины массива, ему присваивается значение аргумента n. После каждого сдвига происходит вывод значений массива.
+</p>
+<p>Далее я добавил рекурсивный вызов функции writeVariants. Алгоритм сработал, но вывел много дублей. Избежать их удалось добавив условие перед печатью элементов массива: выводим последнюю полученую в цикле последовательность только в том случае, если отступ n равен 0. В этом случае вложенный вызов writeVariants не выводит ту последовательность, которая пришла к нему на вход (а этого не надо делать, потому что мы ее уже напечатали перед вложенным вызовом).</p>
+
+<pre>
+<b>function</b> <u title="Комбинации">combinations</u>() {
+	<b>var</b> s = <b>String</b>(<u>readln</u>(<span class="strcolor">"Введите несколько чисел разделяя их запятой"</span>)),
+		array = s.<i>split</i>(<span class="strcolor">","</span>), i, ctrl;
+	<b>for</b> (i = 0; i < array.length; i++) {
+		ctrl = <i>parseInt</i>(array[i]);
+		<b>if</b> (<i>isNaN</i>(ctrl) || ctrl != array[i]) {
+			<u>writeln</u>(<span class="strcolor">"Недопустимые данные. Выход"</span>);
+			<b>return</b>;
+		}
+	}
+	<b>function</b> <u title="Записать (то есть вывести) варианты">writeVariants</u>(array, n) {
+		<b>if</b> (!n) {
+			n = 0;
+		}
+		<b>var</b> lim, i, j, b;
+		lim = (array.length - n) * (array.length - n);
+		<b>for</b> (i = 0, j = n; i < lim; i++, j++) {
+			<b>if</b> (j == n) {
+				b = array[j];
+			}
+			<b>if</b> (j == array.length - 1) {
+				array[j] = b;
+				<b>if</b> (i < lim - 1 || n == 0) {
+					<u>writeln</u>(array.<i>toString</i>());
+				}
+				<u title="Записать (то есть вывести) варианты">writeVariants</u>(array, n + 1);
+				j = n - 1;
+				<b>continue</b>;
+			}
+			array[j] = array[j + 1];
+		}
+	}
+	<u>writeln</u>(<span class="strcolor">"Сочетания:"</span>);
+	<u title="Записать (то есть вывести) варианты">writeVariants</u>(array);
 }
 </pre>
+<p>Выводимые результаты несложно проверить "вручную" для последовательностей из двух, трех и четырех чисел. Но могу ли я быть уверенным, что функция работает правильно при любом количестве элементов?</p>
+<p>Конечно нет. По хорошему я должен был бы математически доказать работоспособность алгоритма, но я не могу этого сделать. Но самое малое, что я должен сделать, это написать функцию тестирования. 
+Можифицирую алгоритм writeVariants так, чтобы функция не просто выводила результаты, но и проверяла их на правильность.
+Сделать это в каждом конкретном случае легко, если знать, что количество перестановок <b class="tblack">N</b> чисел равно <b class="tblack">N!</b>.</p>
+<p></p>
+<pre>
+<b>function</b> <u title="Комбинации">combinations</u>() {
+	<span class="strcolor">"use strict"</span>
+	<b>var</b> s = <b>String</b>(<u>readln</u>(<span class="strcolor">"Введите несколько чисел разделяя их запятой"</span>)),
+		array = s.<i>split</i>(<span class="strcolor">","</span>), i, ctrl;
+	<b>for</b> (i = 0; i < array.length; i++) {
+		ctrl = <i>parseInt</i>(array[i]);
+		<b>if</b> (<i>isNaN</i>(ctrl) || ctrl != array[i]) {
+			<u>writeln</u>(<span class="strcolor">"Недопустимые данные. Выход"</span>);
+			<b>return</b>;
+		}
+	}
+	<b>function</b> <u title="Записать (то есть вывести) варианты">writeVariants</u>(array, n, ctrlUnique, ctrlLength) {
+		<b>var</b> lim, i, j, b, a;
+		<b>if</b> (!n) {
+			n = 0;
+			ctrlUnique = {};
+			ctrlLength = {val:0};
+		}
+		lim = (array.length - n) * (array.length - n);
+		<b>for</b> (i = 0, j = n; i < lim; i++, j++) {
+			<b>if</b> (j == n) {
+				b = array[j];
+			}
+			<b>if</b> (j == array.length - 1) {
+				array[j] = b;
+				<b>if</b> (i < lim - 1 || n == 0) {
+					a = array.<i>toString</i>();
+					<u>writeln</u>(a);
+					<b>if</b> (ctrlUnique[a] == 1) {
+						<b>throw</b> <b>new</b> Exception(<span class="strcolor">"Дубль в выводе!"</span>);
+					}
+					ctrlUnique[a] = 1;
+					ctrlLength.val++;
+				}
+				<u title="Записать (то есть вывести) варианты">writeVariants</u>(array, n + 1, ctrlUnique, ctrlLength);
+				j = n - 1;
+				<b>continue</b>;
+			}
+			array[j] = array[j + 1];
+		}
+		<b>if</b> (n == 0) {
+			<b>if</b> (ctrlLength.val != <u title="Факториал n">factorial</u>(array.length)) {
+				<u>writeln</u>(<span class="strcolor">"Неверный результат, количество перестановок не равно n! "</span>);
+				<b>return</b>;
+			}
+		}
+	}
+	<b>function</b> <u title="Факториал n">factorial</u>(n) {
+		n = <i>parseInt</i>(n);
+		<b>if</b> (!n) {
+			n = 0;
+		}
+		<b>if</b> (n < 2) {
+			<b>return</b> 1;
+		}
+		<b>var</b> result = 1;
+		<b>for</b> (<b>var</b> i = 1; i <= n; i++) {
+			result = result * i;
+		}
+		<b>return</b> result;
+	}
+	<u>writeln</u>(<span class="strcolor">"Сочетания:"</span>);
+	<u title="Записать (то есть вывести) варианты">writeVariants</u>(array);
+}
+</pre>
+<p>Я добавил два аргумента функции writeVariants - объект в котором буду хранить уже найденные сочетания и объект, в котором буду хранить записанное число сочетаний. Всякий раз после того, как выведена очередное сочетание, в объект ctrlUnique добавляется поле с именем, равным строке, представляющей собой это сочетание. Но перед этим проверяет, нет ли уже в объекте поля с таким именем.
+Это позволяет контролировать дубли. Также при успешном добавлении увеличивается значение счетчика ctrlLength.val. После окончания вывода проверяется, равно ли значение счетчика факториалу длины исходного массива.</p>
 <p></p>
 <p></p>
 <div style="width:96%">
