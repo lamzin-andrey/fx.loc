@@ -71,6 +71,7 @@ $lang['cycles'] = 'Циклы';
 $lang['strings'] = 'Строки';
 $lang['arrays'] = 'Массивы';
 $lang['function_tasks'] = 'Задачи на функции';
+$lang['graph2d'] = 'Программирование 2D графики';
 
 
 $lang['delete_errors_and_try_again'] = "\n-----------------\nудалите ошибки и попробуйте снова";

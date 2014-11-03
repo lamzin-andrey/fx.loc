@@ -13,5 +13,6 @@
 	<?=QuickStartHandler::part('strings')?>
 	<?=QuickStartHandler::part('arrays')?>
 	<?=QuickStartHandler::part('function_tasks')?>
+	<?=QuickStartHandler::part('graph2d')?>
 </ul>
 

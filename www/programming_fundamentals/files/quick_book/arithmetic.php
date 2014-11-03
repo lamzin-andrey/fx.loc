@@ -117,7 +117,7 @@
 		<b>var</b> result = 2 * x * x * (x * x + 2) + 6 - x * (3 * x * x + 5),
 		controlResult = 2 * x * x * x * x - 3 * x * x * x  + 4 * x * x - 5 * x + 6;
 		<b>if</b> (result != controlResult) {
-			<u>alert</u>('Видимо что-то не так!');
+			<i>alert</i>('Видимо что-то не так!');
 		}
 		<u>writeln</u>('Результат: ' + result);
 	}
