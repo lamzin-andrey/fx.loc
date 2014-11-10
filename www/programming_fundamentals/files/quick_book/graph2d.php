@@ -67,11 +67,10 @@ canvas. В нашем случае на странице такого элеме
 <b>function</b> createCanvasExample() {
 	<span class="strcolor">"use strict"</span>
 	<b>var</b> canvas = document.<i>createElement</i>(<span class="strcolor">'canvas'</span>),       <span class="strcolor">//Создали "холст"
-</span>		context, 
-		canvases = document.<i>getElementsByTagName</i>(<span class="strcolor">'console'</span>), <span class="strcolor">//все холсты на странице
-</span>		i, firstTextY, text, sz;
+</span>		context,
+		i, firstTextY, text, sz;
 	canvas.width  = screen.width;               <span class="strcolor">//ширина холста
-</span>	canvas.height = screen.height;               <span class="strcolor">//высота холста
+</span>	canvas.height = screen.height;              <span class="strcolor">//высота холста
 </span>	
 	document.body.<i>appendChild</i>(canvas); <span class="strcolor">//добавляем на страницу наш холст, можно начинать рисовать
 </span>	<span class="strcolor">//делаем холст "ближе к нам", чтобы он перекрыл все остальное на странице
@@ -80,10 +79,8 @@ canvas. В нашем случае на странице такого элеме
 	canvas.style.top = <span class="strcolor">'0px'</span>;
 	canvas.style.left = <span class="strcolor">'0px'</span>;
 	
-	canvas.id = <span class="strcolor">'testCanvas'</span>; /чтобы можно было легко его найти
-	canvas.onclick = <b>function</b> () { <span class="strcolor">//при клике удалаем его
-</span>		<b>var</b> st = document.<i>getElementById</i>(<span class="strcolor">'testCanvas'</span>);
-		st.parentNode.<i>removeChild</i>(st);
+	canvas.onclick = <b>function</b> () { <span class="strcolor">//при клике удаляем его
+</span>		document.body.<i>removeChild</i>(canvas);
 	}
 	context = canvas.<i>getContext</i>(<span class="strcolor">"2d"</span>);   <span class="strcolor">//Получить контекст рисования
 </span>	context.fillStyle = <span class="strcolor">"#00AA00"</span>;       <span class="strcolor">//Стиль заливки - темно-зеленый
@@ -96,13 +93,81 @@ canvas. В нашем случае на странице такого элеме
 		firstTextY = <b>Math</b>.<i>round</i>(screen.height / 2);
 	context.<i>strokeText</i>(text, <b>Math</b>.<i>round</i>(screen.width / 2 - context.<i>measureText</i>(text).width / 2),firstTextY);
 	context.font = <span class="strcolor">'14px Geneva'</span>;
-	context.strokeStyle = <span class="strcolor">'#FFFF00'</span>;
+	context.fillStyle = <span class="strcolor">'#FFFF00'</span>;
 	text = <span class="strcolor">'Кликните для закрытия этого зеленого фона!'</span>;
-	context.<i>strokeText</i>(text, <b>Math</b>.<i>round</i>(screen.width / 2 - context.<i>measureText</i>(text).width / 2),firstTextY + 30);
+	context.<i>fillText</i>(text, <b>Math</b>.<i>round</i>(screen.width / 2 - context.<i>measureText</i>(text).width / 2),firstTextY + 30);
 }
-
 </pre>
-<p></p>
+<p>В отличии от предыдущего примера я использовал объект screen для того, чтобы получить ширину и высоту экрана и присвоил эти значения в свойства width и height элемента canvas. 
+Еще одно отличие в том, что созданный элемент canvas добавляется как потомок не DOM элементу который показывает вывод приложения, а
+"корневому" элементу DOM документа - body.</p>
+<p>Строки 11 - 14 служат для того, чтобы поместить наш элемент canvas поверх всего остального содержимого страницы, интересующемся подробностями советую погуглить статьи и учебники по css.</p>
+<p>Далее, назначаем для обработки клика по холсту анонимную функцию. В ней с помощью метода <i>removeChild</i> удаляем наш холст из документа.</p>
+<p>Помимо прямоугольника, на этот раз зеленого, выводим на холсте две надписи разными стилями и цветами. Используем свойства контекста рисования font, strokeStyle и fillStyle для определения размера, семейства и цвета шрифта. После того, как эти параметры заданы, мы можем узнать ширину будущей надписи, хотя она еще не выведена. Для этого используется метод <i>measureText</i>, возвращающая объект, у которого есть свойство width, содержащее ширину текста. Сам текст выводится с помощью методов strokeText и fillText, второй и третий аргументы методов определяют x и y координаты левого верхнего угла надписей.</p>
+<p>Я решил не ограничивать себя и использовать весь экран при решении примеров, связанных с графикой. Поэтому стоит оформить этот код в виде функции, так как он сравнительно объемен. При решении примера в коде будет только вызов функции <u>createFullScreenContext</u>.</p>
+<div class="ainfo">Конечно, fullScreen здесь достаточно условен, так как пользователь будет вынужден переводить браузер в полноэкранный режим "вручную" нажимая F11, но перевести окно браузера в полноэкранный режим с помощью одного только JavaScript если я не ошибаюсь, нельзя.</div>
+<pre>
+<b>function</b> <u>createCanvasExample</u>() {
+	<span class="strcolor">"use strict"</span>
+	<b>function</b> <u>createFullScreenContext</u>(color, parentElement, zIndex) {
+		<b>if</b> (!zIndex) {
+			zIndex = 5;  <span class="strcolor">//значение по умолчанию
+</span>		}
+		<b>if</b> (!color) {     <span class="strcolor">//Стиль заливки по умолчанию - темно-зеленый
+</span>			color = <span class="strcolor">'#00AA00'</span>;
+		}
+		<b>if</b> (!parentElement) {
+			parentElement = document.body;  <span class="strcolor">//значение по умолчанию
+</span>		}
+	    <b>var</b> canvas = document.<i>createElement</i>(<span class="strcolor">'canvas'</span>),       <span class="strcolor">//Создали "холст"
+</span>		    context,
+		    i, firstTextY, text, sz;
+	        canvas.width  = screen.width;               <span class="strcolor">//ширина холста
+</span>	        canvas.height = screen.height;              <span class="strcolor">//высота холста
+</span>	
+		parentElement.<i>appendChild</i>(canvas); <span class="strcolor">//добавляем на страницу наш холст, можно начинать рисовать
+</span>		<span class="strcolor">//делаем холст "ближе к нам", чтобы он перекрыл все остальное на странице
+</span>		canvas.style.zIndex = zIndex;
+		canvas.style.position = <span class="strcolor">'absolute'</span>;
+		canvas.style.top = <span class="strcolor">'0px'</span>;
+		canvas.style.left = <span class="strcolor">'0px'</span>;
+	
+		context = canvas.<i>getContext</i>(<span class="strcolor">"2d"</span>);   <span class="strcolor">//Получить контекст рисования
+</span>		context.fillStyle = color;  
+		<span class="strcolor">//Рисуем прямоугольник на весь холст
+</span>		context.<i>fillRect</i>(0, 0, canvas.width, canvas.height);
+		<b>return</b> {context:context, canvas:canvas};
+	}
+	<b>var</b> _2d = <u>createFullScreenContext</u>();
+	_2d.canvas.onclick = <b>function</b>() {
+		document.body.<i>removeChild</i>(_2d.canvas);
+	}
+}
+</pre>
+<p>Функция <u>createFullScreenContext</u> может принимать три необязательных параметра: цвет заливки, DOM элемент к которому будет добавлен холст и zIndex на случай, если вдруг понадобится поместить очередной холст "над предыдущим". Впрочем, я постараюсь обходиться одним холстом.
+Функция <u>createFullScreenContext</u> возвращает объект из двух свойств - в первом контекст рисования, во втором холст, чтобы его можно было удалить. Код, удаляющий холст при клике мышью я по понятным причинам вынес из функции: вряд ли понадобится удалять холст именно таким образом как сейчас, при клике в произвольной точке.
+</p>
+<p>На этом подготовку к решению примера по 2D графике можно было бы считать законченной, но это не совсем так. Почему, станет после прчтения текста  задания.</p>
+<p>Задача: Создать окно в рамке  на фоне, заполненном псевдографическим символом #178 зеленого цвета, с текстом из файла.
+По клавишам управления курсором выполнять скроллинг текста в окне на одну строку вверх или вниз.</p>
+<p>Здесь у нас небольшая загвоздка: браузерный JavaScript не может работать с текстом из файла, расположенного на вашем компьютере.
+Однако, некоторая альтернатива у нас есть. Опишу её в прокомментированом фрагменте кода далее, добавив при необходимости более развернутые комментарии после описания.</p>
+function pseudoFileExample() {
+	var appConsole = document.getElementById('console'), //наше "окошко" вывода приложения
+		textInput  = document.createElement('textarea'), //Создали элемент для ввода многострочного текста
+		nameInput  = document.createElement('input'),    //Создали элемент для ввода многострочного текста
+		saveButton = document.createElement('button');   //Создали кнопку "Сохранить"
+	textInput.style = "width:99%; resize:none; height:480px;";
+	textInput.id = "pseudofileContent";
+	nameInput.style = "width:99%";
+	nameInput.id = "pseudofileName";
+	saveButton.id = "pseudofileSaveButton";
+	saveButton.align = "right";
+	appConsole.innerHTML = '';
+	appConsole.appendChild(textInput);
+	appConsole.appendChild(nameInput);
+	appConsole.appendChild(saveButton);
+}
 <div style="width:96%">
 <div class="left"><?=QuickStartHandler::aback('arrays')?></div>
 <div class="right"><?=QuickStartHandler::anext('graph2d')?></div>
