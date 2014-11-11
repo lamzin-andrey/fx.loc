@@ -152,22 +152,38 @@ canvas. В нашем случае на странице такого элеме
 По клавишам управления курсором выполнять скроллинг текста в окне на одну строку вверх или вниз.</p>
 <p>Здесь у нас небольшая загвоздка: браузерный JavaScript не может работать с текстом из файла, расположенного на вашем компьютере.
 Однако, некоторая альтернатива у нас есть. Опишу её в прокомментированом фрагменте кода далее, добавив при необходимости более развернутые комментарии после описания.</p>
-function pseudoFileExample() {
-	var appConsole = document.getElementById('console'), //наше "окошко" вывода приложения
-		textInput  = document.createElement('textarea'), //Создали элемент для ввода многострочного текста
-		nameInput  = document.createElement('input'),    //Создали элемент для ввода многострочного текста
-		saveButton = document.createElement('button');   //Создали кнопку "Сохранить"
-	textInput.style = "width:99%; resize:none; height:480px;";
-	textInput.id = "pseudofileContent";
-	nameInput.style = "width:99%";
-	nameInput.id = "pseudofileName";
-	saveButton.id = "pseudofileSaveButton";
-	saveButton.align = "right";
-	appConsole.innerHTML = '';
-	appConsole.appendChild(textInput);
-	appConsole.appendChild(nameInput);
-	appConsole.appendChild(saveButton);
+<pre>
+<b>function</b> pseudoFileExample() {
+	<b>var</b> appConsole = document.<i>getElementById</i>(<span class="strcolor">'console'</span>), <span class="strcolor">//наше "окошко" вывода приложения
+</span>		textInput  = document.<i>createElement</i>(<span class="strcolor">'textarea'</span>), <span class="strcolor">//Создали элемент для ввода многострочного текста
+</span>		nameInput  = document.<i>createElement</i>(<span class="strcolor">'input'</span>),    <span class="strcolor">//Создали элемент для ввода однострочного текста
+</span>		saveButton = document.<i>createElement</i>(<span class="strcolor">'button'</span>);   <span class="strcolor">//Создали кнопку "Сохранить"
+</span>		saveButtonWrap = document.<i>createElement</i>(<span class="strcolor">'p'</span>);    <span class="strcolor">//Создали обертку для кнопки "Сохранить"
+</span>	textInput.style = <span class="strcolor">"width:99%; resize:none; height:440px;"</span>; <span class="strcolor">//Размеры поля ввода
+</span>	nameInput.style = <span class="strcolor">"width:99%"</span>;
+	saveButtonWrap.align = <span class="strcolor">"right"</span>;          <span class="strcolor">//Сместили кнопку к правому краю
+</span>	saveButton.innerHTML = <span class="strcolor">"Сохранить"</span>;      <span class="strcolor">//Написали на ней Сохранить
+</span>	appConsole.innerHTML = <span class="strcolor">''</span>;               <span class="strcolor">// Очистили DOM элемент, в который будем добавлять наши элементы ввода
+</span>	<span class="strcolor">//Добавили наши элементы
+</span>	appConsole.<i>appendChild</i>(textInput);       
+	appConsole.<i>appendChild</i>(nameInput);
+	appConsole.<i>appendChild</i>(saveButtonWrap); 
+	saveButtonWrap.<i>appendChild</i>(saveButton); <span class="strcolor">//Кнопку добавили в "обертку", чтобы выравнять ее по правому краю
+</span>	
+	<span class="strcolor">//пользовательский интерфейс готов, добавим логики
+</span>	saveButton.onclick = <b>function</b>() {
+		localStorage.<i>setItem</i>(nameInput.value, textInput.value);
+	}
 }
+</pre>
+<p>Мы не можем сохранить текст в любом файле на нашем жестком диске, но мы можем сохранить его в локальном хранилище браузера. 
+Современные браузеры позволяют хранить до десяти мегабайт для каждого сайта в хранилище, Internet Explorer до пяти мегабайт.
+Доступ к хранилищу возможен через объект localStorage. Используя метод объекта setItem можно сохранить текст под определенным именем, это вобщем-то напоминает работу с текстовыми файлами.
+Существенная разница заключается в том, что доступ к содержимому такого "файла" возможен только из того браузера, в котором вы его создаете: если вы сохранили текст сказки "Хоббит" используя localStorage.setItem в InternetExplorer, то прочитать его в Firefox вы не сможете. Вы не можете копировать этот "файл", в общем замена настоящим файлам слабоватая, но вполне подходящая для нашей задачи.</p>
+<p>Прежде, чем сохранить какой-то текст в такой "файл", надо позаботиться о том, чтобы можно было ввести этот текст. К счастью, браузер предоставляет нам всевозможные элементы ввода значений, среди них многострочные и однострочные поля ввода текста и кнопки. С помощью метода <i>createElement</i> я создаю эти элементы, а также создаю элемент- контейнер (с помощью кода <i>createElement(<span class="strcolor">'p'</span>)</i>). 
+Он мне нужен для того, чтобы сместить кнопку к правому краю, это привычно большинству пользователей компьютеров. </p>
+<p>Далее я использую свойство (атрибут) style созданных элементов для того, чтобы задать им размер. 
+Для многострочного поля ввода текста я задал ширину 99% и высоту 420 пикселей, а заодно запретил изменять размеры поля пользователю. Я использовал правила CSS, если вас интересуют все возможности, которые можно получить используя атрибут style, можете воспользоваться поиском и найти себе подходящий справочник по CSS3 или книгу.</p>
 <div style="width:96%">
 <div class="left"><?=QuickStartHandler::aback('arrays')?></div>
 <div class="right"><?=QuickStartHandler::anext('graph2d')?></div>
