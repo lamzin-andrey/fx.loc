@@ -72,6 +72,11 @@ $lang['strings'] = 'Строки';
 $lang['arrays'] = 'Массивы';
 $lang['function_tasks'] = 'Задачи на функции';
 $lang['graph2d'] = 'Программирование 2D графики';
+$lang['first_task'] = 'Первая задача';
+$lang['first_task_decision'] = 'Решение первой задачи';
+$lang['pseudofile'] = 'Замена текстовым файлам';
+$lang['pseudofile'] = 'Замена текстовым файлам';
+$lang['first_canvas'] = 'Холст и краски';
 
 
 $lang['delete_errors_and_try_again'] = "\n-----------------\nудалите ошибки и попробуйте снова";

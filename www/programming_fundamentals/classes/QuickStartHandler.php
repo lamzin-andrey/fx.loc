@@ -18,9 +18,18 @@ class QuickStartHandler extends CBaseHandler{
 		}
 		parent::__construct();
 	}
-	static public function part($key) {
+	/**
+	 * @desc Помощник для вывода элементов содержания на quick_start
+	 * */
+	static public function part($key, $href = false) {
 		$lang = utils_getCurrentLang();
-		return '<li><a class="" href="'. WEB_ROOT. '/quick_start/'. $key .'/">'. $lang[$key] . '</a></li>';
+		$display_text_key = $key;
+		$end_link = '/';
+		if ($href) {
+			$end_link = '#' . $href;
+			$display_text_key = $href;
+		}
+		return '<li><a class="" href="'. WEB_ROOT. '/quick_start/'. $key . $end_link . '">'. $lang[$display_text_key] . '</a></li>';
 	}
 	static public function tim($variant, $task, $subtask) {
 		return '<img src="'.WEB_ROOT.'/files/tasks/'.$variant.'/'.$task.'.'.$subtask.'.png" />';

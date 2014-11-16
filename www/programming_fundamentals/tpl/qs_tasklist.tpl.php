@@ -14,5 +14,11 @@
 	<?=QuickStartHandler::part('arrays')?>
 	<?=QuickStartHandler::part('function_tasks')?>
 	<?=QuickStartHandler::part('graph2d')?>
+	<ul>
+		<?=QuickStartHandler::part('graph2d', 'first_canvas')?>
+		<?=QuickStartHandler::part('graph2d', 'first_task')?>
+		<?=QuickStartHandler::part('graph2d', 'pseudofile')?>
+		<?=QuickStartHandler::part('graph2d', 'first_task_decision')?>
+	</ul>
 </ul>
 
