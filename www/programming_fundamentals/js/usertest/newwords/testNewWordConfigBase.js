@@ -34,7 +34,6 @@
 						$(btn).text(questText);
 						$(btn).click(
 							function(evt) {
-								alert(evt.target.getAttribute('data-n'));
 								$('#answer').val( evt.target.getAttribute('data-n') );
 								TestEngine.state = C.CHECK_ONE_RESULT;
 							}
