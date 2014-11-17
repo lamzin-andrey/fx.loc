@@ -29,10 +29,11 @@ class QuickStartHandler extends CBaseHandler{
 	private function _addNewWordsQuests($s) {
 		$pages = array('wtf');
 		$n = array_search($s, $pages);
-		if ($n !== false) {
-			for ($i = 0; $i <= $n; $i++) {
-				$this->js[] = 'usertest/newwords/' .$pages[$i]. '.js';
-			}
+		if ($n === false) {
+			$n = count($pages) - 1;
+		}
+		for ($i = 0; $i <= $n; $i++) {
+			$this->js[] = 'usertest/newwords/' .$pages[$i]. '.js';
 		}
 	}
 	/**

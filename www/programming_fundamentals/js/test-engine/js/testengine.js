@@ -62,6 +62,10 @@ var TestEngine = {
 			function() {
 				switch (o.state) {
 					case o.C.WIN:
+						o.lives = o.beginLives;
+						o.time = o.limit;
+						o.iterator = -1;
+						o.view.setQuest('');
 						o.winner();
 						break;
 					case o.C.CHECK_ONE_RESULT:

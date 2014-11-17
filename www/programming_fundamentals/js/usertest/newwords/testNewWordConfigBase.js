@@ -17,6 +17,7 @@
 			},
 			setQuest: function(v, answers, rule){
 				$('#answer').val('');
+				$('#variants').html('');
 				$("#quest").text(v);
 				if (!rule) {
 					$('#answer').removeClass('hide');
