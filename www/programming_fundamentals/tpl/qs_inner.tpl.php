@@ -16,6 +16,11 @@
 	?>
 		<div class="textcontent scroll-y">
 			<? include APP_ROOT . "/files/quick_book/" . $handler->book_tpl . '.php';?>
+			<? if ($handler->show_test_new_words_button):?>
+			<div class="testsButtons">
+				<button id="runTest" >Тест на новые слова</button>
+			</div>
+			<? endif?>
 		</div>
 		<hr style="color:##D2DAE2;padding:0; margin:0;"/>
 		<div class="qs_editor_place">
@@ -83,5 +88,22 @@
 	
 			</div>
 		</div>
+		
+		<div id="qs-test-new-word-wrap" class="hide">
+			<div class="test-new-word" id="qs-test-new-word">
+				<p style="text-align:right;">
+					<button id="startGame" >Begin game</button>
+				</p>
+				<p><span id="time_left"></span> <span id="fail_result" style="color:red"></span><span id="good_news" style="color:#009900"></span></p>
+				<p id="quest"></p>
+				<p>Score <span  id="score"></span></p>
+				<p>Enter answer</p>
+				<textarea id="answer" style="width:99%;" rows="20"></textarea>
+				<p style="text-align:right;">
+					<button id="send" >Save</button>
+				</p>
+			</div>
+		</div>
+		
 	</article>
 </div>

@@ -109,3 +109,8 @@ u{text-decoration:none; color:#2A8109; font-style:italic;}
 .strcolor {color:#8C5C0D/*#F07676*/;}
 .recolor {color:#F07676;}
 .tred{color:red;}
+
+
+.testsButtons {
+	margin: 10px 0;
+}

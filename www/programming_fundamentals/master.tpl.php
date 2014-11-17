@@ -18,6 +18,14 @@
 	<script type="text/javascript" >
 		var WEB_ROOT = '<?=WEB_ROOT?>';
 	</script>
+	<?
+	if (isset($handler->js) && is_array($handler->js) && count($handler->js)) {
+		foreach ($handler->js as $js){
+		?><script type="text/javascript" charset="UTF-8" src="<?=WEB_ROOT ?>/js/<?=$js?>"></script>
+	<?
+		}
+	}
+	?>
 	<? if (o($handler, 'file_list')):?>
 		<? foreach($handler->file_list as $task): ?>
 		<script type="text/javascript" charset="UTF-8" src="<?=WEB_ROOT ?>/js/task.js.php?id=<?=$task['id']?>"></script>
