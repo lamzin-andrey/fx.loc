@@ -1,7 +1,7 @@
 /**
  * @desc Слова, появившиеся на первом занятии
 */
-(function () {
+/*(function () {
 	$(document).ready(init);
 	function init() {
 		TestEngine.quests = []; //Очистили дефолтный список вопросов - здесь еще раз, на всякий случай, т к это первый из словарей этой серии
@@ -10,3 +10,4 @@
 		console.log( TestEngine.quests );
 	}
 })()
+*/

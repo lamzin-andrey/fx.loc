@@ -102,6 +102,7 @@
 				<p style="text-align:right;">
 					<button id="send" >Save</button>
 				</p>
+				<div id="variants"></div>
 			</div>
 		</div>
 		

@@ -15,8 +15,33 @@
 				$("#fail_result").text('');
 				$("#good_news").text('');
 			},
-			setQuest: function(v){
+			setQuest: function(v, answers, rule){
+				$('#answer').val('');
 				$("#quest").text(v);
+				if (!rule) {
+					$('#answer').removeClass('hide');
+					$('#send').removeClass('hide');
+					$('#variants').innerHTML = '';
+					return;
+				}
+				$('#answer').addClass('hide');
+				$('#send').addClass('hide');
+				$(answers).each(
+					function(i, questText) {
+						var btn = document.createElement('button');
+						//$(btn).data('n', i).text(questText);
+						btn.setAttribute('data-n', i);
+						$(btn).text(questText);
+						$(btn).click(
+							function(evt) {
+								alert(evt.target.getAttribute('data-n'));
+								$('#answer').val( evt.target.getAttribute('data-n') );
+								TestEngine.state = C.CHECK_ONE_RESULT;
+							}
+						);
+						$('#variants').append( btn );
+					}
+				);
 			},
 			setBeginScreen: function(v){},
 			setGameScreen: function(){
