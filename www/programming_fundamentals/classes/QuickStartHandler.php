@@ -27,7 +27,7 @@ class QuickStartHandler extends CBaseHandler{
 	 * @desc Подключить файлы с вопросами для теста на новые слова
 	*/
 	private function _addNewWordsQuests($s) {
-		$pages = array('wtf');
+		$pages = array('wtf', 'keywords');
 		$n = array_search($s, $pages);
 		if ($n === false) {
 			$n = count($pages) - 1;

@@ -94,9 +94,10 @@
 				<p style="text-align:right;">
 					<button id="startGame" >Begin game</button>
 				</p>
-				<p><span id="time_left"></span> <span id="fail_result" style="color:red"></span><span id="good_news" style="color:#009900"></span></p>
-				<p id="quest"></p>
-				<p>Score <span  id="score"></span></p>
+				<p>Time: <span id="time_left"></span> <span id="fail_result" style="color:red"></span><span id="good_news" style="color:#009900"></span></p>
+				<p id="quest" style="border:green 1px solid"></p>
+				<p>Health: <span id="lives"></span></p>
+				<p>Score: <span  id="score"></span></p>
 				<p>Enter answer</p>
 				<textarea id="answer" style="width:99%;" rows="20"></textarea>
 				<p style="text-align:right;">

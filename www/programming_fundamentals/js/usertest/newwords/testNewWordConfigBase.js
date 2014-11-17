@@ -3,7 +3,49 @@
  * */
 (function () {
 	$(document).ready(init);
+	
+	function random(min, max) {
+		max = parseInt(max, 10);
+		min = parseInt(min, 10);
+		max = max ? max : 0;
+		min = min ? min : 0;
+		var n = Math.random();
+		n = Math.round(n * Math.pow(10, String(max).length ) );
+		if (n < min) {
+			n += min;
+		}
+		if (n > max) {
+			n = n % max + min;
+		}
+		return n;
+	}
+	
 	function init() {
+		window.TestNewWordsHandler = {};
+		window.TestNewWordsHandler.shuffle = function() {
+			var L = TestEngine.quests.length, i = L, j, o, arr = TestEngine.quests, word, src;
+			while (i--) {
+				o = arr[i];
+				j = random(0, L - 1);
+				while (i == j) {
+					j = random(0, L - 1);
+				}
+				word = arr[j].a[ arr[j].r ];
+				src  = arr[i].a[0];
+				j = random(0, 2);
+				if (j == 2) {
+					j = 1;
+				}
+				TestEngine.quests[i].r = j;
+				TestEngine.quests[i].a[j] = src;
+				j++;
+				if (j > 1) {
+					j = 0;
+				}
+				TestEngine.quests[i].a[j] = word;
+			}
+			//console.log(arr);
+		}
 		TestEngine.view = {
 			setScore:function(v){
 				$("#score").text(v);
@@ -18,8 +60,8 @@
 			setQuest: function(v, answers, rule){
 				$('#answer').val('');
 				$('#variants').html('');
-				$("#quest").text(v);
-				if (!rule) {
+				$("#quest").text('Что значит: ' + v);
+				if (String(rule) == "undefined") {
 					$('#answer').removeClass('hide');
 					$('#send').removeClass('hide');
 					$('#variants').innerHTML = '';
@@ -47,7 +89,9 @@
 			setGameScreen: function(){
 				$("#startGame").prop('disabled', true);
 			},
-			setLives: function(){},
+			setLives: function(v) {
+				$("#lives").text(v);
+			},
 			setDoneOneAnswerScreen: function(){
 				$("#good_news").text('WoW!');
 				return 2;
