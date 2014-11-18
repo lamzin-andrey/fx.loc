@@ -1,52 +1,46 @@
 /**
- * Базовая конфигурация теста
+ * Базовая конфигурация теста на знание слов, использующихся в тексте программ
  * */
 (function () {
 	$(document).ready(init);
 	
-	function random(min, max) {
-		max = parseInt(max, 10);
-		min = parseInt(min, 10);
-		max = max ? max : 0;
-		min = min ? min : 0;
-		var n = Math.random();
-		n = Math.round(n * Math.pow(10, String(max).length ) );
-		if (n < min) {
-			n += min;
-		}
-		if (n > max) {
-			n = n % max + min;
-		}
-		return n;
-	}
-	
 	function init() {
+		/**
+		 * @desc Объект хранящий функцию shuffle для инициализации "неправильных" вариантов слов
+		*/
 		window.TestNewWordsHandler = {};
+		/**
+		 * @desc Добавляет к каждому слову неправильный вариант ответа, переставляет варианты ответа на вопрос
+		*/
 		window.TestNewWordsHandler.shuffle = function() {
-			var L = TestEngine.quests.length, i = L, j, o, arr = TestEngine.quests, word, src;
+			var L = TestNewWords.quests.length, i = L, j, o, arr = TestNewWords.quests, word, src;
 			while (i--) {
 				o = arr[i];
-				j = random(0, L - 1);
+				j = TestNewWords.random(0, L - 1);
 				while (i == j) {
-					j = random(0, L - 1);
+					j = TestNewWords.random(0, L - 1);
 				}
 				word = arr[j].a[ arr[j].r ];
-				src  = arr[i].a[0];
-				j = random(0, 2);
-				if (j == 2) {
+				src  = arr[i].a[ arr[i].r ];
+				j = TestNewWords.random(0, 500) % 2;
+				if (j) {
 					j = 1;
 				}
-				TestEngine.quests[i].r = j;
-				TestEngine.quests[i].a[j] = src;
+				TestNewWords.quests[i].r = j;
+				TestNewWords.quests[i].a[j] = src;
 				j++;
 				if (j > 1) {
 					j = 0;
 				}
-				TestEngine.quests[i].a[j] = word;
+				TestNewWords.quests[i].a[j] = word;
 			}
 			//console.log(arr);
 		}
-		TestEngine.view = {
+		/** @var глобальный объект - экземпляр базового конфигуратора теста на новые слова*/
+		window.TestNewWords = new TestEngine();
+		TestNewWords.randomize = true; //вопросы будут выводится случайным образом
+		/** @desc Объект реализующий интерфейс представления данных теста, через него тест взаимодействует с DOM */
+		TestNewWords.view = {
 			setScore:function(v){
 				$("#score").text(v);
 			},
@@ -78,7 +72,7 @@
 						$(btn).click(
 							function(evt) {
 								$('#answer').val( evt.target.getAttribute('data-n') );
-								TestEngine.state = C.CHECK_ONE_RESULT;
+								TestNewWords.state = C.CHECK_ONE_RESULT;
 							}
 						);
 						$('#variants').append( btn );
@@ -112,18 +106,16 @@
 				$("#startGame").prop('disabled', false);
 			}
 		};
-		
-		TestEngine.limit = 30 * 1000;
-		TestEngine.time  = 30 * 1000;
-		
-		TestEngine.init();
-		var C = TestEngine.C;
-		$("#startGame").prop('disabled', false);
-		$('#startGame').click( function() {
-			TestEngine.state = C.START_GAME;
+		TestNewWords.configTime(5);	//Конфигурация
+		TestNewWords.init();		//Запуск
+		var C = TestNewWords.C;		//для более быстрого доступа
+		$("#startGame").prop('disabled', false); //кнопку "Начать тест" сделаем пока ннедоступной
+		/** @desc Взаимодействие пользователя с тестом*/
+		$('#startGame').click( function() {      
+			TestNewWords.state = C.START_GAME;
 		});
 		$('#send').click( function() {
-			TestEngine.state = C.CHECK_ONE_RESULT;
+			TestNewWords.state = C.CHECK_ONE_RESULT;
 		});
 	}
 })()

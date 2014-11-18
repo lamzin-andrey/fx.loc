@@ -1,25 +1,58 @@
-var TestEngine = {
-	quests:[/*
-		{q:"Что такое осень?", a:"Это небо"},
+/**
+ * @class Тип объекта, реализующий "движок" тестов 
+*/
+function TestEngine() {
+	this.initTestEngine();
+}
+/**
+ * @desc Инициализация движка тестов, содержит также описание конфигурации и интерфейса объекта - представления данных.
+*/
+TestEngine.prototype.initTestEngine = function() {
+	//config - можно изменять для каждого объекта TestEngine
+	this.quests = [/*
+		//Первые два вопроса ожидают ответа в виде введенного текста
+		{q:"Что такое осень?", a:"Это небо"}, //вопрос - ответ
 		{q:"Переведите: Я буду читать", a:"I will read"},
-		{q:"Как зовут певца?", a:"Zadolbal!"},
-		{t:1, q:"Один в поле... ", 
-			a:["Не пойман", "Не вор", "Не воин", "Биткоин"],
-			r:2
+		//Последний вопрос предполагает, что пользователь выберет один из вариантов
+		{
+		 	t:1,  //вопрос с варианиами ответа
+		 	q:"Один в поле... ", //вопрос 
+			a:["Не пойман", "Не вор", "Не воин", "Биткоин"], //варианты
+			r:2 //правильный вариант
 		}*/
-	],
-	minTime: 30 * 1000,
-	maxTime: 500 * 1000,
-	limit:   5 * 1000,
-	time:    5 * 1000,
-	defaultScorePerAnswer : 10,
-	score:0,
-	beginLives : 2,
-	lives : 2,
-	failAnswerDelay: 1,
-	successAnswerDelay: 1,
+	];
+	this.minTime = 30 * 1000;
+	this.maxTime = 500 * 1000;
+	this.limit   = 5 * 1000;
+	this.time    = 5 * 1000;
+	this.defaultScorePerAnswer = 10;
+	this.score = 0;
+	this.beginLives = 2;
+	this.lives = 2;
+	this.failAnswerDelay = 1;
+	this.successAnswerDelay = 1;
+	this.randomize = false;
 	//end config
-	C:{
+	
+	/**
+	 * Каждому экземпляру надо передать объект - представление, реализующий такие функции:
+	 * */
+	this.viewIfc = { //view required functions
+		setScore:0/*funciton(v){}*/, //Показывает количество очков v
+		setTime: 0,					 //(v) показывает оставшеся для ответа на вопрос время
+		setQuest: 0,				 //(String text[, Array answers, Number rule]) выводит текст вопроса, если переданы варианты answers, выводит варианты
+		setBeginScreen: 0,			 //Обновляет экран перед началом теста
+		setGameScreen: 0,			 //Обновляет экран в начале игры
+		setLives: 0,				 //(v) выводит кол-во здоровья, жизней и т п 
+		setDoneOneAnswerScreen: 0,   //Показывает экран или сообщение об успешном ответе на вопрос. Должен вернуть количество секунд, которое будети показываться этот экран
+		setFailOneAnswerScreen: 0,   //Показывает экран или сообщение о неуспешном ответе на вопрос. Должен вернуть количество секунд, которое будети показываться этот экран
+		setGameOverScreen: 0,		 //Показывает экран при провальном окончании игры
+		getAnswer: 0,                //Должен возвращать ответ веденный пользователем или номер выбранного пользователем варианта при ответе на вопрос
+		clearPrevStatus:0            //Вызывается перед показом нового вопроса. Можно использовать чтобы удалить сообщения об успешном или неуспешном ответе на вопрос
+	};
+	
+	//constants
+	this.C = {
 		NOT_BEGIN:0,
 		GET_QUEST:1,
 		START_GAME:2,
@@ -31,27 +64,37 @@ var TestEngine = {
 		FAIL_RESULT_SHOWING:16,
 		GAME_OVER:20,
 		WIN:25
-	},
-	//end constants
-	viewIfc: { //view required functions
-		setScore:0/*funciton(){}*/,
-		setTime: 0,
-		setQuest: 0,
-		setBeginScreen: 0,
-		setGameScreen: 0,
-		setLives: 0,
-		setDoneOneAnswerScreen:0,
-		setDoneOneAnswerScreen: 0,  //return time delay success screen
-		setFailOneAnswerScreen: 0,  //return time delay fail screen
-		setGameOverScreen: 0,
-		getAnswer: 0,               // (!) must return answer text or answer variant number
-		clearPrevStatus:0           // can clear "Wrong" or "Success" messages
-	},
+	};
+	//end constats
+	
+	
 	//end view interface
-	iterator:-1,
-	interval:null,
-	state : 0,
-	init:function() {
+	this.iterator = -1;
+	this.interval = null;
+	this.state = 0;
+}
+/**
+ * @desc Установить время ожидания ответа на вопрос
+ * @param {Number} seconds
+*/
+TestEngine.prototype.configTime = function(seconds) {
+	var s = seconds;
+	this.limit = s * 1000;
+	this.time  = s * 1000;
+}
+/**
+ * @desc Установить количество жизней
+ * @param {Number} lives
+*/
+TestEngine.prototype.configLives = function(lives) {
+	var l = lives;
+	this.beginLives = l;
+	this.lives = l;
+}
+/**
+ * @desc Запуск таймера теста, логика вызова методов объекта в зависимотси от состояния процесса тестирования
+*/
+TestEngine.prototype.init = function() {
 		var data = {};
 		/*if (!this.checkView(data)) {
 			throw new Error("view required functions: " + data.join(','));
@@ -98,6 +141,7 @@ var TestEngine = {
 						o.view.setTime(o.limit / 1000);
 						o.view.clearPrevStatus();
 						if (o.state == o.C.START_GAME) {
+							o.shuffleQuests();
 							o.view.setLives(o.beginLives);
 							o.view.setScore(0);
 							o.score = 0;
@@ -109,82 +153,150 @@ var TestEngine = {
 				}
 			}, 1000
 		);
-	},
-	decrementTime: function() {
-		this.time = this.time - 1 * 1000;
-		if (this.time > 0) {
-			this.view.setTime(this.time / 1000);
-		} else {
-			this.view.setTime(this.time / 1000);
-			this.state = this.C.FAIL_RESULT;
-		}
-	},
-	decrementFailResultTime: function() {
-		this.failAnswerDelay--;
-		if (this.failAnswerDelay <= 0) {
-			this.failAnswerDelay = 1;
-			this.state = this.C.GET_QUEST;
-		}
-	},
-	checkLives: function() {
-		if (this.lives--) {
-			var d = parseInt(this.view.setFailOneAnswerScreen(), 10);
-			this.failAnswerDelay = d ? d : this.failAnswerDelay;
-			this.view.setLives(this.lives);
-			this.state = this.C.FAIL_RESULT_SHOWING;
-			this.time = this.limit;
-			if (!this.lives) {
-				this.state = this.C.GAME_OVER;
-			}
-		} else {
+}
+/**
+ * @desc Обратный отсчет времени при ожидании ответа на вопрос
+*/
+TestEngine.prototype.decrementTime = function() {
+	this.time = this.time - 1 * 1000;
+	if (this.time > 0) {
+		this.view.setTime(this.time / 1000);
+	} else {
+		this.view.setTime(this.time / 1000);
+		this.state = this.C.FAIL_RESULT;
+	}
+}
+/**
+ * @desc Обратный отсчет времени при показе экрана неудачного ответа на вопрос
+*/
+TestEngine.prototype.decrementFailResultTime = function() {
+	this.failAnswerDelay--;
+	if (this.failAnswerDelay <= 0) {
+		this.failAnswerDelay = 1;
+		this.state = this.C.GET_QUEST;
+	}
+}
+/**
+ * @desc Вызывается при неверном ответе на вопрос. Уменьшает количество здоровья и при достижении нуля устанавливает состояние проигрыша
+*/
+TestEngine.prototype.checkLives = function() {
+	if (this.lives--) {
+		var d = parseInt(this.view.setFailOneAnswerScreen(), 10);
+		this.failAnswerDelay = d ? d : this.failAnswerDelay;
+		this.view.setLives(this.lives);
+		this.state = this.C.FAIL_RESULT_SHOWING;
+		this.time = this.limit;
+		if (!this.lives) {
 			this.state = this.C.GAME_OVER;
 		}
-	},
-	nextQuest: function() {
-		this.iterator++;
-		if (this.iterator == this.quests.length) {
+	} else {
+		this.state = this.C.GAME_OVER;
+	}
+}
+/**
+ * @desc Следующий вопрос
+*/
+TestEngine.prototype.nextQuest = function() {
+	this.iterator++;
+	if (this.iterator == this.quests.length) {
+		this.state = this.C.WIN;
+	} else {
+		this.view.setQuest(this.quests[this.iterator].q, this.quests[this.iterator].a, this.quests[this.iterator].r);
+		this.state = this.C.WAIT_ANSWER;
+	}
+}
+/**
+ * @desc Проверка правильности введенного ответа
+*/
+TestEngine.prototype.checkOneResult = function() {
+	var quest = this.quests[this.iterator], type = quest.t;
+	if (!type) {
+		//for q/a only
+		if (String(this.view.getAnswer()).toLowerCase() == this.quests[this.iterator].a.toLowerCase()) {
+			this.state = this.C.SUCCESS_ONE_RESULT;
+		} else {
+			this.state = this.C.FAIL_RESULT;
+		}
+	} else {
+		if (quest.r == this.view.getAnswer()) {
+			this.state = this.C.SUCCESS_ONE_RESULT;
+		} else {
+			this.state = this.C.FAIL_RESULT;
+		}
+	}
+}
+/**
+ * @desc Увеличение очков при вводе верного ответа
+*/
+TestEngine.prototype.incrementScores = function() {
+	this.score += this.defaultScorePerAnswer;
+	this.view.setScore(this.score);
+	var d = parseInt(this.view.setDoneOneAnswerScreen(), 10);
+	this.successAnswerDelay = d ? d : this.successAnswerDelay;
+	this.state = this.C.SUCCESS_RESULT_SHOWING;
+}
+/**
+ * @desc Обратный отсчет времени при показе экрана удачного ответа на вопрос
+*/
+TestEngine.prototype.decrementSuccessResultTime = function() {
+	this.successAnswerDelay--;
+	if (this.successAnswerDelay <= 0) {
+		this.successAnswerDela = 1;
+		if (this.iterator + 1 == this.quests.length) {
 			this.state = this.C.WIN;
 		} else {
-			this.view.setQuest(this.quests[this.iterator].q, this.quests[this.iterator].a, this.quests[this.iterator].r);
-			this.state = this.C.WAIT_ANSWER;
+			this.state = this.C.GET_QUEST;
 		}
-	},
-	checkOneResult: function() {
-		var quest = this.quests[this.iterator], type = quest.t;
-		if (!type) {
-			//for q/a only
-			if (String(this.view.getAnswer()).toLowerCase() == this.quests[this.iterator].a.toLowerCase()) {
-				this.state = this.C.SUCCESS_ONE_RESULT;
-			} else {
-				this.state = this.C.FAIL_RESULT;
-			}
-		} else {
-			if (quest.r == this.view.getAnswer()) {
-				this.state = this.C.SUCCESS_ONE_RESULT;
-			} else {
-				this.state = this.C.FAIL_RESULT;
-			}
-		}
-	},
-	incrementScores: function() {
-		this.score += this.defaultScorePerAnswer;
-		this.view.setScore(this.score);
-		var d = parseInt(this.view.setDoneOneAnswerScreen(), 10);
-		this.successAnswerDelay = d ? d : this.successAnswerDelay;
-		this.state = this.C.SUCCESS_RESULT_SHOWING;
-	},
-	decrementSuccessResultTime:function() {
-		this.successAnswerDelay--;
-		if (this.successAnswerDelay <= 0) {
-			this.successAnswerDela = 1;
-			if (this.iterator + 1 == this.quests.length) {
-				this.state = this.C.WIN;
-			} else {
-				this.state = this.C.GET_QUEST;
-			}
-		}
-	},
-	winner: function() {
-		this.view.setWinScreen();
 	}
-};
+}
+/**
+ * @desc Показ экрана удачного завершения игры
+*/
+TestEngine.prototype.winner = function() {
+	this.view.setWinScreen();
+}
+/**
+ * @desc Если this.randomize == true перемешивает вопросы
+*/
+TestEngine.prototype.shuffleQuests = function() {
+	if (this.randomize) {
+		var i = this.quests.length, copy = [], j;
+		while (i--) {
+			if (this.quests.length > 1) {
+				j = this.random(0, this.quests.length);
+				copy.push( this.quests[j] );
+				this.quests.splice(j, 1);
+			} else if (this.quests.length > 1) {
+				copy.push( this.quests[0] );
+				break;
+			}
+		}
+		this.quests = copy;
+	}
+}
+/**
+ * @desc Возвращает случайное число от min до max
+*/
+TestEngine.prototype.random = function (min, max) {
+	var n, iOne = false;
+	if (max - min == 1) {
+		max++;
+		iOne = true;
+	}
+	max = parseInt(max, 10);
+	min = parseInt(min, 10);
+	max = max ? max : 0;
+	min = min ? min : 0;
+	n = Math.random();
+	n = Math.round(n * Math.pow(10, String(max).length ) );
+	if (n < min) {
+		n += min;
+	}
+	if (n > max) {
+		n = n % max + min;
+	}
+	if (iOne && n == max) {
+		n--;
+	}
+	return n;
+}
