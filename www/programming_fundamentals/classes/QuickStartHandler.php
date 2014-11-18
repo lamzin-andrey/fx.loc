@@ -7,6 +7,7 @@ class QuickStartHandler extends CBaseHandler{
 		$this->left_inner = 'qs_tasklist.tpl.php';
 		$this->right_inner = 'qs_inner.tpl.php';
 		$this->css[] = 'qs';
+		$this->css[] = 'test_new_words';
 		$aUrl = explode('?', $_SERVER['REQUEST_URI']);
 		$url = $aUrl[0];
 		$a = explode('programming_fundamentals/quick_start', $url);

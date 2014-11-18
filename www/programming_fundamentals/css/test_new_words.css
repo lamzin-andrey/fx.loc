@@ -1,0 +1,92 @@
+#qs-test-new-word, tnwframe {
+	width:640px;
+	height:400px;
+	max-width:640px;
+	max-height:400px;
+}
+.tnwlabel {
+    background-color: rgba(255, 255, 255, 0.59) !important;
+    border-radius: 8px;
+    color: /*#38923b*/#a3773e;
+    font-size: 26pt;
+    line-height: 41px;
+    margin: 0 84px 72px;
+    padding: 12px;
+    box-shadow: 2px 7px 24px 9px #f2d7ff;
+}
+.tnwStartButtonPlace {
+	margin:10px 0 0 0;
+	text-align:center;
+}
+.box_shadow {
+	/*background: linear-gradient(to bottom, #c3d1d7, #c3d1d7, #ffffff, #c3d1d7, #c3d1d7);*/
+	background: white;
+    border-radius: 8px;
+    box-shadow: 2px 7px 24px 9px #f2d7ff;
+    opacity: 0.9;
+    padding: 8px;
+}
+.tnwhealth {
+	position: absolute;
+    left: 22px;
+    top: 45px;
+    color: #a3773e;
+}
+.tnwscore {
+	position: absolute;
+	left: 540px;
+    top: 45px;
+    color: #a3773e;
+}
+.tnwtime {
+    background-color: white;
+    border-radius: 7px;
+    box-shadow: 2px 10px 25px 9px #f2d7ff;
+    margin: 10px auto;
+    padding: 4px 0;
+    text-align: center;
+    width: 134px;
+}
+.tnw_center {
+	margin:0 auto;
+	text-align:center;
+}
+#quest_prefix {
+	width:300px;
+	font-size:14pt;
+}
+.tnw_vspacer {
+}
+#quest {
+    color: #a3773e;
+    font-size: 16pt;
+    font-weight: bold;
+    width: 200px;
+}
+#variants {
+	/*border: 1px solid red;*/
+    width: 543px;
+}
+#variants button {
+    display: inline-block;
+    font-size: 16pt;
+    min-width: 176px;
+}
+#variants button:nth-of-type(2n) {
+	margin-left:100px;
+}
+.tnw_done_msg {
+	font-size:20pt;
+	color:green;
+	width:300px;
+}
+.tnw_fail_msg {
+	font-size:20pt;
+	color:#AA0000;
+	width:300px;
+}
+.tnw_done_vspacer {
+	height:75px;
+	margin:0;
+}
+

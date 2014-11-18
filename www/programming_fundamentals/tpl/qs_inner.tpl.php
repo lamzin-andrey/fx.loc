@@ -1,4 +1,4 @@
-<div class="promo">
+<div class="promo"><img src="<?=WEB_ROOT?>/img/wordtest/bg0.png" width="1px" height="1px;">
 	<div id="fixcon" class="hide">
 		<div class="console">
 			<div id="console" class="scroll-y"></div>
@@ -91,19 +91,7 @@
 		
 		<div id="qs-test-new-word-wrap" class="hide">
 			<div class="test-new-word" id="qs-test-new-word">
-				<p style="text-align:right;">
-					<button id="startGame" >Begin game</button>
-				</p>
-				<p>Time: <span id="time_left"></span> <span id="fail_result" style="color:red"></span><span id="good_news" style="color:#009900"></span></p>
-				<p id="quest" style="border:green 1px solid"></p>
-				<p>Health: <span id="lives"></span></p>
-				<p>Score: <span  id="score"></span></p>
-				<p>Enter answer</p>
-				<textarea id="answer" style="width:99%;" rows="20"></textarea>
-				<p style="text-align:right;">
-					<button id="send" >Save</button>
-				</p>
-				<div id="variants"></div>
+				<? include APP_ROOT . '/tpl/qs_test_new_words_view.tpl.php'; ?>
 			</div>
 		</div>
 		

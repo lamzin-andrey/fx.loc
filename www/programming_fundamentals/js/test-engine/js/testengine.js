@@ -103,56 +103,53 @@ TestEngine.prototype.init = function() {
 		var o = this;
 		this.interval = setInterval(
 			function() {
-				switch (o.state) {
-					case o.C.WIN:
-						o.lives = o.beginLives;
-						o.time = o.limit;
-						o.iterator = -1;
-						o.view.setQuest('');
-						o.winner();
-						break;
-					case o.C.CHECK_ONE_RESULT:
-						o.checkOneResult();
-						break;
-					case o.C.WAIT_ANSWER:
-						o.decrementTime();
-						break;
-					case o.C.SUCCESS_RESULT_SHOWING:
-						o.decrementSuccessResultTime();
-					case o.C.FAIL_RESULT_SHOWING:
-						o.decrementFailResultTime();
-						break;
-					case o.C.FAIL_RESULT:
-						o.checkLives();
-						break;
-					case o.C.SUCCESS_ONE_RESULT:
-						o.incrementScores();
-						break;
-					case o.C.GAME_OVER:
-						o.lives = o.beginLives;
-						o.time = o.limit;
-						o.iterator = -1;
-						o.view.setQuest('');
-						o.view.setGameOverScreen();
-						break;
-					case o.C.GET_QUEST:	
-					case o.C.START_GAME:
-						o.time = o.limit;
-						o.view.setTime(o.limit / 1000);
-						o.view.clearPrevStatus();
-						if (o.state == o.C.START_GAME) {
-							o.shuffleQuests();
-							o.view.setLives(o.beginLives);
-							o.view.setScore(0);
-							o.score = 0;
-							o.view.setGameScreen();
-							o.state == o.C.GET_QUEST;
-						}
-						o.nextQuest();
-						break;
-				}
-			}, 1000
+				o.tick();
+			}, 1*1000
 		);
+}
+/**
+ * @desc "Тик" таймера
+*/
+TestEngine.prototype.tick = function () {
+	var o = this;
+	switch (o.state) {
+		case o.C.WIN:
+			o.lives = o.beginLives;
+			o.time = o.limit;
+			o.iterator = -1;
+			o.view.setQuest('');
+			o.winner();
+			break;
+		case o.C.CHECK_ONE_RESULT:
+			o.checkOneResult();
+			break;
+		case o.C.WAIT_ANSWER:
+			o.decrementTime();
+			break;
+		case o.C.SUCCESS_RESULT_SHOWING:
+			o.decrementSuccessResultTime();
+			break;
+		case o.C.FAIL_RESULT_SHOWING:
+			o.decrementFailResultTime();
+			break;
+		case o.C.FAIL_RESULT:
+			o.checkLives();
+			break;
+		case o.C.SUCCESS_ONE_RESULT:
+			o.incrementScores();
+			break;
+		case o.C.GAME_OVER:
+			o.lives = o.beginLives;
+			o.time = o.limit;
+			o.iterator = -1;
+			o.view.setQuest('');
+			o.view.setGameOverScreen();
+			break;
+		case o.C.GET_QUEST:	
+		case o.C.START_GAME:
+			o.onGetQuest();
+			break;
+	}
 }
 /**
  * @desc Обратный отсчет времени при ожидании ответа на вопрос
@@ -241,7 +238,7 @@ TestEngine.prototype.incrementScores = function() {
 TestEngine.prototype.decrementSuccessResultTime = function() {
 	this.successAnswerDelay--;
 	if (this.successAnswerDelay <= 0) {
-		this.successAnswerDela = 1;
+		this.successAnswerDelay = 1;
 		if (this.iterator + 1 == this.quests.length) {
 			this.state = this.C.WIN;
 		} else {
@@ -299,4 +296,22 @@ TestEngine.prototype.random = function (min, max) {
 		n--;
 	}
 	return n;
+}
+/**
+ * @desc 
+*/
+TestEngine.prototype.onGetQuest = function () {
+	var o = this;
+	o.time = o.limit;
+	o.view.setTime(o.limit / 1000);
+	o.view.clearPrevStatus();
+	if (o.state == o.C.START_GAME) {
+		o.shuffleQuests();
+		o.view.setLives(o.beginLives);
+		o.view.setScore(0);
+		o.score = 0;
+		o.view.setGameScreen();
+		o.state == o.C.GET_QUEST;
+	}
+	o.nextQuest();
 }

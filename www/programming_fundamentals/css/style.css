@@ -4,6 +4,7 @@
 .scroll-y {overflow-y:scroll;}
 .center {background-color: white; margin:0 auto; padding:0px 0px;}
 .hide {display:none !important}
+.o0 {opacity:0; height:0px !important; width:0px !important;}
 .bg-rose {background-color: #FFB0B9; color:#5F3F14;}
 .bg-light-green {background-color: #B0FFC2; color:green}
 .bg-dark-blue {background-color: #9cb0ca;color:black;}
@@ -22,6 +23,7 @@ ul.nomark li {list-style-type:none;}
 .btn {cursor:pointer}
 .tcenter {text-align:center;}
 .w100 {width:100%}
+.bgnone {background: none !important;}
 
 /* custom */
 /* страница консоли */
