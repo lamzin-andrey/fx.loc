@@ -8,7 +8,8 @@
 	</div>
 	<div id="qsTNWDonescreen" class="hide">
 		<p class="tnw_done_vspacer">&nbsp;</p>
-		<p class="box_shadow tnw_center tnw_done_msg">Правильно!</p>
+		<p id="tnwSuccess" class="box_shadow tnw_center tnw_done_msg">Правильно!</p>
+		<p id="tnwSuccessInfo" class="box_shadow tnw_center tnw_done_msg hide">Не забывайте переодически проходить этот тест по мере чтения новых статей.</p>
 	</div>
 	<div id="qsTNWFailscreen" class="hide">
 		<p class="tnw_done_vspacer">&nbsp;</p>

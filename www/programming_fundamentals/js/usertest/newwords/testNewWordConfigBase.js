@@ -40,7 +40,7 @@
 		window.TestNewWords = new TestEngine();
 		TestNewWords.randomize = true; //вопросы будут выводится случайным образом
 		/** @desc Объект реализующий интерфейс представления данных теста, через него тест взаимодействует с DOM */
-		TestNewWords.view = {
+			TestNewWords.view = {
 			setScore:function(v){
 				$("#score").text(v);
 			},
@@ -70,13 +70,16 @@
 						$(btn).text(questText);
 						$(btn).click(
 							function(evt) {
+								$('#variants button').prop('disabled', true);
 								$('#tnwanswer').val( evt.target.getAttribute('data-n') );
 								TestNewWords.state = C.CHECK_ONE_RESULT;
-								TestNewWords.checkOneResult();
+								//TestNewWords.checkOneResult();
+								TestNewWords.tick();
 								TestNewWords.tick();
 							}
 						);
 						$('#variants').append( btn );
+						$('#variants button').prop('disabled', false);
 					}
 				);
 				$('#variants').append( $('<div class="clearfix"></div>') );
@@ -86,6 +89,7 @@
 				$('#qsTNWPlayscreen').addClass('hide');
 				$('#qsTNWHelloScreen').removeClass('hide');
 				$("#tnwstartGame").prop('disabled', false);
+				TestNewWords.state = 0;
 			},
 			setGameScreen: function(){
 				$("#tnwstartGame").prop('disabled', true);
@@ -95,16 +99,19 @@
 				$("#lives").text(v);
 			},
 			setDoneOneAnswerScreen: function(){
-				//$("#good_news").text('WoW!');
 				$('#qsTNWPlayscreen').addClass('hide');
 				$('#qsTNWDonescreen').removeClass('hide');
-				return 2;
+				if (!$('#tnwSuccessInfo').hasClass('hide')) {
+					$('#tnwSuccessInfo').addClass('hide');
+				}
+				$('#tnwSuccess').html('Правильно!');
+				return 1;
 			},
 			setFailOneAnswerScreen: function(){
 				$('#tnwErr').text('Ошибка!');
 				$('#qsTNWPlayscreen').addClass('hide');
 				$('#qsTNWFailscreen').removeClass('hide');
-				return 3;
+				return 2;
 			},
 			setGameOverScreen: function(){
 				$('#tnwErr').text('GAME OVER');
@@ -123,8 +130,24 @@
 				return $('#tnwanswer').val();
 			},
 			setWinScreen: function(){
-				$("#good_news").text('ПОБЕДА');
-				$("#tnwstartGame").prop('disabled', false);
+				this.clearPrevStatus();
+				var s = 'Очень хорошо!';
+				if (TestNewWords.lives == 1) {
+					s = 'Хорошо!';
+				}
+				$('#tnwSuccess').html(s);
+				$('#tnwSuccessInfo').removeClass('hide');
+				$('#qsTNWPlayscreen').addClass('hide');
+				$('#qsTNWDonescreen').removeClass('hide');
+				//$("#tnwstartGame").prop('disabled', false);
+				var o = this;
+				TestNewWords.state = 0;
+				setTimeout(
+					function () {
+						o.setBeginScreen();
+					},
+					5000
+				);
 			}
 		};
 		TestNewWords.configTime(5);	//Конфигурация

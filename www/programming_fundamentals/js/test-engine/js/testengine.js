@@ -114,9 +114,7 @@ TestEngine.prototype.tick = function () {
 	var o = this;
 	switch (o.state) {
 		case o.C.WIN:
-			o.lives = o.beginLives;
 			o.time = o.limit;
-			o.iterator = -1;
 			o.view.setQuest('');
 			o.winner();
 			break;
@@ -170,7 +168,12 @@ TestEngine.prototype.decrementFailResultTime = function() {
 	this.failAnswerDelay--;
 	if (this.failAnswerDelay <= 0) {
 		this.failAnswerDelay = 1;
-		this.state = this.C.GET_QUEST;
+		if (this.iterator + 1 >= this.quests.length) {
+			this.state = this.C.WIN;
+			//this.view.setWinScreen();
+		} else {
+			this.state = this.C.GET_QUEST;
+		}
 	}
 }
 /**
@@ -195,7 +198,8 @@ TestEngine.prototype.checkLives = function() {
 */
 TestEngine.prototype.nextQuest = function() {
 	this.iterator++;
-	if (this.iterator == this.quests.length) {
+	//console.log('iterator = ' + this.iterator);
+	if (this.iterator >= this.quests.length) {
 		this.state = this.C.WIN;
 	} else {
 		this.view.setQuest(this.quests[this.iterator].q, this.quests[this.iterator].a, this.quests[this.iterator].r);
@@ -218,7 +222,7 @@ TestEngine.prototype.checkOneResult = function() {
 		if (quest.r == this.view.getAnswer()) {
 			this.state = this.C.SUCCESS_ONE_RESULT;
 		} else {
-			this.state = this.C.FAIL_RESULT;
+				this.state = this.C.FAIL_RESULT;
 		}
 	}
 }
@@ -239,8 +243,9 @@ TestEngine.prototype.decrementSuccessResultTime = function() {
 	this.successAnswerDelay--;
 	if (this.successAnswerDelay <= 0) {
 		this.successAnswerDelay = 1;
-		if (this.iterator + 1 == this.quests.length) {
+		if (this.iterator + 1 >= this.quests.length) {
 			this.state = this.C.WIN;
+			this.view.setWinScreen();
 		} else {
 			this.state = this.C.GET_QUEST;
 		}
@@ -260,16 +265,17 @@ TestEngine.prototype.shuffleQuests = function() {
 		var i = this.quests.length, copy = [], j;
 		while (i--) {
 			if (this.quests.length > 1) {
-				j = this.random(0, this.quests.length);
+				j = this.random(0, this.quests.length - 1);
 				copy.push( this.quests[j] );
 				this.quests.splice(j, 1);
-			} else if (this.quests.length > 1) {
+			} else {
 				copy.push( this.quests[0] );
 				break;
 			}
 		}
 		this.quests = copy;
 	}
+	//console.log( this.quests);
 }
 /**
  * @desc Возвращает случайное число от min до max
@@ -298,14 +304,17 @@ TestEngine.prototype.random = function (min, max) {
 	return n;
 }
 /**
- * @desc 
+ * @desc событие запроса вопроса
 */
 TestEngine.prototype.onGetQuest = function () {
+	//console.log("st = " + this.state);
 	var o = this;
 	o.time = o.limit;
 	o.view.setTime(o.limit / 1000);
 	o.view.clearPrevStatus();
 	if (o.state == o.C.START_GAME) {
+		o.lives = o.beginLives;
+		o.iterator = -1;
 		o.shuffleQuests();
 		o.view.setLives(o.beginLives);
 		o.view.setScore(0);
