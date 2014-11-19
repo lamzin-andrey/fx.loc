@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+<script>
+var aKeywords = ['Array', 'break', 'case', 'catch',  'continue', 'Date',  'default', 'do', 'Error',  'else',  'Function',  'false',  'finally',  'for',  'function',  'if',  'in',  'instanceof',  'Infinity',  'Math',  'NaN', 'Number',  'new',  'null',  'Object',  'prototype',  'RegExp',  'return',  'String',  'switch', 'throw',  'try',  'true',  'undefined',  'var',  'with',  'while'];
+var aMeth = ['measureText', 'strokeText', 'removeChild', 'getElementsByTagName', 'appendChild', 'fillRect', 'getContext', 'getElementById', 'createElement', 'substring', 'indexOf', 'charAt', 'split', 'random', 'round', 'ceil', 'floor', 'pow', 'alert',  'prompt',  'sqrt',  'cos', 'sin',  'split',  'join',  'parseInt',  'parseFloat',  'isNaN',  'toString'];
+var aUf = ['writeln',  'readln'];
+var sKeywords = '|' + aKeywords.join('|') + '|';
+var sMeth = '|' + aMeth.join('|') + '|';
+var sUf = '|' + aUf.join('|') + '|';
+	function hCode() {
+		var v = document.getElementById("in").value, 
+			out = document.getElementById("out");
+			
+if (v.length) {
+	var $q_is_open = false,
+	$dq_is_open = false,
+	$dc_is_open = false,
+	$c_is_open = false,
+	$in_ignore_block = false,
+	oneBlockIsOpen = false,
+	$count_open_blocks = 0,
+	result = '', buf = '';
+	for (var i = 0; i < v.length; i++) {
+		ch = v.charAt(i);
+			$ch = ch;
+		if (!$in_ignore_block) { //проверить, не начался ли с текущего символа блок игнора
+			if ($ch == '"') {
+					$dq_is_open = $in_ignore_block = true;
+			} else if ($ch == "'") {
+				$q_is_open = $in_ignore_block = true;
+			} else if ($ch == '/') {
+				if (v.charAt(i + 1) == '/') {
+					$c_is_open = $in_ignore_block = true;
+				} else if (v.charAt(i + 1) == '*') {
+					$dc_is_open = $in_ignore_block = true;
+				}
+			}
+			if ($in_ignore_block) {
+				if (buf) {
+					result += buf;
+					buf = '';
+				}
+				result += '<span class="strcolor">' + ch;
+				continue;
+			}
+		}
+		if ($in_ignore_block) {  //проверить, не закончился ли с текущим символом блок игнора
+			if ($q_is_open && $ch == "'") {
+				$q_is_open = $in_ignore_block = false;
+			} else if ($dq_is_open && $ch == '"') {
+				$dq_is_open = $in_ignore_block = false;
+			} else if ($c_is_open && $ch == "\n") {
+				$c_is_open = $in_ignore_block = false;
+			} else if ($dc_is_open && $ch == '/') {
+				if (v.charAt(i - 1) == '*') {
+					$dc_is_open = $in_ignore_block = false;
+				}
+			}
+			if (!$in_ignore_block) {
+				result += ch + '</span>';
+				continue;
+			}
+		}
+		if (!$in_ignore_block) { //собираем слова 
+			if (ch == '\t' || ch == '.' || ch == '(' || ch == ',' || ch == '\r' || ch == '\n' || ch == ' '|| ch == ';' || ch == ':') {
+				if (sKeywords.indexOf('|' + buf + '|') != -1) {
+					buf = '<b>' + buf + '</b>';
+				}
+				if (sMeth.indexOf('|' + buf + '|') != -1) {
+					buf = '<i>' + buf + '</i>';
+				}
+				if (sUf.indexOf('|' + buf + '|') != -1) {
+					buf = '<u>' + buf + '</u>';
+				}
+				buf += ch;
+				result += buf;
+				buf = '';
+			} else {
+				buf += ch;
+			}
+		}else {
+			result += ch;
+		}
+		
+	}
+	if (buf) {
+		result += buf;
+	}
+	result = '<pre>\n' + result + '\n</pre>';
+	out.value = result;
+	
+} //if v .length
+}
+</script>
+	</head>
+	<body>
+<textarea id="in" style="width:99%" rows="15"></textarea>
+<p>Out:</p>
+<textarea id="out" style="width:99%" rows="15"></textarea><br/>
+<input type="button" onclick="hCode()" value="do"/>
+</body>
+</html>

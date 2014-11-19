@@ -207,6 +207,101 @@ canvas (canvas буквально  - холст). В нашем случае н�
 <p>Напомню текст задачи: создать окно в рамке на фоне, заполненном псевдографическим символом #178 зеленого цвета, с текстом из файла. По клавишам управления курсором выполнять скроллинг текста в окне на одну строку вверх или вниз.</p>
 <div class="ainfo">Если вы уже успели заинтересоватсья html и css, вам возможно уже известно, что эту задачу можно легко и просто решить их средствами. Однако, здесь меня интересует программирование графики, поэтому я решу эту задачу так, словно никакого html и css не сущетствует.</div>
 
+<pre>
+<b>function</b> pseudoFileExample() {	
+	<b>var</b> _2d = createFullScreenContext(<span class="strcolor">"#FFFFFF"</span>), 
+		WIDTH = 640, 
+		HEIGHT = 480,
+		TOP_BORDER_H = 30,
+		BORDER = 5,
+		BORDER_COLOR = <span class="strcolor">"#AA0000"</span>,
+		WND_BG_COLOR = <span class="strcolor">"#00F0F0"</span>,
+		ctx = _2d.context,
+		BG_COLOR =  <span class="strcolor">"#00AA00"</span>,
+		ch = <b>String</b>.fromCharCode(178),
+		SC_WIDTH = screen.width,
+		SC_HEIGHT = screen.height,
+		s, i, j, k, y, verticalLimit,
+		verticalStart = 12;
+		
+	<span class="strcolor">//Залить фон
+</span>	<b>function</b> drawBg() {
+		ctx.fillStyle = BG_COLOR;	
+		ctx.font = <span class="strcolor">"12px Geneva"</span>;
+		<span class="strcolor">//определить, сколько символов поместится в строке в ширину
+</span>		s = <b>new</b> <b>Array</b>(101).<i>join</i>(ch);
+		<b>while</b> (ctx.<i>measureText</i>(s).width < SC_WIDTH) {
+			s += ch;
+		}
+	<span class="strcolor">//сколько надо строк, чтобы залить фон символом
+</span>		verticalLimit = <b>Math</b>.<i>ceil</i>(SC_HEIGHT / 12), y = 12;
+		<span class="strcolor">//залить фон символом
+</span>		<b>while</b> (y < SC_WIDTH) {
+			ctx.fillText(s, 0, y);
+			y += 12;
+		}
+	}
+	drawBg();
+	<span class="strcolor">//вывести текст
+</span>	<b>function</b> _drawText(ctx, _x, _y, _w, _h) {
+		<b>var</b> text = localStorage.getItem(<span class="strcolor">'my_content'</span>), caretX = _x, caretY = verticalStart + _y, needNextStr = <b>false</b>;
+		ctx.fillStyle = <span class="strcolor">"#FF0000"</span>;	
+		ctx.font = <span class="strcolor">"12px Geneva"</span>;
+		s = <span class="strcolor">''</span>;
+		<span class="strcolor">//выводим текст
+</span>		<b>for</b> (i = 0; i < text.length; i++) {
+			s += text.<i>charAt</i>(i);
+			<b>if</b> (ctx.<i>measureText</i>(s).width > _w || text.<i>charAt</i>(i) == <span class="strcolor">"\n"</span>) {
+				s = s.<i>substring</i>(0, s.length - 1);
+				<span class="strcolor">//alert(s);
+</span>				<b>if</b> (caretY > _y) {
+					ctx.fillText(s, caretX, caretY);
+				}
+				caretY += 12;
+				s = text.<i>charAt</i>(i);
+			}
+			<b>if</b> (caretY > _y + _h) {
+				<span class="strcolor">//alert(i);
+</span>				<b>return</b>;
+			}
+		}
+		<b>if</b> (s.length && caretY > _y) {
+			ctx.fillText(s, caretX, caretY);
+		}
+	}
+	<span class="strcolor">//отрисовать "окно"
+</span>	<b>function</b> drawWnd() {
+		<b>var</b> w = <b>Math</b>.<i>round</i>( (SC_WIDTH - WIDTH) / 2), h = <b>Math</b>.<i>round</i>( (SC_HEIGHT - HEIGHT) / 2);
+		ctx.fillStyle = BORDER_COLOR;
+		ctx.<i>fillRect</i>(w, h, WIDTH, HEIGHT );
+		ctx.fillStyle = WND_BG_COLOR;
+		ctx.<i>fillRect</i>(w + BORDER, h +  TOP_BORDER_H, WIDTH - 2 * BORDER, HEIGHT - TOP_BORDER_H - BORDER);
+		_drawText(ctx, w + BORDER, h +  TOP_BORDER_H, WIDTH - 2 * BORDER, HEIGHT - TOP_BORDER_H - BORDER);
+	}
+	drawWnd();
+	
+	<b>function</b> moveText(event) {
+		<b>if</b> (event.keyCode == 38) {
+			verticalStart += 12;
+		}
+		<b>if</b> (event.keyCode == 40) {
+			verticalStart -= 12;
+		}
+		ctx.fillStyle  = <span class="strcolor">"#ffffff"</span>;
+		ctx.<i>fillRect</i>(0, 0, SC_WIDTH, SC_HEIGHT);
+		drawBg();
+		drawWnd();
+	}
+	
+	document.body.onkeydown = moveText;
+	
+	_2d.canvas.onclick = <b>function</b>() {
+		document.body.<i>removeChild</i>(_2d.canvas);
+	}
+}
+</pre>
+
+
 <div style="width:96%">
 <div class="left"><?=QuickStartHandler::aback('arrays')?></div>
 <div class="right"><?=QuickStartHandler::anext('graph2d')?></div>
