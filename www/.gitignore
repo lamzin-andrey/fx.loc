@@ -1,7 +1,8 @@
 access
 stat.php
 parsers
-programming_fundamentals/js/test-engine/.git
-programming_fundamentals/js/test-engine/*.html
-programming_fundamentals/js/test-engine/js/lib.js
-programming_fundamentals/js/test-engine/js/app.js
+www/programming_fundamentals/js/test-engine/.git
+www/programming_fundamentals/js/test-engine/*.html
+www/programming_fundamentals/js/test-engine/js/lib.js
+www/programming_fundamentals/js/test-engine/js/app.js
+www/programming_fundamentals/img/wordtest/*.png
