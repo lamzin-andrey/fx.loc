@@ -6,3 +6,8 @@ error.log
 .settings
 tz
 www/programming_fundamentals/codetag.html
+www/programming_fundamentals/js/test-engine/.git
+www/programming_fundamentals/js/test-engine/*.html
+www/programming_fundamentals/js/test-engine/js/lib.js
+www/programming_fundamentals/js/test-engine/js/app.js
+www/programming_fundamentals/img/wordtest/*.png
