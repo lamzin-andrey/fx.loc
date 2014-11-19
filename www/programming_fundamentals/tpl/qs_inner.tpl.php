@@ -19,6 +19,9 @@
 			<? if ($handler->show_test_new_words_button):?>
 			<div class="testsButtons">
 				<button id="runTest" >Тест на новые слова</button>
+				<? foreach ($handler->test_buttons as $id => $text): ?>
+					<button id="<?=$id ?>" ><?=$text ?></button>
+				<? endforeach ?>
 			</div>
 			<? endif?>
 		</div>
@@ -94,6 +97,13 @@
 				<? include APP_ROOT . '/tpl/qs_test_new_words_view.tpl.php'; ?>
 			</div>
 		</div>
+		<? foreach ($handler->tests as $id => $tpl): ?>
+			<div id="<?=$id?>-wrap" class="hide">
+				<div class="test-new-word" id="<?=$id?>">
+					<? include APP_ROOT . '/tpl/'. $tpl .'.php'; ?>
+				</div>
+			</div>
+		<? endforeach ?>
 		
 	</article>
 </div>

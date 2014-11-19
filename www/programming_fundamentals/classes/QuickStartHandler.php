@@ -3,6 +3,9 @@ require_once APP_ROOT . '/classes/CBaseHandler.php';
 class QuickStartHandler extends CBaseHandler{
 	public $book_tpl = 'intro';
 	public $show_test_new_words_button = false;
+	
+	public $test_buttons = array();	//array button_id => button_text
+	public $tests = array();		//button_template
 	public function __construct() {
 		$this->left_inner = 'qs_tasklist.tpl.php';
 		$this->right_inner = 'qs_inner.tpl.php';
@@ -18,6 +21,7 @@ class QuickStartHandler extends CBaseHandler{
 				$this->js[] = 'test-engine/js/testengine.js'; //движок тестов
 				$this->js[] = 'usertest/newwords/testNewWordConfigBase.js';      //Основной конфиг теста на новые слова
 				$this->_addNewWordsQuests($s);			   	   //Подключить файлы с вопросами для теста на новые слова
+				$this->_addExtendsTest($s);
 				$this->js[] = 'usertest/newwords/testNewWord.js';      		   //Окошко для теста на новые слова
 				$this->show_test_new_words_button = true;
 			}
@@ -49,6 +53,18 @@ class QuickStartHandler extends CBaseHandler{
 			$display_text_key = $href;
 		}
 		return '<li><a class="" href="'. WEB_ROOT. '/quick_start/'. $key . $end_link . '">'. $lang[$display_text_key] . '</a></li>';
+	}
+	/**
+	 * @desc Подключает тесты в зависимости от url
+	*/
+	private function _addExtendsTest($url) {
+		if ($url == "observer") {
+			$this->js[] = 'usertest/patterns/testPatternsConfigBase.js';      	//Основной конфиг теста по паттернам
+			$this->js[] = 'usertest/patterns/testPatterns.js';      			//Окно тестов
+			$this->test_buttons['patternTestRun'] = 'Тест по паттернам проектирования';
+			$this->tests['qs-test-patterns'] = 'qs_test_patterns_view.tpl';
+			$this->css[] = 'test_patterns';
+		}
 	}
 	static public function tim($variant, $task, $subtask) {
 		return '<img src="'.WEB_ROOT.'/files/tasks/'.$variant.'/'.$task.'.'.$subtask.'.png" />';

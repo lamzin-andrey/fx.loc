@@ -77,6 +77,7 @@ $lang['first_task_decision'] = 'Решение первой задачи';
 $lang['pseudofile'] = 'Замена текстовым файлам';
 $lang['pseudofile'] = 'Замена текстовым файлам';
 $lang['first_canvas'] = 'Холст и краски';
+$lang['observer'] = 'Паттерн наблюдатель';
 
 
 $lang['delete_errors_and_try_again'] = "\n-----------------\nудалите ошибки и попробуйте снова";

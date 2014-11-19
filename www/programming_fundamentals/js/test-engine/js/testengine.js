@@ -32,6 +32,12 @@ TestEngine.prototype.initTestEngine = function() {
 	this.failAnswerDelay = 1;
 	this.successAnswerDelay = 1;
 	this.randomize = false;
+	//при текстовых ответах
+	this.caseSensitive = false; 
+	this.fullCompliance = false; 
+	this.orderWordsSensitive = false; 
+	this.dropSigns = true; 
+	this.dropSignsRe = /[.,:!-?+]/gm; 
 	//end config
 	
 	/**
@@ -212,8 +218,7 @@ TestEngine.prototype.nextQuest = function() {
 TestEngine.prototype.checkOneResult = function() {
 	var quest = this.quests[this.iterator], type = quest.t;
 	if (!type) {
-		//for q/a only
-		if (String(this.view.getAnswer()).toLowerCase() == this.quests[this.iterator].a.toLowerCase()) {
+		if (this.isAnswersEqual()) {
 			this.state = this.C.SUCCESS_ONE_RESULT;
 		} else {
 			this.state = this.C.FAIL_RESULT;
@@ -323,4 +328,46 @@ TestEngine.prototype.onGetQuest = function () {
 		o.state == o.C.GET_QUEST;
 	}
 	o.nextQuest();
+}
+/**
+ * @desc Проверка правильности введенного текстового ответа
+*/
+TestEngine.prototype.isAnswersEqual = function() {
+	var i, a, b;
+	function _lc(s) { return s.toLowerCase();}
+	function _split(s) {
+		var ar = s.split(/\s/), b = [];
+		i = ar.length;
+		while(i--) {
+			if (ar[i]) {
+				b.push(ar[i]);
+			}
+		}
+		return b;
+	}
+	a = String(this.view.getAnswer()), b = String(this.quests[this.iterator].a);
+	if (!this.caseSensitive) {
+		a = _lc(a);
+		b = _lc(b);
+	}
+	if (this.fullCompliance) {
+		return (a == b);
+	}
+	if (this.dropSigns) {
+		a = a.replace(this.dropSignsRe, '');
+		b = b.replace(this.dropSignsRe, '')
+	}
+	a = _split(a);
+	b = _split(b);
+	if (!this.orderWordsSensitive) {
+		a = a.sort();
+		b = b.sort();
+	}
+	i = a.length;
+	while (i--) {
+		if (a[i] != b[i]) {
+			return false;
+		}
+	}
+	return true;
 }
