@@ -208,18 +208,18 @@ canvas (canvas буквально  - холст). В нашем случае н�
 <div class="ainfo">Если вы уже успели заинтересоватсья html и css, вам возможно уже известно, что эту задачу можно легко и просто решить их средствами. Однако, здесь меня интересует программирование графики, поэтому я решу эту задачу так, словно никакого html и css не сущетствует.</div>
 
 <pre>
-<b>function</b> pseudoFileExample() {	
-	<b>var</b> _2d = createFullScreenContext(<span class="strcolor">"#FFFFFF"</span>), 
-		WIDTH = 640, 
-		HEIGHT = 480,
-		TOP_BORDER_H = 30,
-		BORDER = 5,
-		BORDER_COLOR = <span class="strcolor">"#AA0000"</span>,
-		WND_BG_COLOR = <span class="strcolor">"#00F0F0"</span>,
-		ctx = _2d.context,
-		BG_COLOR =  <span class="strcolor">"#00AA00"</span>,
-		ch = <b>String</b>.fromCharCode(178),
-		SC_WIDTH = screen.width,
+<b>function</b> <u title="Пример реализации окна на холсте">widow2DExample</u>() {
+	<b>var</b> _2d = <u>createFullScreenContext</u>(<span class="strcolor">"#FFFFFF"</span>), 
+		WIDTH = 640,       <span class="strcolor">//ширина окна с текстом</span>
+		HEIGHT = 480,      <span class="strcolor">//высота окна с текстом</span>
+		TOP_BORDER_H = 30, <span class="strcolor">//высота верхней рамки окна с текстом</span>
+		BORDER = 5,        <span class="strcolor">//толщина рамки окна с текстом</span>
+		BORDER_COLOR = <span class="strcolor">"#AA0000"</span>, <span class="strcolor">//цвет рамки окна</span>
+		WND_BG_COLOR = <span class="strcolor">"#00F0F0"</span>, <span class="strcolor">//цвет фона окна</span>
+		ctx = _2d.context,   <span class="strcolor">//контекст рисования</span>
+		BG_COLOR =  <span class="strcolor">"#00AA00"</span>,    <span class="strcolor">//фон холста</span>
+		ch = <b>String</b>.fromCharCode(178),<span class="strcolor">//символ, который используется в качестве фона</span>
+		SC_WIDTH = screen.width,             <span class="strcolor">//цвет рамки окна</span>
 		SC_HEIGHT = screen.height,
 		s, i, j, k, y, verticalLimit,
 		verticalStart = 12;
