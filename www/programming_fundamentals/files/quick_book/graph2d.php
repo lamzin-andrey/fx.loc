@@ -208,7 +208,7 @@ canvas (canvas буквально  - холст). В нашем случае н�
 <div class="ainfo">Если вы уже успели заинтересоватсья html и css, вам возможно уже известно, что эту задачу можно легко и просто решить их средствами. Однако, здесь меня интересует программирование графики, поэтому я решу эту задачу так, словно никакого html и css не сущетствует.</div>
 
 <pre>
-<b>function</b> <u title="Пример реализации окна на холсте">widow2DExample</u>() {
+<b>function</b> <u title="Пример реализации окна на холсте">window2DExample</u>() {
 	<b>var</b> _2d = <u>createFullScreenContext</u>(<span class="strcolor">"#FFFFFF"</span>), 
 		WIDTH = 640,       <span class="strcolor">//ширина окна с текстом</span>
 		HEIGHT = 480,      <span class="strcolor">//высота окна с текстом</span>
@@ -219,13 +219,14 @@ canvas (canvas буквально  - холст). В нашем случае н�
 		ctx = _2d.context,   <span class="strcolor">//контекст рисования</span>
 		BG_COLOR =  <span class="strcolor">"#00AA00"</span>,    <span class="strcolor">//фон холста</span>
 		ch = <b>String</b>.fromCharCode(178),<span class="strcolor">//символ, который используется в качестве фона</span>
-		SC_WIDTH = screen.width,             <span class="strcolor">//цвет рамки окна</span>
-		SC_HEIGHT = screen.height,
-		s, i, j, k, y, verticalLimit,
-		verticalStart = 12;
+		SC_WIDTH = screen.width,             <span class="strcolor">//ширина экрана</span>
+		SC_HEIGHT = screen.height,			 <span class="strcolor">//высота экрана</span>
+		s, i, j, k, y, verticalLimit,		 
+		textFontSize = 12,					 <span class="strcolor">//размер шрифта в пикселях</span>
+		verticalStart = textFontSize;
 		
 	<span class="strcolor">//Залить фон
-</span>	<b>function</b> drawBg() {
+</span>	<b>function</b> <u>drawBg</u>() {
 		ctx.fillStyle = BG_COLOR;	
 		ctx.font = <span class="strcolor">"12px Geneva"</span>;
 		<span class="strcolor">//определить, сколько символов поместится в строке в ширину
@@ -233,17 +234,17 @@ canvas (canvas буквально  - холст). В нашем случае н�
 		<b>while</b> (ctx.<i>measureText</i>(s).width < SC_WIDTH) {
 			s += ch;
 		}
-	<span class="strcolor">//сколько надо строк, чтобы залить фон символом
-</span>		verticalLimit = <b>Math</b>.<i>ceil</i>(SC_HEIGHT / 12), y = 12;
+		<span class="strcolor">//сколько надо строк, чтобы залить фон символом
+</span>		verticalLimit = <b>Math</b>.<i>ceil</i>(SC_HEIGHT / textFontSize), y = textFontSize;
 		<span class="strcolor">//залить фон символом
 </span>		<b>while</b> (y < SC_WIDTH) {
 			ctx.fillText(s, 0, y);
-			y += 12;
+			y += textFontSize;
 		}
 	}
 	drawBg();
 	<span class="strcolor">//вывести текст
-</span>	<b>function</b> _drawText(ctx, _x, _y, _w, _h) {
+</span>	<b>function</b> <u>_drawText</u>(ctx, _x, _y, _w, _h) {
 		<b>var</b> text = localStorage.getItem(<span class="strcolor">'my_content'</span>), caretX = _x, caretY = verticalStart + _y, needNextStr = <b>false</b>;
 		ctx.fillStyle = <span class="strcolor">"#FF0000"</span>;	
 		ctx.font = <span class="strcolor">"12px Geneva"</span>;
@@ -257,7 +258,7 @@ canvas (canvas буквально  - холст). В нашем случае н�
 </span>				<b>if</b> (caretY > _y) {
 					ctx.fillText(s, caretX, caretY);
 				}
-				caretY += 12;
+				caretY += textFontSize;
 				s = text.<i>charAt</i>(i);
 			}
 			<b>if</b> (caretY > _y + _h) {
@@ -270,7 +271,7 @@ canvas (canvas буквально  - холст). В нашем случае н�
 		}
 	}
 	<span class="strcolor">//отрисовать "окно"
-</span>	<b>function</b> drawWnd() {
+</span>	<b>function</b> <u>drawWnd</u>() {
 		<b>var</b> w = <b>Math</b>.<i>round</i>( (SC_WIDTH - WIDTH) / 2), h = <b>Math</b>.<i>round</i>( (SC_HEIGHT - HEIGHT) / 2);
 		ctx.fillStyle = BORDER_COLOR;
 		ctx.<i>fillRect</i>(w, h, WIDTH, HEIGHT );
@@ -280,28 +281,33 @@ canvas (canvas буквально  - холст). В нашем случае н�
 	}
 	drawWnd();
 	
-	<b>function</b> moveText(event) {
+	<b>function</b> <u>moveText</u>(event) {
+		<b>if</b> (event.keyCode != 38 && event.keyCode != 40) {
+			<b>return</b> <b>true</b>;
+		}
 		<b>if</b> (event.keyCode == 38) {
-			verticalStart += 12;
+			verticalStart += textFontSize;
 		}
 		<b>if</b> (event.keyCode == 40) {
-			verticalStart -= 12;
+			verticalStart -= textFontSize;
 		}
 		ctx.fillStyle  = <span class="strcolor">"#ffffff"</span>;
 		ctx.<i>fillRect</i>(0, 0, SC_WIDTH, SC_HEIGHT);
-		drawBg();
-		drawWnd();
+		<u>drawBg</u>();
+		<u>drawWnd</u>();
+		<b>return</b> <b>false</b>;
 	}
 	
 	document.body.onkeydown = moveText;
 	
 	_2d.canvas.onclick = <b>function</b>() {
 		document.body.<i>removeChild</i>(_2d.canvas);
+		document.body.onkeydown = <b>null</b>;
 	}
 }
 </pre>
-
-
+<p>В общем-то при решении задачи не использовано ничего нового. Для отрисовки окна я использовал те же функции что и в примерах этой статьи выше - <i>fillRect</i> и <i>fillText</i>. Для получения текста, выводимого в окне я использую метод localStorage.</i>getItem</i>. Чтобы обеспечить прокрутку текста на одну строку я назначил обработку событий нажатия клавиш клавиатуры "вверх" и "вниз" функции <u>moveText</u>, которая перерисовывает все после кажлого нажатия кнопки, смещая текст. Я использую переменную verticalStart чтобы запоминать смещение от начала текста, и я вывожу его только когда очередная строка займет место ниже чем область окна. 
+Функция moveText возвращает false если нажата кнопка "вверх" или "вниз". Это сделано для того, чтобы браузер не прокручивал полосу прокрутки справа, которую вы возможно видите, если работаете в firefox. Но так как необходимо, чтобы браузер нормально реагировал на нажатие этих клавишь после того, как приложение закрыто, в обработке клика на холсте я присваиваю <b>null</b> заместо функции <u>moveText</u>. Можете попробовать не делать этого - браузер перестанет реагировать на нажатия клавишь "вверх" и "вниз" пока вы не обновите страницу.</p>
 <div style="width:96%">
 <div class="left"><?=QuickStartHandler::aback('arrays')?></div>
 <div class="right"><?=QuickStartHandler::anext('graph2d')?></div>
