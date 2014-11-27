@@ -28,6 +28,9 @@ class CApplication {
 			case 'programming_fundamentals':
 				$this->_promoPageActions();
 				break;
+			case 'login':
+				$this->_loginActions();
+				break;
 			default:
 				if (strpos($url, 'programming_fundamentals/quick_start/') !== false) {
 					$this->_quickStartActions();
@@ -45,6 +48,12 @@ class CApplication {
 		if (is_ajax()) {
 			$h->ajaxAction();
 		}
+	}
+	/**
+	 * @desc Обработка возможных действий при регистрации и авторизации
+	**/
+	private function _loginActions() {
+		$this->handler = $h = $this->_load('LoginHandler');
 	}
 	/**
 	 * @desc Обработка возможных действий на странице списка задач
