@@ -318,16 +318,29 @@ TestEngine.prototype.onGetQuest = function () {
 	o.view.setTime(o.limit / 1000);
 	o.view.clearPrevStatus();
 	if (o.state == o.C.START_GAME) {
-		o.lives = o.beginLives;
-		o.iterator = -1;
-		o.shuffleQuests();
-		o.view.setLives(o.beginLives);
-		o.view.setScore(0);
-		o.score = 0;
-		o.view.setGameScreen();
+		o.reset();
 		o.state == o.C.GET_QUEST;
 	}
 	o.nextQuest();
+}
+/**
+ * @desc Сбросить все в состояние не начатой игры
+*/
+TestEngine.prototype.reset = function() {
+	var o = this;
+	o.lives = o.beginLives;
+	o.iterator = -1;
+	o.shuffleQuests();
+	o.view.setLives(o.beginLives);
+	o.view.setScore(0);
+	o.score = 0;
+	o.view.setGameScreen();
+	o.state == o.C.NOT_BEGIN;
+}
+/**
+ * @desc Проверка правильности введенного текстового ответа
+*/
+TestEngine.prototype.isAnswersEqual = function() {
 }
 /**
  * @desc Проверка правильности введенного текстового ответа
