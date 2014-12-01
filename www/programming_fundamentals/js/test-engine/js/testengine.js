@@ -335,7 +335,7 @@ TestEngine.prototype.reset = function(showBeginScreen) {
 	o.view.setScore(0);
 	o.score = 0;
 	o.view.setGameScreen();
-	o.state == o.C.NOT_BEGIN;
+	o.state = o.C.NOT_BEGIN;
 	if (showBeginScreen) {
 		o.view.setBeginScreen();
 	}
