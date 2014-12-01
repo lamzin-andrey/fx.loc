@@ -4,8 +4,7 @@
 (function () {
 	$(document).ready(init);
 	function reinitTest() {
-		TestNewWords.reset();
-		TestNewWords.view.setBeginScreen();
+		TestNewWords.reset(1);
 	}
 	function init() {
 		$('#runTest').click(

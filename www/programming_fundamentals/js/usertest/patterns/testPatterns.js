@@ -5,8 +5,7 @@
 	$(document).ready(init);
 	function init() {
 		function reinitTest() {
-			TestPatterns.reset();
-			TestPatterns.view.setBeginScreen();
+			TestPatterns.reset(1);
 		}
 		$('#patternTestRun').click(
 			function() {

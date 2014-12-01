@@ -326,7 +326,7 @@ TestEngine.prototype.onGetQuest = function () {
 /**
  * @desc Сбросить все в состояние не начатой игры
 */
-TestEngine.prototype.reset = function() {
+TestEngine.prototype.reset = function(showBeginScreen) {
 	var o = this;
 	o.lives = o.beginLives;
 	o.iterator = -1;
@@ -336,6 +336,9 @@ TestEngine.prototype.reset = function() {
 	o.score = 0;
 	o.view.setGameScreen();
 	o.state == o.C.NOT_BEGIN;
+	if (showBeginScreen) {
+		o.view.setBeginScreen();
+	}
 }
 /**
  * @desc Проверка правильности введенного текстового ответа
