@@ -48,6 +48,8 @@
 		<div class="toolbar">
 			<? include APP_ROOT . '/tpl/toolbar.php'?>
 		</div>
+			<? include APP_ROOT . '/tpl/form_auth.tpl.php' ?>
+		
 		<div id="tooltip" class="right bg-dark-blue"></div>
 		<div class="left tasklist">
 			<?

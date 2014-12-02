@@ -120,3 +120,60 @@ body {height:100%; padding:0px 4px; margin:0px;
 	color:black;
 }
 .file-view-imgs {width:85px;}
+
+/* auth form style */
+.aphone {
+	height:62px;
+	padding-left: 4px;
+}/**/
+.aphone label {
+	display:inline-block;
+	height:34px;
+	margin:4px 0px 0px 7px;
+}/**/
+.apwd {
+	margin-top:12px;
+}/**/
+.apwd label {
+	/*display:inline-block;
+	height:34px;*/
+	margin:4px 0px 0px 11px;
+}
+.apwd input[type=password] {
+	height:34px;
+	margin:4px 0px 0px 4px;
+	width:370px;
+	font-size:24pt;
+}
+.slabel {
+	display:inline !important;
+}
+.aphone input[type=email], .aphone input[type=password] {
+	width:370px;
+	margin-top:3px;
+	vertical-align: top;
+	font-size:24pt;
+}
+.aformwrap input[type=button] {
+	margin: 8px 24px 0 0;
+	padding: 4px 6px;
+	text-align: center;
+}
+.smbr {
+	color:#3279b2;
+	font-size:10pt;
+	padding-left:6px;
+	margin: 22px 0 0px 0;
+	display:inline-block;
+}
+.popupouter {
+	background-color: white;
+	border: 1px solid #c4c4c4;
+	border-radius: 0 0 9px 9px;
+	float: right;
+	margin: 0 auto;
+	padding: 9px;
+	width: 407px;
+	box-shadow:-7px 9px 22px 9px #909090;
+}
+/** end auth form style **/

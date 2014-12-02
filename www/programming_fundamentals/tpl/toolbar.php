@@ -18,7 +18,8 @@
 </ul>
 <div class="right">
 	<ul class="inline">
-		<!--li><a href="#" onclick="alert('In process...')"><?=$lang['SignUp']?></a></li-->
+		<li><a href="#" onclick="alert('In process...')"><?=$lang['SignUp']?></a></li>
+		<li><a href="<?=WEB_ROOT?>/signin" id="bSignin"><?=$lang['SignIn']?></a></li>
 	</ul>
 </div>
 <div class="clearfix"></div>

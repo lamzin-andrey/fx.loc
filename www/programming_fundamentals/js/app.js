@@ -10,6 +10,7 @@
 			initTooltipFunctions();
 			initKeywordsHelp();
 			initSampleTextEditor();
+			initSignupButton();
 		}
 	);
 //============Простой редактор кода=====================================
@@ -875,9 +876,31 @@
 	}
 	/**
 	 * @desc А здесь можно будет что-то красивое и эффектное сделать при желании
-	 * */
+	*/
 	function showError(s) {
 		alert(s);
+	}
+	/**
+	 * @desc Форма логина
+	*/
+	function initSignupButton() {
+		$('#bSignin').click(
+			function() {
+				var o = $('#authForm');
+				if (o.hasClass('hide')) {
+					o.removeClass('hide');
+				} else {
+					o.addClass('hide');
+				}
+				return false;
+			}
+		);
+		$('#aop').click(
+			function () {
+				alert('In process');
+				return false;
+			}
+		);
 	}
 	//ajax helper
 	function req(data, success, fail, id, url, method) {
