@@ -889,6 +889,7 @@
 				var o = $('#authForm');
 				if (o.hasClass('hide')) {
 					o.removeClass('hide');
+					$('#login').focus();
 				} else {
 					o.addClass('hide');
 				}
