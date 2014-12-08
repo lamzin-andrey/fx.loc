@@ -12,23 +12,24 @@ class CApplication {
 		//TODO роутер
 		$aUrl = explode('?', $_SERVER['REQUEST_URI']);
 		$url = trim($aUrl[0], '/');
+		$work_fiolder = 'programming_fundamentals';
 		switch ($url) {
-			case 'programming_fundamentals/console':
+			case $work_fiolder . '/console':
 				$this->_consolePageActions();
 				break;
-			case 'programming_fundamentals/quick_start':
+			case $work_fiolder . '/quick_start':
 				$this->_quickStartActions();
 				break;
-			case 'programming_fundamentals/tasklist':
+			case $work_fiolder . '/tasklist':
 				$this->_tasklistActions();
 				break;
-			case 'programming_fundamentals/editor':
+			case $work_fiolder . '/editor':
 				$this->_editorActions();
 				break;
-			case 'programming_fundamentals':
+			case $work_fiolder:
 				$this->_promoPageActions();
 				break;
-			case 'login':
+			case $work_fiolder . '/login':
 				$this->_loginActions();
 				break;
 			default:

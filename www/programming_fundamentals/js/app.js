@@ -896,10 +896,27 @@
 				return false;
 			}
 		);
-		$('#aop').click(
-			function () {
-				alert('In process');
-				return false;
+		function _onSuccess(data) {
+			if (data.success == 1) {
+				window.location.reload();
+			} else {
+				showError(lang['user_not_found']);
+			}
+		}
+		function _onFail(data) {
+			showError(lang['default_error']);
+			
+		}
+		function _loginAction() {
+			req({email:$('#login').val(), password:$('#password').val()}, _onSuccess, _onFail, 'login', WEB_ROOT + '/login');
+			return false;
+		}
+		$('#aop').click(_loginAction);
+		$('#password').keydown(
+			function (evt) {
+				if (evt.keyCode == 13 && $.trim($('#password').val()).length > 0) {
+					_loginAction();
+				}
 			}
 		);
 	}

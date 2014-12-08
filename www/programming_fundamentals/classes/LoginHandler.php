@@ -1,13 +1,14 @@
 <?php
-class LoginHandler {
+require_once APP_ROOT . '/classes/CBaseHandler.php';
+class LoginHandler extends CBaseHandler {
 	
 	public function __construct() {
-		switch (@$_POST["action"]) {
+		switch (@$_REQUEST["action"]) {
 			case "login":
-				$this->login();
+				$this->_login();
 				break;
 			case "logout":
-				$this->logout();
+				$this->_logout();
 				break;
 			default:
 				if (!@$_SESSION["uid"]) {
@@ -23,17 +24,17 @@ class LoginHandler {
 		$this->exec();*/
 	}
 	
-	private function logout(){
+	private function _logout(){
 		$_SESSION = array();
 		utils_302(WEB_ROOT . '/');
 	}
 	
-	private function login(){
-		//$phone = Shared::preparePhone(@$_POST["phone"]);
+	private function _login() {
 		$email = @$_POST['email'];
 		$password = md5(str_replace("'", '&quot;', trim(@$_POST["password"])));
-		$data = query("SELECT u.id FROM users AS u
-		WHERE u.email = '$email' AND u.pwd = '$password'", $nR);
+		$sql_query = "SELECT u.id FROM users AS u
+						WHERE u.email = '$email' AND u.pwd = '$password'";
+		$data = query($sql_query, $nR);
 		$id = 0;
 		if ($nR) {
 			$row = $data[0];

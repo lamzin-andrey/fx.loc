@@ -7,7 +7,7 @@
 <div class="right">
 	<ul class="inline">
 		<li>Иванов Иван</li>
-		<li><a href="#" onclick="alert('In process...')"><?=$lang['Exit']?></a></li>
+		<li><a href="<?=WEB_ROOT?>/login?action=logout"><?=$lang['Exit']?></a></li>
 	</ul>
 </div>
 <div class="clearfix"></div>
