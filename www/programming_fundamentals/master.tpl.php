@@ -143,5 +143,6 @@ function myFirstProgram() {
 			</div>
 		</form>
 	</div>
+	<? include APP_ROOT . '/tpl/form_reg.tpl.php' ?>
 </body>
 </html> 

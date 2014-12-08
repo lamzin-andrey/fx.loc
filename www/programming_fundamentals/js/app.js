@@ -10,6 +10,7 @@
 			initTooltipFunctions();
 			initKeywordsHelp();
 			initSampleTextEditor();
+			initSigninButton();
 			initSignupButton();
 		}
 	);
@@ -881,9 +882,9 @@
 		alert(s);
 	}
 	/**
-	 * @desc Форма логина
+	 * @desc Формы логина и регистрации
 	*/
-	function initSignupButton() {
+	function initSigninButton() {
 		$('#bSignin').click(
 			function() {
 				var o = $('#authForm');
@@ -903,12 +904,8 @@
 				showError(lang['user_not_found']);
 			}
 		}
-		function _onFail(data) {
-			showError(lang['default_error']);
-			
-		}
 		function _loginAction() {
-			req({email:$('#login').val(), password:$('#password').val()}, _onSuccess, _onFail, 'login', WEB_ROOT + '/login');
+			req({email:$('#login').val(), password:$('#password').val()}, _onSuccess, defaultAjaxFail, 'login', WEB_ROOT + '/login');
 			return false;
 		}
 		$('#aop').click(_loginAction);
@@ -917,6 +914,31 @@
 				if (evt.keyCode == 13 && $.trim($('#password').val()).length > 0) {
 					_loginAction();
 				}
+			}
+		);
+	}
+	function initSignupButton() {
+		function _onSuccess(data) {
+			if (data.status == 'ok') {
+				window.location.reload();
+			} else {
+				showError(data.sError);
+			}
+		}
+		$("#regLink").click(
+			function () {
+				$('#authForm').addClass('hide');
+				appWindow('regFormWrapper', lang['SignUp']);
+			}
+		);
+		$("#breg").click(
+			function () {
+				var pwd = $('#rpassword').val(), pwdC = $('#password_confirm').val(), email = $('#rlogin').val(),
+					name = $('#uname').val(), sname = $('#usname').val();
+				if (pwd == pwdC && pwd.length && email.length) {
+					req({email:email, password:pwd, pc:pwdC, name: name, sname: sname}, _onSuccess, defaultAjaxFail, 'signup', WEB_ROOT + '/login');
+				}
+				//appWindowClose();
 			}
 		);
 	}
@@ -935,5 +957,8 @@
 			success:success,
 			error:fail
 		});
+	}
+	function defaultAjaxFail() {
+		showError(lang['default_error']);
 	}
 })(jQuery)

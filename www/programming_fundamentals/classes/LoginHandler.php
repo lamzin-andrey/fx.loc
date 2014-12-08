@@ -10,18 +10,14 @@ class LoginHandler extends CBaseHandler {
 			case "logout":
 				$this->_logout();
 				break;
+			case "signup":
+				$this->_signup();
+				break;
 			default:
 				if (!@$_SESSION["uid"]) {
 					utils_302(WEB_ROOT . '/');
 				}
 		}
-		/*$phone =  Shared::preparePhone(@$_SESSION['phone']);
-		if (strlen($phone) < 5) {
-			$this->stopSql = true;
-		} else {
-			$this->filter = " WHERE phone = '$phone' AND m.is_deleted != 1 ";
-		}
-		$this->exec();*/
 	}
 	
 	private function _logout(){
@@ -31,7 +27,7 @@ class LoginHandler extends CBaseHandler {
 	
 	private function _login() {
 		$email = @$_POST['email'];
-		$password = md5(str_replace("'", '&quot;', trim(@$_POST["password"])));
+		$password = $this->_getHash(@$_POST["password"]);
 		$sql_query = "SELECT u.id FROM users AS u
 						WHERE u.email = '$email' AND u.pwd = '$password'";
 		$data = query($sql_query, $nR);
@@ -49,5 +45,52 @@ class LoginHandler extends CBaseHandler {
 			print json_encode(array("success"=>'0'));
 		}
 		exit;
+	}
+	/**
+	 * @desc Регистрация пользователя
+	**/
+	private function _signup() {
+		$lang = utils_getCurrentLang();
+		$email = req('email');
+		$pwd   = req('password');
+		$pwd_c = req('pc');
+		$name  = req('name');
+		$sname = req('sname');
+		if (!trim($email)) {
+			json_error('sError', $lang['email_required']);
+		}
+		if (!checkMail($email)) {
+			json_error('sError', $lang['email_is_not_valid']);
+		}
+		//die("SELECT id FROM users WHERE email = '{$email}'");
+		$exists = dbvalue("SELECT id FROM users WHERE email = '{$email}'");
+		if ($exists) {
+			json_error('sError', $lang['email_already_exists']);
+		}
+		if (!trim($pwd)) {
+			json_error('sError', $lang['password_required']);
+		}
+		if ($pwd != $pwd_c) {
+			json_error('sError', $lang['password_different']);
+		}
+		$pwd = $this->_getHash($pwd);
+		$name = str_replace("'", '&quot;', trim($name));
+		$surname = str_replace("'", '&quot;', trim($sname));
+		$email = str_replace("'", '&quot;', trim($email));
+		$uid = CApplication::getUid();
+		$sql_query = "UPDATE users SET name = '{$name}', surname = '{$surname}', email = '{$email}', pwd = '{$pwd}' WHERE id = {$uid}";
+		//die($sql_query);
+		query($sql_query, $nR, $aR);
+		if ($aR) {
+			json_ok('sError', $lang['reg_complete']);
+		} else{
+			json_error('sError', $lang['default_error']);
+		}
+	}
+	/*
+	 * 
+	*/
+	private function _getHash($s) {
+		return md5(str_replace("'", '&quot;', trim($s)));
 	}
 }

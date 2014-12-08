@@ -123,7 +123,7 @@ body {height:100%; padding:0px 4px; margin:0px;
 
 /* auth form style */
 .aphone {
-	height:62px;
+	height:74px;
 	padding-left: 4px;
 }/**/
 .aphone label {
@@ -148,7 +148,7 @@ body {height:100%; padding:0px 4px; margin:0px;
 .slabel {
 	display:inline !important;
 }
-.aphone input[type=email], .aphone input[type=password] {
+.aphone input[type=email], .aphone input[type=password], .aphone input[type=text] {
 	width:370px;
 	margin-top:3px;
 	vertical-align: top;

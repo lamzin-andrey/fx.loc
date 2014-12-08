@@ -45,9 +45,6 @@ function json_ok() {
 function json_error() {
 	$sz = func_num_args();
 	$data['status'] = "error";
-	if ((int)@$_POST['dbfrts'] > 0) {
-		$data["dbfrts"]= $_POST['dbfrts'];
-	}
  	for ($i = 0; $i < $sz; $i++) {
  		if ($i + 1 < $sz) {
  			$data[func_get_arg($i)] = func_get_arg($i + 1);

@@ -5,9 +5,13 @@ require_once dirname(__FILE__) . '/classes/CViewHelper.php';
 class CApplication {
 	public $handler = null;
 	public $lang = array();
+	public $user_email;
+	public $user_name;
+	public $user_surname;
 	public function __construct() {
 		@session_start();
 		$this->lang = utils_getCurrentLang();
+		$this->_loadAuthUserData();
 		$this->_ajaxHandler();
 		//TODO роутер
 		$aUrl = explode('?', $_SERVER['REQUEST_URI']);
@@ -162,7 +166,7 @@ class CApplication {
 	}
 	/**
 	 * 
-	 **/
+	*/
 	static public function getUid() {
 		if ((int)sess('uid')) {
 			return (int)sess('uid');
@@ -179,5 +183,19 @@ class CApplication {
 			return $guid;
 		}
 		return 0;
+	}
+	/**
+	 * @desc Получить мыло имя и фамилию неанонимного пользователя
+	*/
+	private function _loadAuthUserData() {
+		if ($uid = (int)sess('uid')) {
+			$data = dbrow("SELECT id, email, name, surname FROM users WHERE id = '{$uid}'", $nR);
+			//$guid = 0;
+			if ($nR) {
+				$this->user_email = $data['email'];
+				$this->user_name = $data['name'];
+				$this->user_surname = $data['surname'];
+			}
+		}
 	}
 }
