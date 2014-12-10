@@ -1,3 +1,3 @@
 -- MySQL
-ALTER TABLE users ADD COLUMN name VARCHAR(64) COMMENT 'Имя пользователя';
-ALTER TABLE users ADD COLUMN surname VARCHAR(64) COMMENT 'Фамилия пользователя';
+ALTER TABLE users ADD COLUMN name VARCHAR(64) COMMENT 'РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ';
+ALTER TABLE users ADD COLUMN surname VARCHAR(64) COMMENT 'Р¤Р°РјРёР»РёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ';
