@@ -67,7 +67,8 @@ $lang['email_required'] = 'Необходимо ввести email';
 $lang['password_different'] = 'Пароли не совпадают';
 $lang['reg_complete'] = 'Регистрация завершена, вы можете войти в кабинет используя email и пароль заданные при входе';
 $lang['CurrentTask'] = 'Моя задача';
-
+$lang['Password_recovery'] = 'Восстановление пароля';
+$lang['Sign_in_button_label'] = 'Вход';
 
 //quick_start
 $lang['intro'] = 'Что это';
