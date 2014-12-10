@@ -109,8 +109,21 @@ body {height:100%; padding:0px 4px; margin:0px;
 	margin-bottom:0px;
 	box-shadow:0px 0px 10px 0px #c0c0c0;
 }
-.toolbar ul{	margin: 10px 6px 6px;}
-.toolbar ul li a{color:black; font-weight:bold; }
+.toolbar ul{margin: 10px 6px 6px;}
+.toolbar ul li a {
+	border-bottom: 1px solid;
+    border-right: 1px solid;
+    color: black;
+    display: inline-block;
+    line-height: 22px;
+    padding: 0 10px 0 6px;
+    text-decoration: none;
+}
+.toolbar ul li a:hover {
+    color: white;
+    background-color: #3279b2;
+    text-decoration: none;
+}
 /**upload**/
 .upopup fieldset{
 	border-color:#6F93CF;
@@ -175,5 +188,21 @@ body {height:100%; padding:0px 4px; margin:0px;
 	padding: 9px;
 	width: 407px;
 	box-shadow:-7px 9px 22px 9px #909090;
+}
+#password_equ, #password_validate {
+	border-radius: 4px;
+    color: white;
+    display: inline-block;
+    line-height: 12px;
+    padding: 5px;
+    position: absolute;
+    right: 44px;
+    font-size:11pt;
+}
+.password_equ {
+	background-color: #00aa00;
+}
+.password_no_equ {
+	background-color: #aa0000;
 }
 /** end auth form style **/

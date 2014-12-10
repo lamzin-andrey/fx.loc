@@ -881,6 +881,7 @@
 	function showError(s) {
 		alert(s);
 	}
+	//================Авторизация=======================================
 	/**
 	 * @desc Формы логина и регистрации
 	*/
@@ -920,7 +921,9 @@
 	function initSignupButton() {
 		function _onSuccess(data) {
 			if (data.status == 'ok') {
-				window.location.reload();
+				showError(data.sError);
+				//window.location.reload();
+				appWindowClose();
 			} else {
 				showError(data.sError);
 			}
@@ -937,11 +940,52 @@
 					name = $('#uname').val(), sname = $('#usname').val();
 				if (pwd == pwdC && pwd.length && email.length) {
 					req({email:email, password:pwd, pc:pwdC, name: name, sname: sname}, _onSuccess, defaultAjaxFail, 'signup', WEB_ROOT + '/login');
+				} else {
+					showError(lang['email_required'] + ' ' + lang['and_password_required']);
 				}
 				//appWindowClose();
 			}
 		);
+		function _checkStrongPassword(s) {
+			$('#password_validate').removeClass('hide');
+			if (/[A-Za-z]+/.test(s) && /[0-9A-Za-z]{6,111}/.test(s) && /[0-9]+/.test(s)) {
+				$('#password_validate').removeClass('password_no_equ').addClass('password_equ').text(lang['strong_password']);
+			} else {
+				$('#password_validate').removeClass('password_equ').addClass('password_no_equ').text(lang['easy_password']);
+			}
+		}
+		function _checkEquivPassword(s) {
+			$('#password_equ').removeClass('hide');
+			if (s == $('#rpassword').val()) {
+				$('#password_equ').removeClass('password_no_equ').addClass('password_equ').text(lang['password_match']);
+			} else {
+				$('#password_equ').removeClass('password_equ').addClass('password_no_equ').text(lang['password_not_match']);
+			}
+		}
+		$('#rpassword').keydown(
+			function(){
+				var o = this;
+				setTimeout(
+					function(){
+						_checkStrongPassword(o.value);
+					}
+					,100
+				);
+			}
+		);
+		$('#password_confirm').keydown(
+			function(){
+				var o = this;
+				setTimeout(
+					function(){
+						_checkEquivPassword(o.value);
+					}
+					,100
+				);
+			}
+		);
 	}
+	//================/Авторизация=======================================
 	//ajax helper
 	function req(data, success, fail, id, url, method) {
 		if (!method) {

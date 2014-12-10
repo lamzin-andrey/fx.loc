@@ -64,11 +64,16 @@ $lang['email_already_exists'] = 'Пользователь с таким email у
 $lang['email_is_not_valid'] = 'Некорректный email';
 $lang['password_required'] = 'Необходимо ввести пароль';
 $lang['email_required'] = 'Необходимо ввести email';
+$lang['and_password_required'] = ' и пароль';
 $lang['password_different'] = 'Пароли не совпадают';
 $lang['reg_complete'] = 'Регистрация завершена, вы можете войти в кабинет используя email и пароль заданные при входе';
 $lang['CurrentTask'] = 'Моя задача';
 $lang['Password_recovery'] = 'Восстановление пароля';
 $lang['Sign_in_button_label'] = 'Вход';
+$lang['easy_password'] = 'Простой пароль';
+$lang['strong_password'] = 'Хороший пароль';
+$lang['password_not_match'] = 'Пароли не совпадают';
+$lang['password_match'] = 'Пароли совпадают';
 
 //quick_start
 $lang['intro'] = 'Что это';

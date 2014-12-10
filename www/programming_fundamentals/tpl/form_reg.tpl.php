@@ -15,11 +15,11 @@
 					<input type="email" value="" id="rlogin" name="rlogin">
 				</div>
 				<div class="apwd">
-					<label class="slabel" for="rpassword"><?=$lang['Password']?></label><br> 
+					<label class="slabel" for="rpassword"><?=$lang['Password']?></label><span id="password_validate" class="password_no_equ hide"><?=$lang['easy_password']?></span><br>
 					<input type="password" value="" id="rpassword" name="password">					
 				</div>
 				<div class="apwd">
-					<label class="slabel" for="password_confirm"><?=$lang['Password_confirmation']?></label><br>
+					<label class="slabel" for="password_confirm"><?=$lang['Password_confirmation']?></label><span id="password_equ" class="password_no_equ hide"><?=$lang['password_not_match']?></span><br>
 					<input type="password" value="" id="password_confirm" name="password_confirm">
 				</div>
 				<div class="right prmf">
