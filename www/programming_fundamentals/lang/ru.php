@@ -74,6 +74,7 @@ $lang['easy_password'] = 'Простой пароль';
 $lang['strong_password'] = 'Хороший пароль';
 $lang['password_not_match'] = 'Пароли не совпадают';
 $lang['password_match'] = 'Пароли совпадают';
+$lang['Main_page'] = 'Начало';
 
 //quick_start
 $lang['intro'] = 'Что это';

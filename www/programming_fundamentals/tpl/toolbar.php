@@ -1,8 +1,18 @@
 <? if(sess('uid')):?>
-<ul class="inline left">
-	<li><a href="#" onclick="alert('In process...')"><?=$lang['CurrentTask']?></a></li>
-	<li><a href="<?=WEB_ROOT?>/tasklist"><?=$lang['TaskList']?></a></li>
-	<li><a href="<?=WEB_ROOT?>/quick_start"><?=$lang['QuickStart']?></a></li>
+<ul class="inline left"><?
+	$links = array(
+		WEB_ROOT  => 'Main_page',
+		WEB_ROOT . '/console' => 'your_programs',
+		'#' => 'CurrentTask',
+		WEB_ROOT . '/tasklist' => 'TaskList',
+		WEB_ROOT . '/quick_start' => 'QuickStart',
+		WEB_ROOT . '/text_editor' => 'text_editor'
+	);
+?><? foreach ($links as $link => $langkey): ?>
+<? if ('/' . $app->base_url != $link):?>
+	<li><a href="<?=$link?>" <?if ($link == '#'):?>onclick="alert('In process...'); return false;"<? endif?>><?=$lang[$langkey]?></a></li>
+<? endif?>
+<? endforeach?>
 </ul>
 <div class="right">
 	<ul class="inline">

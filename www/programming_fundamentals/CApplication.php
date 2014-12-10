@@ -8,6 +8,7 @@ class CApplication {
 	public $user_email;
 	public $user_name;
 	public $user_surname;
+	public $base_url;
 	public function __construct() {
 		@session_start();
 		$this->lang = utils_getCurrentLang();
@@ -15,7 +16,7 @@ class CApplication {
 		$this->_ajaxHandler();
 		//TODO роутер
 		$aUrl = explode('?', $_SERVER['REQUEST_URI']);
-		$url = trim($aUrl[0], '/');
+		$this->base_url = $url = trim($aUrl[0], '/');
 		$work_fiolder = 'programming_fundamentals';
 		switch ($url) {
 			case $work_fiolder . '/console':
