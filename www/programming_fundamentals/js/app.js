@@ -881,7 +881,6 @@
 		}
 		
 		//добавление подсказки и обработки клика всем кейвордам на странице в примерах кода
-		
 		//
 		function onKeywordClick() {
 			var s = keyMap[$(this).text()].hl;
@@ -901,6 +900,34 @@
 				}
 			}
 		);
+		//добавление номеров строк 
+		$('.textcontent pre').each(
+			function(i, pre) {
+				pre = $(pre);
+				var parent = pre.parent(),
+					tpl = $('<div class="code_example">\
+						<div class="ce_btn"><input class="btn copy_example_btn" type="button" value="' + lang['Copy_this_code'] + '"></div>\
+						<div class="ce_ls left"></div>\
+						<div class="ce_pre left"></div>\
+						<div class="clearfix"></div>\
+					</div>');
+				pre.after(tpl);
+				var n = pre.text().split('\n').length;
+				tpl.find('.ce_pre').first()[0].appendChild(pre[0]);
+				var c = tpl.find('.ce_ls').first();
+				for (var i = 0; i < n; i++) {
+					c.append( $('<div class="ce_l">' + (i + 1) + '</div>') );
+				}
+				tpl.find('.btn').click(
+					function() {
+						var obj = $(this),
+							text = obj.parent().parent().find('pre').text();
+						$('#qs_editor_s').val(text);
+					}
+				);
+			}
+		);
+		
 	}
 //====== /Словарь кейвордов
 	

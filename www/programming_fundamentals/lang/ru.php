@@ -99,6 +99,7 @@ $lang['pseudofile'] = 'Замена текстовым файлам';
 $lang['pseudofile'] = 'Замена текстовым файлам';
 $lang['first_canvas'] = 'Холст и краски';
 $lang['observer'] = 'Паттерн наблюдатель';
+$lang['Copy_this_code'] = 'Копировать этот пример в редактор кода';
 
 
 $lang['delete_errors_and_try_again'] = "\n-----------------\nудалите ошибки и попробуйте снова";
