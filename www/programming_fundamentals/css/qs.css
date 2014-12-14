@@ -5,17 +5,32 @@
 	height:100%;
 }
 #qs_editor_s {
-	width:100%;
+	width:90%;
 	margin-top:0px;
 	resize:vertical;
 	-moz-tab-size:4;
 	tab-size:4;
 	-ms-tab-size:2;
 	-o-tab-size:2;
+	line-height:14pt;
+	font-size  :12pt;
 }
 .qs_editor_s_tbar img {
 	width:32px;
 	height:32px;
+}
+#qseLines {
+	min-width:36px;
+	margin-top:5px;
+}
+.qse_l {
+	background-color: #D6D2D0;
+	line-height:14pt;
+	font-size  :10pt;
+	padding-left:4px;
+}
+.qse_la {
+	background-color: #B5B5C6;
 }
 .fixed_con {
 	position:fixed;

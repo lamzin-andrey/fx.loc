@@ -93,6 +93,46 @@
 			}
 			$('#qsline').text(res.y);
 			$('#qscol').text(res.x);
+			lines(s, res.y);
+		}
+		function lines(s, n){
+			var total = s.split('\n').length, i = 0,
+				div = $('#qseLines'), css;/*, exists = div.find('.qse_l').length;*/
+			div.html('');
+			for (i; i < total; i++) {
+				if ((i + 1) == n) {
+					css = 'qse_l qse_la';
+				} else {
+					css = 'qse_l';
+				}
+				div.append( $('<div class="' + css + '">' + (i + 1) + '</div>') );
+			}
+			//console.log('total = ' + total + ', exists = ' + exists);
+			/*if (exists > total) {
+				div.html('');
+				for (i; i < total; i++) {
+					if ((i + 1) == n) {
+						css = 'qse_l qse_la';
+					} else {
+						css = 'qse_l';
+					}
+					div.append( $('<div class="' + css + '">' + (i + 1) + '</div>') );
+				}
+			} else {
+				div.find('.qse_l').removeClass('qse_la');
+				if (exists == total) {
+					div.find('.qse_l').eq(n - 1).addClass('qse_la');
+				} else {
+					for (i = exists; i < total; i++) {
+						if ((i + 1) == n) {
+							css = 'qse_l qse_la';
+						} else {
+							css = 'qse_l';
+						}
+						div.append( $('<div class="' + css + '">' + (i + 1) + '</div>') );
+					}
+				}
+			}*/
 		}
 		function onKeyDown(e) {
 			//Контроль Tab клавиши
@@ -124,6 +164,12 @@
 				);
 				return true;
 			} else if (e.keyCode == 13) {//Enter
+				setTimeout(
+					function () {
+						showTextCursorCoord();
+					}
+					, 10
+				);
 				var ta = this, pos = getCaretPosition(ta),
 					s = ta.value, tail, q, spaces = '', i, j = 0;
 				if (pos) {
@@ -185,6 +231,7 @@
 				setTimeout(
 					function () {
 						setMenuIconState();
+						showTextCursorCoord();
 					}
 					, 10
 				);
@@ -499,8 +546,6 @@
 					appWindowClose();
 					showLoader();
 					req({id:id}, onLoadContent, onFailLoadContent, 'loadFileContent', WEB_ROOT + '/editor/');
-				} else {
-					alert('Fucking Fuck');
 				}
 			}
 			$('.file-names-filter').attr('style', null);
@@ -514,6 +559,50 @@
 					}
 				}, 10
 			);
+			//init serach field
+			$('#searchFileName')[0].onkeydown = function () {
+				function isFileItem(li) {
+					if (li.hasClass('file_view template') || li.hasClass('no_file')) {
+						return false;
+					}
+					return true;
+				}
+				
+				var inp = this;
+				setTimeout(
+					function() {
+						var s = inp.value;
+						if (s.length) {
+							$('.js-br-files li').each(
+								function (i, item) {
+									item = $(item);
+									if (!isFileItem(item)) {
+										return;
+									}
+									var name = item.find('.js-file-title').text();
+									if (name.indexOf(s) == -1) {
+										item.addClass('hide');
+									} else {
+										item.removeClass('hide');
+									}
+								}
+							);
+						} else {
+							$('.js-br-files li').each(
+								function (i, item) {
+									item = $(item);
+									if (!isFileItem(item)) {
+										return;
+									}
+									item.removeClass('hide');
+								}
+							);
+						}
+					}
+					,10
+				);
+			}
+			// end init serach field
 			req({}, onLoadUserFiles, onFailLoadUserFiles, 'loadUserFiles', WEB_ROOT + '/editor/');
 		}
 		//отправка запроса на переименование файла
@@ -553,7 +642,8 @@
 		$('#qsEditTitleSaveBtn').click(sendRenameFile);
 		if (localStorage.getItem('qsLastText')) {
 			$(mid).val( localStorage.getItem('qsLastText') );
-			setMenuIconState() ;
+			setMenuIconState();
+			showTextCursorCoord();
 			if(localStorage.getItem('fileId')) {
 				fileId = localStorage.getItem('fileId');
 			}
