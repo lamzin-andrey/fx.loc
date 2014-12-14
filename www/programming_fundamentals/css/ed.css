@@ -140,4 +140,17 @@ u{text-decoration:none; color:#2A8109; font-style:italic;}
 .simple_code_editor {
 	display:block;
 }
-
+#functionlist li{
+	margin-bottom:none !important;
+}
+#functionlist li a{
+	height:0px;
+}
+.codehint {
+	border:1px solid black;
+	background: #FFFAA6;
+	padding:2px;
+	top:200px;
+	left:42px;
+	font-size:11pt;
+}

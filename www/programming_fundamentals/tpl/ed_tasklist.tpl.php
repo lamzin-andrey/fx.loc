@@ -1,10 +1,6 @@
-<ul class="scroll-y">
-	<li><a class="" href="<?=WEB_ROOT?>/quick_start/"><?=$lang['intro']?></a></li>
-	<li><a class="" href="<?=WEB_ROOT?>/quick_start/wtf/"><?=$lang['wtf']?></a></li>
-	<li><a class="" href="<?=WEB_ROOT?>/quick_start/security/"><?=$lang['security']?></a></li>
-	<li><a class="" href="<?=WEB_ROOT?>/quick_start/keywords/"><?=$lang['keywords']?></a></li>
+<ul id="functionlist">
+	<!--li><a class="" href="<?=WEB_ROOT?>/quick_start/"><?=$lang['intro']?></a></li-->
 	<?//=QuickStartHandler::part('variables')?>
-	
 	<!--ul>
 		<?//=QuickStartHandler::part('graph2d', 'first_canvas')?>
 	</ul-->

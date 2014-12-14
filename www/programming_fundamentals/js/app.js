@@ -76,7 +76,11 @@
 			fileId = -1,
 			fileDisplayName = '',
 			lastTimeLoadFileClick = 0,
-			maxEditorHeight = false;
+			maxEditorHeight = false,
+			enableFunctions = false,
+			ContentFunctions = {globals:{}},
+			DefaultContentFunctions = {globals:{}};
+		window.SiEd = {};
 		if (!$(mid)[0]) {
 			return;
 		}
@@ -95,6 +99,7 @@
 			$('#qsline').text(res.y);
 			$('#qscol').text(res.x);
 			lines(s, res.y);
+			return {p:p, s:s};
 		}
 		function lines(s, n){
 			var total = s.split('\n').length, i = 0,
@@ -235,7 +240,8 @@
 				setTimeout(
 					function () {
 						setMenuIconState();
-						showTextCursorCoord();
+						var data = showTextCursorCoord();
+						showCodeHint(data);
 					}
 					, 10
 				);
@@ -341,6 +347,7 @@
 						appWindow('saveScriptFormWrapper', lang['information']);
 					}
 				}
+				buildFunctionList();
 			}
 			if (fileId == -1) {
 				try {
@@ -406,6 +413,7 @@
 				if (d.warning) {
 					addTooltipWarning(d.warning);
 				}
+				buildFunctionList();
 			} else {
 				showError(d.msg);
 			}
@@ -539,6 +547,8 @@
 					$(mid).val(d.file_content);
 					$('#currentFileName').text(fileDisplayName);
 					localStorage.setItem('fileDisplayName', fileDisplayName);
+					onKeyUp();
+					buildFunctionList();
 					hideLoader();
 				}
 				var id = parseInt($(this).data('id'));
@@ -635,6 +645,151 @@
 			}
 			req(data, onRename, onFailRename, 'renameFile', WEB_ROOT + '/editor/');
 		}
+		/**
+		 * @desc строит список функций, встречающихся в открытом файле
+		*/
+		function buildFunctionList() {
+			var s = $(mid).val(),
+				re = /function\s+[A-z0-9]+\s*\([A-z0-9,'" ]*\)/gi,
+				data = s.match(re), cName, fName;
+			//console.log(data);
+			
+			ContentFunctions = {};
+			for (cName in DefaultContentFunctions) {
+				ContentFunctions[cName] = {}
+				for (fName in DefaultContentFunctions[cName]) {
+					ContentFunctions[cName][fName] = {
+						name:DefaultContentFunctions[cName][fName].name,
+						src:DefaultContentFunctions[cName][fName].src,
+					};
+					for (var k = 0; k < DefaultContentFunctions[cName][fName].args.length; k++) {
+						ContentFunctions[cName][fName].args.push( DefaultContentFunctions[cName][fName].args[k] );
+					}
+				}
+			}
+			$(data).each(
+				function (i, s) {
+					var src = s,
+						o = {args:[]},
+						j, _name = '', open = 0, ch, nameStart = 0, readArg = 0;
+					s = s.replace('function', '');
+					var args = s.replace(/.*\(([^)]*)\).*/, '$1');
+					var arr = s.split('(');
+					o.name = $.trim((arr[0]));
+					o.src = src;
+					//console.log(args);
+					if (args.length) {
+						arr = args.split(',');
+						$(arr).each(
+							function(i, q) {
+								q = $.trim(q);
+								if (q) {
+									o.args.push(q);
+								}
+							}
+						);
+					}
+					ContentFunctions.globals[o.name] = o;
+				}
+			);
+			//console.log(ContentFunctions);
+			showContentFunctionsInList();
+		}
+		/**
+		 * @desc Выводит имена функций в списке справа
+		*/
+		function showContentFunctionsInList() {
+			var container = $('#functionlist'), //используя эту переменную позже построим дерево
+				cName, fName;
+			container.html('');
+			for (cName in ContentFunctions) {
+				if (cName != 'globals') {
+					container = addContentClassInList(cName);
+				}
+				for (fName in ContentFunctions[cName]) {
+					container.append( $('<li><a href="#" onclick="SiEd.gotoFunctionOnEditor(\'' + fName + '\'); return false;">' + fName + '</a></li>') );
+				}
+			}
+		}
+		/**
+		 * Возвращает ссылку на элемент списка, для построения дерева
+		 * */
+		function addContentClassInList(cName) {
+			return $('#functionlist'); //TODO заглушку убрать
+		}
+		/**
+		 * Переход к выбранной в списке справа функции
+		 * */
+		window.SiEd.gotoFunctionOnEditor = function (name, cName) {
+			if (!cName) {
+				cName = 'globals';
+			}
+			if (ContentFunctions[cName][name]) {
+				var src = ContentFunctions[cName][name].src,
+					s = $(mid).val(),
+					caretPos = s.indexOf(src),
+					L, T, value;
+					//console.log(caretPos);
+				if (caretPos != -1) {
+					//T = s.split('\n').length;
+					s = s.substring(0, caretPos);
+					L = s.split('\n').length;
+					value = (L - 1) * parseInt($(mid).css('line-height'), 10);
+					
+					$(mid)[0].scrollTop = 100500;
+					setCaretPosition($(mid)[0], caretPos);
+					showTextCursorCoord();
+					setTimeout(
+						function () {
+							$(mid)[0].scrollTop = value;
+							
+						}, 10
+					);
+				}
+			}
+		}
+		/**
+		 * Возвращает ссылку на элемент списка, для построения дерева
+		 * */
+		function showCodeHint(data) {
+			var pos = data.p, s = data.s, q = s, L,
+			rightCb, rightOb, leftCb, leftOb, i, aName = [], alp = 'abcdefghijklmnopqrstuvwxyz0123456789_$';
+			if (pos) {
+				s = s.substring(0, pos);
+				alp += alp.toUpperCase();
+				leftCb = s.lastIndexOf(')');
+				leftOb = s.lastIndexOf('(');
+				if (leftOb != -1 && leftOb > leftCb) {
+					var  start  = 0, proc = 0, fName;
+					for (i = leftOb - 1; i > -1; i--) {
+						var ch = s.charAt(i);
+						if (alp.indexOf(ch) != -1) {
+							aName.push(ch);
+							start = 1;
+						} else if (start) {
+							break;
+						}
+					}
+					fName = $.trim( aName.reverse().join('') );
+					//console.log(fName);
+					for (cName in ContentFunctions) {
+						for (name in ContentFunctions[cName]) {
+							if (name == fName && ContentFunctions[cName][name].args.length) {
+								//console.log('found');
+								$('#codeTooltip').text( ContentFunctions[cName][name].args.join(', ') ).removeClass('hide');
+								//TODO set coordinates
+								L = parseInt($(mid).css('line-height'), 10)  *  (s.split('\n').length + 1);
+								var top = (L - $(mid)[0].scrollTop + $(mid)[0].offsetTop ) +  'px';
+								$('#codeTooltip').css('top', top);
+								return;
+							}
+						}
+					}
+				}
+			}
+			$('#codeTooltip').addClass('hide');
+		}
+		
 		//Инициализация
 		$(mid).keydown(onKeyDown);
 		$(mid).keyup(onKeyUp);
@@ -648,6 +803,7 @@
 			$(mid).val( localStorage.getItem('qsLastText') );
 			setMenuIconState();
 			showTextCursorCoord();
+			buildFunctionList();
 			if(localStorage.getItem('fileId')) {
 				fileId = localStorage.getItem('fileId');
 			}
@@ -673,6 +829,7 @@
 		);*/
 		//высота редактора на странице text_editor
 		if (window.location.href.indexOf('/text_editor') != -1) {
+			enableFunctions = true;
 			maxEditorHeight = getViewport().h - 130;
 			$('#qs_editor_s').height(  maxEditorHeight + 'px' );
 			$('#qseLineWrapper').height( ($('#qs_editor_s').height() + 5) + 'px');

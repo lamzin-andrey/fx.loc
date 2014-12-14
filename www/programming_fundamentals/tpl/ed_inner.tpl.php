@@ -84,7 +84,7 @@
 	
 			</div>
 		</div>
-		
+		<div class="abs codehint hide" id="codeTooltip">innerHTML, locale</div>
 		
 	</article>
 </div>
