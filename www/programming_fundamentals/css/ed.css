@@ -5,7 +5,7 @@
 	height:100%;
 }
 #qs_editor_s {
-	width:90%;
+	width:94%;
 	margin-top:0px;
 	resize:vertical;
 	-moz-tab-size:4;
@@ -13,14 +13,22 @@
 	-ms-tab-size:2;
 	-o-tab-size:2;
 	line-height:14pt;
-	font-size  :12pt;
+	font-size :12pt;
+	/*max-height: 600px;*/
+}
+.abs {
+	position:absolute;
+}
+.prel {
+	position:relative;
 }
 .oh {overflow:hidden;}
 #qseLines {
+	position:relative;
 	min-width:36px;
 	padding-top:5px;
 	background-color: #D6D2D0;
-	position:relative;
+	max-height: 600px;
 }
 .qse_l {
 	background-color: #D6D2D0;
@@ -35,6 +43,7 @@
 	width:32px;
 	height:32px;
 }
+
 .fixed_con {
 	position:fixed;
 	top:70px;
@@ -128,7 +137,7 @@ u{text-decoration:none; color:#2A8109; font-style:italic;}
 .recolor {color:#F07676;}
 .tred{color:red;}
 
-
-.testsButtons {
-	margin: 10px 0;
+.simple_code_editor {
+	display:block;
 }
+

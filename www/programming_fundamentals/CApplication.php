@@ -29,6 +29,7 @@ class CApplication {
 				$this->_tasklistActions();
 				break;
 			case $work_fiolder . '/editor':
+			case $work_fiolder . '/text_editor':
 				$this->_editorActions();
 				break;
 			case $work_fiolder:

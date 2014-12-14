@@ -38,7 +38,7 @@
 				obj.className += ' ' + css;
 			}
 			//getviewport
-			function getViewport() {
+			window.getViewport = function() {
 				var w = W.innerWidth, h = W.innerHeight;
 				if (!w && D.documentElement && D.documentElement.clientWidth) {
 					w = D.documentElement.clientWidth;

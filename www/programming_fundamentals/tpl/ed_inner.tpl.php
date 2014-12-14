@@ -6,7 +6,7 @@
 	</div><?
 		$aUrl = explode('?', $_SERVER['REQUEST_URI']);
 		$url = $aUrl[0];
-		if (strpos($url, '/quick_start') !== false && strpos($url, '/quick_start/keywords') === false) {?>
+		if ((strpos($url, '/quick_start') !== false || strpos($url, '/test_editor') !== false) && strpos($url, '/quick_start/keywords') === false) {?>
 			<div class="hide">
 			<?
 			include APP_ROOT . '/files/quick_book/keyworddiv.php';?>
@@ -14,18 +14,6 @@
 			<?
 		}
 	?>
-		<div class="textcontent scroll-y">
-			<? include APP_ROOT . "/files/quick_book/" . $handler->book_tpl . '.php';?>
-			<? if ($handler->show_test_new_words_button):?>
-			<div class="testsButtons">
-				<button id="runTest" >Тест на новые слова</button>
-				<? foreach ($handler->test_buttons as $id => $text): ?>
-					<button id="<?=$id ?>" ><?=$text ?></button>
-				<? endforeach ?>
-			</div>
-			<? endif?>
-		</div>
-		<hr style="color:##D2DAE2;padding:0; margin:0;"/>
 		<div class="qs_editor_place">
 			<ul class="inline qs_editor_s_tbar">
 				<li>
@@ -45,6 +33,7 @@
 				</li>
 			</ul>
 			<div class="simple_code_editor">
+				<!--div class="oh left"><div id="qseLines"></div></div-->
 				<div id="qseLineWrapper" class="oh left"><div id="qseLines"></div></div>
 				<textarea id="qs_editor_s" rows="15" spellcheck="false" class="left"></textarea>
 				<div class="clearfix"></div>
@@ -96,18 +85,6 @@
 			</div>
 		</div>
 		
-		<div id="qs-test-new-word-wrap" class="hide">
-			<div class="test-new-word" id="qs-test-new-word">
-				<? include APP_ROOT . '/tpl/qs_test_new_words_view.tpl.php'; ?>
-			</div>
-		</div>
-		<? foreach ($handler->tests as $id => $tpl): ?>
-			<div id="<?=$id?>-wrap" class="hide">
-				<div class="test-new-word" id="<?=$id?>">
-					<? include APP_ROOT . '/tpl/'. $tpl .'.php'; ?>
-				</div>
-			</div>
-		<? endforeach ?>
 		
 	</article>
 </div>

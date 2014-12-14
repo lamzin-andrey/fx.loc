@@ -1,11 +1,10 @@
 <?php
 require_once APP_ROOT . '/classes/CBaseHandler.php';
 class EditorHandler extends CBaseHandler{
-	//public $;
 	public function __construct() {
-		$this->left_inner = 'q_tasklist.tpl.php';
-		$this->right_inner = 'q_inner.tpl.php';
-		$this->css[] = 'sb';
+		$this->left_inner = 'ed_tasklist.tpl.php';
+		$this->right_inner = 'ed_inner.tpl.php';
+		$this->css[] = 'ed';
 		parent::__construct();
 	}
 	public function ajaxAction() {

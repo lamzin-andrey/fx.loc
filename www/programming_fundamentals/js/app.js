@@ -75,7 +75,8 @@
 		var mid = '#qs_editor_s',
 			fileId = -1,
 			fileDisplayName = '',
-			lastTimeLoadFileClick = 0;
+			lastTimeLoadFileClick = 0,
+			maxEditorHeight = false;
 		if (!$(mid)[0]) {
 			return;
 		}
@@ -133,6 +134,9 @@
 					}
 				}
 			}*/
+			//console.log();
+			$('#qseLineWrapper').css('max-height', ($('#qs_editor_s').height() + 5) + 'px');
+			$('#qseLines')[0].style.top = (-1 * $('#qs_editor_s')[0].scrollTop) + 'px';
 		}
 		function onKeyDown(e) {
 			//Контроль Tab клавиши
@@ -660,6 +664,19 @@
 					}
 				}catch(E){;}
 			}
+		}
+		$(mid).bind('mousewheel', showTextCursorCoord);
+		/*setInterval(
+		 function() {
+			 showTextCursorCoord();
+		 },10
+		);*/
+		//высота редактора на странице text_editor
+		if (window.location.href.indexOf('/text_editor') != -1) {
+			maxEditorHeight = getViewport().h - 130;
+			$('#qs_editor_s').height(  maxEditorHeight + 'px' );
+			$('#qseLineWrapper').height( ($('#qs_editor_s').height() + 5) + 'px');
+			showTextCursorCoord();
 		}
 	}
 //============ / Простой редактор кода===================================
