@@ -5,4 +5,4 @@ require_once APP_ROOT . "/CApplication.php"; //logic
 $app = new CApplication();
 $handler = $app->handler;
 $lang = $app->lang;
-require_once APP_ROOT . "/master.tpl.php";   //view
+require_once APP_ROOT . "/" . $app->layout;   //view

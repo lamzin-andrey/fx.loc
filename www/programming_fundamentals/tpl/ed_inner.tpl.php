@@ -39,7 +39,8 @@
 				<div class="clearfix"></div>
 			</div>
 			<div class="status_bar right"><?=$lang['Line']?>: <span id="qsline">0</span>, <?=$lang['Column']?>: <span id="qscol">0</span></div>
-			<input type="button" style='width:1px;height:1px;' value='' />
+			<input type="button" style='width:1px;height:1px;opacity:0' value='' />
+			<div class="clearfix"></div>
 		</div>
 		<div id="qs-br-wrap" class="hide">
 			<div class="qs_file_browser" id="qs-br">

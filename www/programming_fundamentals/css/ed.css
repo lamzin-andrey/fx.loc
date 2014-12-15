@@ -3,9 +3,10 @@
 }
 .qs_editor_place {
 	height:100%;
+	width:100%;
 }
 #qs_editor_s {
-	width:94%;
+	min-width:96%;
 	margin-top:0px;
 	resize:vertical;
 	-moz-tab-size:4;
@@ -14,7 +15,8 @@
 	-o-tab-size:2;
 	line-height:14pt;
 	font-size :12pt;
-	/*max-height: 600px;*/
+	padding:0px;
+	border-right:1px;
 }
 .abs {
 	position:absolute;
@@ -28,7 +30,7 @@
 	min-width:36px;
 	padding-top:5px;
 	background-color: #D6D2D0;
-	max-height: 600px;
+	/*max-height: 600px;*/
 }
 .qse_l {
 	background-color: #D6D2D0;
@@ -139,6 +141,9 @@ u{text-decoration:none; color:#2A8109; font-style:italic;}
 
 .simple_code_editor {
 	display:block;
+}
+#functionlist {
+	margin-top:0px;
 }
 #functionlist li{
 	margin-bottom:none !important;

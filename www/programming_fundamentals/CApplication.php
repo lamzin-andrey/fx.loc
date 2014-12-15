@@ -9,6 +9,7 @@ class CApplication {
 	public $user_name;
 	public $user_surname;
 	public $base_url;
+	public $layout = 'master.tpl.php';
 	public function __construct() {
 		@session_start();
 		$this->lang = utils_getCurrentLang();
@@ -52,6 +53,7 @@ class CApplication {
 	**/
 	private function _editorActions() {
 		$this->handler = $h = $this->_load('EditorHandler');
+		$this->layout = 'tpl/editor.master.tpl.php';
 		if (is_ajax()) {
 			$h->ajaxAction();
 		}

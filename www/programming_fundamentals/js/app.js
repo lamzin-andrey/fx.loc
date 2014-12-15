@@ -348,6 +348,7 @@
 					}
 				}
 				buildFunctionList();
+				saveEditorWidth();
 			}
 			if (fileId == -1) {
 				try {
@@ -414,6 +415,7 @@
 					addTooltipWarning(d.warning);
 				}
 				buildFunctionList();
+				saveEditorWidth();
 			} else {
 				showError(d.msg);
 			}
@@ -645,6 +647,7 @@
 			}
 			req(data, onRename, onFailRename, 'renameFile', WEB_ROOT + '/editor/');
 		}
+		//плюшки для редактора
 		/**
 		 * @desc строит список функций, встречающихся в открытом файле
 		*/
@@ -750,7 +753,7 @@
 		}
 		/**
 		 * Возвращает ссылку на элемент списка, для построения дерева
-		 * */
+		*/
 		function showCodeHint(data) {
 			var pos = data.p, s = data.s, q = s, L,
 			rightCb, rightOb, leftCb, leftOb, i, aName = [], alp = 'abcdefghijklmnopqrstuvwxyz0123456789_$';
@@ -789,7 +792,14 @@
 			}
 			$('#codeTooltip').addClass('hide');
 		}
-		
+		/**
+		 * Сохранить ширину редактора на странице text_editor
+		*/
+		function saveEditorWidth() {
+			if (enableFunctions) {
+				localStorage.setItem('editorWidth', $('#textEditorArea').width());
+			}
+		}
 		//Инициализация
 		$(mid).keydown(onKeyDown);
 		$(mid).keyup(onKeyUp);
@@ -834,6 +844,10 @@
 			$('#qs_editor_s').height(  maxEditorHeight + 'px' );
 			$('#qseLineWrapper').height( ($('#qs_editor_s').height() + 5) + 'px');
 			showTextCursorCoord();
+			var w;
+			if (w = localStorage.getItem('editorWidth')) {
+				$('#textEditorArea').width(w)  + 'px'; 
+			}
 		}
 	}
 //============ / Простой редактор кода===================================
