@@ -18,35 +18,69 @@ document.body.appendChild(  document.createElement("textarea")  );
 var c = document.getElementById('myCanvas');
 var ctx = c.getContext('2d');
 ctx.fillRect(20, 20, 150, 100);
-">fillRect()</i>
-'>appendChild(tagName)</i> <i title="//Метод объекта Math
+">fillRect()</i> <i title="//Метод объекта Math
 Math.pow(2, 3); //Возводит 2 в третью степень
-">pow(base, n)</i>
-'>appendChild(tagName)</i> <i title="//Метод объекта Math
+">pow(base, n)</i> <i title="//Метод объекта Math
 Math.sin(Math.PI * 30 / 180); //Получаем синус 30 градусов
 //Так как метод ожидает аргумент в радианной мере, умножаем 30 на PI  и делим на 180 
-">sin(radians)</i>
-'>appendChild(tagName)</i> <i title="//Метод объекта Math
+">sin(radians)</i> <i title="//Метод объекта Math
 Math.cos(Math.PI * 30 / 180); //Получаем косинус 30 градусов
 //Так как метод ожидает аргумент в радианной мере, умножаем 30 на PI  и делим на 180 
-">cos(radians)</i>
-'>appendChild(tagName)</i> <i title="//Метод объекта Math
+">cos(radians)</i> <i title="//Метод объекта Math
 Math.random(); //Вернет случайное дробное число от 0 до 1
-">random()</i>
-'>appendChild(tagName)</i> <i title="
+">random()</i> <i title="
 isNaN(x); 		//Вернет true если аргумент - не число и false в противном случае
 isNaN(101); 	//Вернет true
 isNaN('Hello'); //Вернет false
-
 ">isNaN()</i> <i title="//Метод объекта RegExp
 //Вернет истину, если строка соответствует регулярному выражению
 //примеры
 var re = /^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,4}$/mig;
 alert(re.test('01/12/2014')); //Выведет false
 	alert(re.test('01.12.2014')); //Выведет true
-">test()</i>  <i title="//Метод объекта Math
+">test()</i> <i title="//Метод объекта Math
 //Возвращает квадратный корень аргумента
 alert(Math.sqrt(9) ); //Получаем квадратный корень числа 9
-">sqrt(n)</i>
+">sqrt(n)</i> <i title="//Стандартная функция браузерного javascript
+//возвращает то значение, которое ввел пользователь в всплывающее окно
+var s = prompt('Введите свое имя');
+alert('Вас зовут ' + s );//Выводим только что заданное имя
+">prompt(s)</i> <i title="//Стандартная функция javascript
+//Пытается определить, целое число в переданном аргументе
+//Первым аргументом передается строка или число, вторым - основание системы счисления
+//Если не передавать второй аргумент, попытается определить систему счисления автоматически
+//На момент написания этих строк пока еще остается важным указывать систему счисления явно например при обработке дат
+alert(parseInt('09')); //Выведет 0 в Internet Explorer 8  и других старых браузерах, так как в JavaScript два числа с ведущем нулем считаются записью в восьмеричной системе счисления
+alert('Вас зовут...');  //выведет NaN (Not a Number - Не число)
+alert('07');  //выведет 7
+">parseInt(s)</i> <i title="//Стандартная функция javascript
+//Пытается определить, дробное число в переданном аргументе
+//Первым аргументом передается строка или число
+alert(parseFloat('0.9')); //Выведет 0.9
+alert('Вас зовут...');  //выведет NaN (Not a Number - Не число)
+">parseFloat(s)</i> <i title='//Метод объекта Math
+//Возвращает число, округленное "вниз", то есть
+alert(Math.floor(2.9) ); //Выведет 2
+'>floor(f)</i> <i title='//Метод объекта типа String
+//Возвращает из строки символ номер n
+//Символы при этом нумеруются с нуля
+var s = new String("abc"),
+	q = "dke";
+alert(s.charAt(1) ); //Выведет b
+alert(q.charAt(0) ); //Выведет d
+'>charAt(n)</i> <i title='//Метод объекта типа String
+//Возвращает позицию первого вхождения подстроки substring
+//Символы при этом нумеруются с нуля
+var s = "abcde",
+	substring = "de";
+alert(s.indexOf(substring) ); //Выведет 3
+
+//необязательный параметр offset (отступ) указывает, нга сколько символов вправо надо сместиться перед началом поиска
+s = "else";
+var offset = 1;
+alert(s.indexOf("e", offset) ); //Выведет 3
+alert(s.indexOf("e") ); //Выведет 0
+'>indexOf(substring, offset)</i>
+
 	</pre>
 </div>
