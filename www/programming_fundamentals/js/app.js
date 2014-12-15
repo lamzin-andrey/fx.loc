@@ -9,6 +9,7 @@
 			initWinFunctions();
 			initTooltipFunctions();
 			initKeywordsHelp();
+			//initStdFuncsHelp();
 			initSampleTextEditor();
 			initSigninButton();
 			initSignupButton();
@@ -850,67 +851,104 @@
 			}
 		}
 	}
-//============ / Простой редактор кода===================================
-//====== Словарь кейвордов
+//============ / Простой редактор кода==================================
+
+//===========Словари и подсветка для подсказок на страницах статей======
+//====== Словарь кейвордов  и стандартных функций
 	function initKeywordsHelp() {
-		var keyMap = {}, keys = [], sKeys = '', i, j, list, q, key, content, saveContent;
-		// инициализация keyMap
-		$('#keywords pre b').each(
-			function(i, item) {
-				key = $(item).text(), content = $(item).attr('title');;
-				keys.push(key);
-				keyMap[key] = content;
-			}
-		);
-		sKeys = '|' +  keys.join('|') + '|';
-		for (i in keyMap) {
-			saveContent = content = keyMap[i];
-			list = content.split('\n');
-			for (j = 0; j < list.length; j++) {
-				list[j] = ' QSTAB ' + list[j];
-			}
-			content = 'function ' + i + 'Example() { QSNEW_LINE ' + list.join(' QSNEW_LINE ') + ' QSNEW_LINE }';
-			content = content.replace(/\t/gim, ' QSTAB ');
-			content = content.replace(/,/gim, ' QSZP ');
-			content = content.replace(/:/gim, ' QSDP ');
-			content = content.replace(/\./gim, ' QSDOT ');
-			content = content.replace(/\(/gim, ' QSBRCK ');
-			content = content.replace(/;/gim, ' QSENDOP ');
-			list = content.split(/\s/);
-			for (j = 0; j < list.length; j++) {
-				if (sKeys.indexOf('|' + list[j] + '|') != -1) {
-					list[j] = '<b>' + list[j] + '</b>';
+		/**
+		 * @desc Загрузить слова из специального раздела на странице
+		 * @see initKeywordsHelp, initStdFuncsHelp
+		 * @param divId
+		 * @param tagName
+		 * @param Object keyMap
+		*/
+		function _getKeyMap(divId, tagName, keyMap) {
+			var keys = [], sKeys = '', i, j, list, q, key, content, saveContent, aKey;
+			// инициализация keyMap
+			$('#' + divId + ' pre ' + tagName).each(
+				function(i, item) {
+					key = $(item).text(), content = $(item).attr('title');
+					aKey = key.split('(');
+					key = $.trim(aKey[0]);
+					keys.push(key);
+					keyMap[key] = content;
 				}
+			);
+			sKeys = '|' +  keys.join('|') + '|';
+			return sKeys;
+		}
+		/**
+		 * @desc Подсветка синтаксиса для текста в всплывающем окне
+		 * @see initKeywordsHelp, initStdFuncsHelp
+		 * @param keyMap - карта слов требующих подсветки в виде массива, получена во время работы  _getKeyMap
+		 * @param sKeys  - специальная строка с ключевыми словами, требующими подсветки, результат _getKeyMap
+		 * @param sKeysSF - специальная строка с именами стандартных функций , результат _getKeyMap
+		 * 
+		*/
+		function _highlightWordsInHelp(keyMap, sKeys, sKeysSF) {
+			for (i in keyMap) {
+				saveContent = content = keyMap[i];
+				list = content.split('\n');
+				for (j = 0; j < list.length; j++) {
+					list[j] = ' QSTAB ' + list[j];
+				}
+				content = 'function ' + i + 'Example() { QSNEW_LINE ' + list.join(' QSNEW_LINE ') + ' QSNEW_LINE }';
+				content = content.replace(/\t/gim, ' QSTAB ');
+				content = content.replace(/,/gim, ' QSZP ');
+				content = content.replace(/:/gim, ' QSDP ');
+				content = content.replace(/\./gim, ' QSDOT ');
+				content = content.replace(/\(/gim, ' QSBRCK ');
+				content = content.replace(/;/gim, ' QSENDOP ');
+				list = content.split(/\s/);
+				for (j = 0; j < list.length; j++) {
+					if (sKeys.indexOf('|' + list[j] + '|') != -1) {
+						list[j] = '<b>' + list[j] + '</b>';
+					}
+					if (sKeysSF.indexOf('|' + list[j] + '|') != -1) {
+						list[j] = '<i>' + list[j] + '</i>';
+					}
+				}
+				content = list.join(' ');
+				content = content.replace(/ QSTAB /gim, '\t');
+				content = content.replace(/ QSNEW_LINE /gim, '\n');
+				
+				content = content.replace(/ QSZP /gim, ',');
+				content = content.replace(/ QSDP/gim, ':');
+				content = content.replace(/ QSDOT /gim, '.');
+				content = content.replace(/ QSBRCK /gim, '(');
+				content = content.replace(/ QSENDOP /gim, ';');
+				keyMap[i] = {hl:content, pl:saveContent};
 			}
-			content = list.join(' ');
-			content = content.replace(/ QSTAB /gim, '\t');
-			content = content.replace(/ QSNEW_LINE /gim, '\n');
-			
-			content = content.replace(/ QSZP /gim, ',');
-			content = content.replace(/ QSDP/gim, ':');
-			content = content.replace(/ QSDOT /gim, '.');
-			content = content.replace(/ QSBRCK /gim, '(');
-			content = content.replace(/ QSENDOP /gim, ';');
-			keyMap[i] = {hl:content, pl:saveContent};
+			return keyMap;
 		}
 		
-		//добавление подсказки и обработки клика всем кейвордам на странице в примерах кода
-		//
-		function onKeywordClick() {
-			var s = keyMap[$(this).text()].hl;
-			if (keyMap[$(this).text()].pl != $(this).attr('title')) {
+		var keyMap = {}, sKeys,
+			keyMapSF = {}, sKeysSF,
+			i, j, list, q, content, saveContent;
+		sKeys = _getKeyMap('keywords', 'b', keyMap);
+		//инициализация стд. функций
+		sKeysSF = _getKeyMap('stdfunctions', 'i', keyMapSF);
+		keyMap = _highlightWordsInHelp(keyMap, sKeys, sKeysSF);
+		keyMapSF = _highlightWordsInHelp(keyMapSF, sKeys, sKeysSF);
+		
+		function onColorWordClick() {
+			var km = (this.tagName == 'B' ? keyMap :( this.tagName == 'I' ? keyMapSF : keyMap )); //TODO last keyMap заменить на keyMapUF когда тот появится
+			var s = km[$(this).text()].hl;
+			if (km[$(this).text()].pl != $(this).attr('title')) {
 				s = $(this).attr('title');
 			}
 			$('#keywordLog').html('<pre style="white-space: pre-wrap; padding:10px; tab-size:2;-moz-tab-size: 2; -o-tab-size:2;">' + s + '</pre>');
 			appWindow('keywordLogWrap', lang['information']);
 		}
-		$('.textcontent pre b').each(
+		$('.textcontent pre b, .textcontent pre i').each(
 			function (i, b) {
-				if (keyMap[$(b).text()]) {
+				var km = (b.tagName == 'B' ? keyMap :( b.tagName == 'I' ? keyMapSF : keyMap )); //TODO last keyMap заменить на keyMapUF когда тот появится
+				if (km[$(b).text()]) {
 					if (!$(b).attr('title') || $(b).attr('title') == '') {
-						$(b).attr('title', keyMap[$(b).text()].pl);
+						$(b).attr('title', km[$(b).text()].pl);
 					}
-					$(b).click(onKeywordClick);
+					$(b).click(onColorWordClick);
 				}
 			}
 		);
@@ -943,8 +981,7 @@
 		);
 		
 	}
-//====== /Словарь кейвордов
-	
+//====== /Словарь кейвордов и стандартных функций
 	/**
 	 * @desc Уведомления в стиле ubuntu
 	 * */

@@ -8,12 +8,12 @@
 		$url = $aUrl[0];
 		if (strpos($url, '/quick_start') !== false && strpos($url, '/quick_start/keywords') === false) {?>
 			<div class="hide">
-			<?
-			include APP_ROOT . '/files/quick_book/keyworddiv.php';?>
+			<?	include APP_ROOT . '/files/quick_book/keyworddiv.php';?>
 			</div>
 			<?
 		}
 	?>
+	<div class="hide"><?	include APP_ROOT . '/files/quick_book/functionsdiv.php';?></div>
 		<div class="textcontent scroll-y">
 			<? include APP_ROOT . "/files/quick_book/" . $handler->book_tpl . '.php';?>
 			<? if ($handler->show_test_new_words_button):?>
