@@ -17,6 +17,7 @@
 	font-size :12pt;
 	padding:0px;
 	border-right:1px;
+	background:url('/programming_fundamentals/img/resize-bottom.png')  right bottom no-repeat;
 }
 .abs {
 	position:absolute;
@@ -158,4 +159,7 @@ u{text-decoration:none; color:#2A8109; font-style:italic;}
 	top:200px;
 	left:42px;
 	font-size:11pt;
+}
+#qseLineWrapper {
+	resize:none;
 }

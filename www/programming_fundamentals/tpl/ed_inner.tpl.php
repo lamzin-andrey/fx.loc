@@ -1,4 +1,4 @@
-<div class="promo"><img src="<?=WEB_ROOT?>/img/wordtest/bg0.png" width="1px" height="1px;">
+<div class="promo">
 	<div id="fixcon" class="hide">
 		<div class="console">
 			<div id="console" class="scroll-y"></div>
@@ -40,7 +40,7 @@
 			</div>
 			<div class="status_bar right"><?=$lang['Line']?>: <span id="qsline">0</span>, <?=$lang['Column']?>: <span id="qscol">0</span></div>
 			<input type="button" style='width:1px;height:1px;opacity:0' value='' />
-			<div class="clearfix"></div>
+			<div class="clearfix">&nbsp;</div>
 		</div>
 		<div id="qs-br-wrap" class="hide">
 			<div class="qs_file_browser" id="qs-br">
