@@ -65,7 +65,7 @@
 		}
 	}
 	<span class="strcolor">//Установим ферзя
-	queenCoordinates = queenCoordinates.<i title="Возвращает строку как queenCoordinates, но все символы строчные">toLowerCase()</i>;
+	queenCoordinates = queenCoordinates.<i title="Возвращает строку как queenCoordinates, но все символы строчные">toLowerCase</i>();
 </span>	i = letters.<i>indexOf</i>( queenCoordinates.<i>charAt</i>(0) );
 	j = <i>parseInt</i>(queenCoordinates.<i>charAt</i>(1), 10) - 1;
 	<b>if</b> (i < 0 || <i>isNaN</i>(j) || j < 0 || j > 7) {<span class="strcolor">//координаты фигур по вертикали и горизонтали должны быть в пределах [0-7]
