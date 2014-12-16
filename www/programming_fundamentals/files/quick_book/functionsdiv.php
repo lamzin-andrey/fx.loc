@@ -9,7 +9,7 @@ alert(['one','three','two']); //Пример вывода массива
 alert(document.body); //Пример вывода чего-то еще">alert(s)</i>  <i title='//Метод DOM элемента страницы. Добавляет "во внутрь" объекта другой объект.
 //Попробуйте например выполнить 
 document.body.appendChild(  document.createElement("textarea")  );
-//промотав страницу вниз вы увидите, что внизу появилось новое меогострочное поле ввода'>appendChild(tagName)</i> <i title="//Рисует на холсте прямоугольник определенного цвета
+//промотав страницу вниз вы увидите, что внизу появилось новое многострочное поле ввода'>appendChild(tagName)</i> <i title="//Рисует на холсте прямоугольник определенного цвета
 var c = document.getElementById('myCanvas');
 var ctx = c.getContext('2d');
 ctx.fillRect(20, 20, 150, 100);">fillRect()</i> <i title="//Метод объекта Math
@@ -238,5 +238,28 @@ parentElement.removeChild(appConsole);'>removeChild(domElement)</i>
 <i title='//Метод объекта типа Canvas
 //Canvas.measureText(text);
 //Возвращает ширину текста в пикселях'>measureText(text)</i>
+
+<i title='//Метод объекта localStorage
+//localStorage.setItem(key, value);
+//Сохоаняет в локальном хранилище значение value с "именем" key.
+//Сохраненное значение может быть получено с помощью метода getItem(key)
+//Значение хранится, пока пользователь не очистит локальное хранилище браузера
+localStorage.setItem("exampleKey", "test");
+alert( localStorage.getItem("exampleKey") ); //test
+localStorage.removeItem("exampleKey");
+alert( localStorage.getItem("exampleKey") ); //null
+'>setItem(key, value)</i>
+
+<i title='//Метод объекта типа Array
+//Array.join(delimiter);
+//Соединяет элементы массива в строку, вставляя между ими строку delimeter
+var array = [0, 1, 2, 5, "numbers"];
+alert (array.join("-")); //0-1-2-5-numbers
+'>join(delimeter)</i>
+
+<i title="//Метод объекта Math
+//Простое округление числа
+alert (Math.round(0.5) ); //Получаем 1
+alert (Math.round(0.4) ); //Получаем 0">round(floatNumber)</i>
 	</pre>
 </div>
