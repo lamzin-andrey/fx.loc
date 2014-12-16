@@ -1,60 +1,76 @@
 <div id="stdfunctions">
 	<pre>
-<i title="//Стандартная функция браузерого JavaScript, метод объекта window.
+<i title="//Стандартная функция браузерого JavaScript, метод объекта window
+//window.alert(s);
 //Выводит всплывающее окно с сообщением, переданнным в качестве aргумента
-//Если в качестве аргумента была передана не строка, то попытается переобразовать его в строку, вызвав метод toString.
+//Если в качестве аргумента была передана не строка, то попытается переобразовать аргумент в строку, вызвав для него метод toString
 alert('Пример вывода простой строки');
 alert(101); //Пример вывода числа
 alert(['one','three','two']); //Пример вывода массива
-alert(document.body); //Пример вывода чего-то еще">alert(s)</i>  <i title='//Метод DOM элемента страницы. Добавляет "во внутрь" объекта другой объект.
+alert(document.body); //Пример вывода чего-то еще">alert(s)</i>
+<i title='//Метод DOM элемента страницы. Добавляет "во внутрь" объекта другой объект.
 //Попробуйте например выполнить 
 document.body.appendChild(  document.createElement("textarea")  );
-//промотав страницу вниз вы увидите, что внизу появилось новое многострочное поле ввода'>appendChild(tagName)</i> <i title="//Рисует на холсте прямоугольник определенного цвета
+//промотав страницу вниз вы увидите, что внизу появилось новое многострочное поле ввода'>appendChild(tagName)</i>
+<i title="//Рисует на холсте прямоугольник определенного цвета
 var c = document.getElementById('myCanvas');
 var ctx = c.getContext('2d');
-ctx.fillRect(20, 20, 150, 100);">fillRect()</i> <i title="//Метод объекта Math
-Math.pow(2, 3); //Возводит 2 в третью степень">pow(base, n)</i> <i title="//Метод объекта Math
+ctx.fillRect(20, 20, 150, 100);">fillRect()</i>
+<i title="//Метод объекта Math
+Math.pow(2, 3); //Возводит 2 в третью степень">pow(base, n)</i>
+<i title="//Метод объекта Math
 Math.sin(Math.PI * 30 / 180); //Получаем синус 30 градусов
-//Так как метод ожидает аргумент в радианной мере, умножаем 30 на PI  и делим на 180 
-">sin(radians)</i> <i title="//Метод объекта Math
+//Так как метод ожидает аргумент в радианной мере, умножаем 30 на PI  и делим на 180">sin(radians)</i>
+<i title="//Метод объекта Math
 Math.cos(Math.PI * 30 / 180); //Получаем косинус 30 градусов
-//Так как метод ожидает аргумент в радианной мере, умножаем 30 на PI  и делим на 180">cos(radians)</i> <i title="//Метод объекта Math
-Math.random(); //Вернет случайное дробное число от 0 до 1">random()</i> <i title="isNaN(x); 		//Вернет true если аргумент - не число и false в противном случае
+//Так как метод ожидает аргумент в радианной мере, умножаем 30 на PI  и делим на 180">cos(radians)</i>
+<i title="//Метод объекта Math
+Math.random(); //Вернет случайное дробное число от 0 до 1">random()</i>
+<i title="isNaN(x); 		//Вернет true если аргумент - не число и false в противном случае
 isNaN(101); 	//Вернет true
-isNaN('Hello'); //Вернет false">isNaN()</i> <i title="//Метод объекта RegExp
+isNaN('Hello'); //Вернет false">isNaN()</i>
+<i title="//Метод объекта RegExp
 //Вернет истину, если строка соответствует регулярному выражению
 //примеры
 var re = /^[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,4}$/mig;
 alert(re.test('01/12/2014')); //Выведет false
-	alert(re.test('01.12.2014')); //Выведет true">test()</i> <i title="//Метод объекта Math
+	alert(re.test('01.12.2014')); //Выведет true">test()</i>
+<i title="//Метод объекта Math
 //Возвращает квадратный корень аргумента
-alert(Math.sqrt(9) ); //Получаем квадратный корень числа 9">sqrt(n)</i> <i title="//Стандартная функция браузерного javascript
+alert(Math.sqrt(9) ); //Получаем квадратный корень числа 9">sqrt(n)</i>
+<i title="//Стандартная функция браузерного javascript
 //возвращает то значение, которое ввел пользователь в всплывающее окно
 var s = prompt('Введите свое имя');
-alert('Вас зовут ' + s );//Выводим только что заданное имя">prompt(s)</i> <i title="//Стандартная функция javascript
-//Пытается определить, целое число в переданном аргументе
+alert('Вас зовут ' + s );//Выводим только что заданное имя">prompt(s)</i>
+<i title="//Стандартная функция javascript
+//Пытается определить целое число в переданном аргументе
 //Первым аргументом передается строка или число, вторым - основание системы счисления
 //Если не передавать второй аргумент, попытается определить систему счисления автоматически
 //На момент написания этих строк пока еще остается важным указывать систему счисления явно например при обработке дат
-alert(parseInt('09')); //Выведет 0 в Internet Explorer 8  и других старых браузерах, так как в JavaScript два числа с ведущем нулем считаются записью в восьмеричной системе счисления
+alert(parseInt('09')); //Выведет 0 в Internet Explorer 8 и других старых браузерах, так как в JavaScript два числа с ведущем нулем считаются записью в восьмеричной системе счисления
 alert('Вас зовут...');  //выведет NaN (Not a Number - Не число)
 alert('07');  //выведет 7">parseInt(s)</i> <i title="//Стандартная функция javascript
 //Пытается определить, дробное число в переданном аргументе
 //Первым аргументом передается строка или число
 alert(parseFloat('0.9')); //Выведет 0.9
-alert('Вас зовут...');  //выведет NaN (Not a Number - Не число)">parseFloat(s)</i> <i title='//Метод объекта Math
+alert('Вас зовут...');  //выведет NaN (Not a Number - Не число)">parseFloat(s)</i>
+<i title='//Метод объекта Math
 //Math.floor(floatNumber);
 //Возвращает число, округленное "вниз", то есть
-alert(Math.floor(2.9) ); //Выведет 2'>floor(f)</i>  <i title='//Метод объекта Math
+alert(Math.floor(2.9) ); //Выведет 2'>floor(f)</i> 
+<i title='//Метод объекта Math
 //Math.ceil(floatNumber);
 //Возвращает число, округленное "вверх", то есть
-alert(Math.ceil(2.1) ); //Выведет 3'>ceil(f)</i> <i title='//Метод объекта типа String
+alert(Math.ceil(2.1) ); //Выведет 3'>ceil(f)</i>
+<i title='//Метод объекта типа String
+String.charAt(n)
 //Возвращает из строки символ номер n
 //Символы при этом нумеруются с нуля
 var s = new String("abc"),
 		q = "dke";
 alert(s.charAt(1) ); //Выведет b
-alert(q.charAt(0) ); //Выведет d'>charAt(n)</i> <i title='//Метод объекта типа String
+alert(q.charAt(0) ); //Выведет d'>charAt(n)</i>
+<i title='//Метод объекта типа String
 //Возвращает позицию первого вхождения подстроки substring
 //Символы при этом нумеруются с нуля
 var s = "abcde",
@@ -65,11 +81,13 @@ alert(s.indexOf(substr) ); //Выведет 3
 s = "else";
 var offset = 1;
 alert(s.indexOf("e", offset) ); //Выведет 3
-alert(s.indexOf("e") ); //Выведет 0'>indexOf(substring, offset)</i> <i title='//Метод объекта типа String
+alert(s.indexOf("e") ); //Выведет 0'>indexOf(substring, offset)</i>
+<i title='//Метод объекта типа String
 //Возвращает подстроку от символа номер start до символа номер end
 //Символы при этом нумеруются с нуля
 var s = "abcde";
-alert(s.substring(0, 1) ); //Выведет a'>substring(start, end)</i> <i title='//Метод объекта типа String
+alert(s.substring(0, 1) ); //Выведет a'>substring(start, end)</i>
+<i title='//Метод объекта типа String
 //String.replace(pattern, replacement);
 //Заменяет подстроку pattern строкой replacement.
 //Если в качестве pattern передана строка, выполняется замена только первого вхождения
@@ -99,8 +117,7 @@ alert(s.toUpperCase(s) ); //Выведет ABECDE
 <i title='//Метод объекта Math
 //Math.abs(n);
 //Возвращает абсолютное значение (модуль) числа
-alert(Math.abs(-5)); //Выведет 5
-'>abs(т)</i>
+alert(Math.abs(-5)); //Выведет 5'>abs(n)</i>
 <i title='//Метод объекта типа Array
 //Array.splice(start, length, newItem1, newItem2, ...);
 //Удаляет length элементов массива начиная с позиции start
@@ -184,7 +201,7 @@ document.getElementById("console").appendChild(div);//Добавим новый 
 <i title='//Метод объекта document
 //document.getElementById(id);
 //Возвращает html элемент, имеющий указанный id
-//Если элемент найден, с ним можно выполнять разщличные действия, изменять его свойства, содержимое, удалить его
+//Если элемент найден, с ним можно выполнять различные действия, изменять его свойства, содержимое, удалить его
 //Пример
 writeln("Здравствуйте!");
 var appConsole = document.getElementById("console");//Попробуем найти окошко вывода вашей программки
@@ -195,8 +212,7 @@ if (appConsole) {
 	}
 } else {
 	alert("Это только на сайте работает!");
-}
-'>getElementById(id)</i>
+}'>getElementById(id)</i>
 
 <i title='//Метод объекта типа Canvas
 //Canvas.getContext(contextType);
@@ -241,21 +257,19 @@ parentElement.removeChild(appConsole);'>removeChild(domElement)</i>
 
 <i title='//Метод объекта localStorage
 //localStorage.setItem(key, value);
-//Сохоаняет в локальном хранилище значение value с "именем" key.
+//Сохраняет в локальном хранилище значение value с "именем" key
 //Сохраненное значение может быть получено с помощью метода getItem(key)
 //Значение хранится, пока пользователь не очистит локальное хранилище браузера
 localStorage.setItem("exampleKey", "test");
 alert( localStorage.getItem("exampleKey") ); //test
 localStorage.removeItem("exampleKey");
-alert( localStorage.getItem("exampleKey") ); //null
-'>setItem(key, value)</i>
+alert( localStorage.getItem("exampleKey") ); //null'>setItem(key, value)</i>
 
 <i title='//Метод объекта типа Array
 //Array.join(delimiter);
-//Соединяет элементы массива в строку, вставляя между ими строку delimeter
+//Соединяет элементы массива в строку, вставляя между ними строку delimeter
 var array = [0, 1, 2, 5, "numbers"];
-alert (array.join("-")); //0-1-2-5-numbers
-'>join(delimeter)</i>
+alert (array.join("-")); //0-1-2-5-numbers'>join(delimeter)</i>
 
 <i title="//Метод объекта Math
 //Простое округление числа
