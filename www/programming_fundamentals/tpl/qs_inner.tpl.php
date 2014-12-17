@@ -90,7 +90,7 @@
 				</div>
 				
 				<div id="keywordLogWrap" class="hide">
-					<div id="keywordLog" style="max-width:800px"></div>
+					<div id="keywordLog" style="max-width:800px; background-color:white;"></div>
 				</div>
 	
 			</div>

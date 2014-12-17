@@ -6,6 +6,7 @@
 	function init() {
 		function reinitTest() {
 			TestPatterns.reset(1);
+			$('.popup-content').removeClass('bgnone');
 		}
 		$('#patternTestRun').click(
 			function() {
