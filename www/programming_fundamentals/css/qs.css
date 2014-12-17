@@ -119,6 +119,7 @@
 
 b {color:blue;}
 i{color:#3279b2;}
+.strcolor i, .strcolor b, .strcolor u {font-weight:normal; font-style:normal; color:#8C5C0D;}
 u{text-decoration:none; color:#2A8109; font-style:italic;}
 
 .textcontent pre {tab-size:4;-moz-tab-size: 4; -o-tab-size:4; margin:0px; line-height:15px; font-size:10pt;}

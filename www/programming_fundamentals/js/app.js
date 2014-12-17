@@ -887,13 +887,30 @@
 		 * 
 		*/
 		function _highlightWordsInHelp(keyMap, sKeys, sKeysSF) {
+			var i, j,content, saveContent, list, buf;
 			for (i in keyMap) {
 				saveContent = content = keyMap[i];
-				list = content.split('\n');
-				for (j = 0; j < list.length; j++) {
-					list[j] = ' QSTAB ' + list[j];
+				content = content.replace(/\\"/mig, 'SLASHED_D_QUOTES');
+				content = content.replace(/\s?"([^"]*)"/mig, '<span class="strcolor"> "$1"</span>');
+				content = content.replace(/SLASHED_D_QUOTES/mig, '\\"');
+				content = content.replace(/\\\//mig, 'SLASHED_D_QUOTES');
+				copy = content;
+				content = content.replace(/(\/[^\/]+\/[mig]{1,3})/mig, '<span class="recolor"> $1 </span>');
+				if (copy == content) {
+					content = content.replace(/(\/[^\/]+\/)[^\/]]*$/mig, '<span class="recolor"> $1 </span>');
 				}
-				content = 'function ' + i + 'Example() { QSNEW_LINE ' + list.join(' QSNEW_LINE ') + ' QSNEW_LINE }';
+				content = content.replace(/SLASHED_D_QUOTES/mig, '\\/');
+				content = content.replace(/\s?'([^']*)'/mig, '<span class="strcolor"> \'$1\'</span>');
+				content = content.replace(/\s?\/\/([^\n]+)\n?$/mig, '<span class="strcolor">//$1</span>\n');
+				content = content.replace(/\/\*([^*]*)\*\//mig, '<span class="strcolor">/*$1*/</span>');
+				list = content.split('\n');
+				buf = [];
+				for (j = 0; j < list.length; j++) {
+					if (list[j].length) {
+						buf.push(' QSTAB ' + list[j]);
+					}
+				}
+				content = 'function ' + i + 'Example() { QSNEW_LINE ' + buf.join(' QSNEW_LINE ') + ' QSNEW_LINE }';
 				content = content.replace(/\t/gim, ' QSTAB ');
 				content = content.replace(/,/gim, ' QSZP ');
 				content = content.replace(/:/gim, ' QSDP ');
