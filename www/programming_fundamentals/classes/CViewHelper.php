@@ -1,5 +1,78 @@
 <?php
 class CViewHelper {
+	/**
+	 * @var Функция обратного вызова при рендеринге комментариев
+	 * @see self::renderUlTree
+	*/
+	static public $UlTreeItemRenderCallback = null;
+	
+	/**
+	 * @desc Рендерит дерево построенное CAbstractDbTree::buildTree в html UL список
+	 * @param array  $data - результат работы Funcs::buildTree
+	 * @param string $display_value будет выведено <li>$data[N][$display_value]</li>
+	 * @param array  $data_attributes для каждого будет выведено <li data-{$data_attributes_item}=$data_attributes[$data_attributes_item]
+	 * @param string $ul_css класс для списков UL, также автоматически добавляется level-N
+	 * @param string $li_css класс для элементов списков LI
+	 * @param int    $level уровень вложенности
+	**/
+	static public function renderComment($commentInfo) {
+		$s = '<div class="left userinfo">'. $commentInfo['name'] .'</div>
+		<div class="left cmv_title">'. $commentInfo['title'] .'</div>
+		<div class="clearfix"></div>
+		<div class="left cmv_timestamps">
+			<div class="clearfix"></div>
+			<div class="left cmv_created">'. $commentInfo['date_create'] .'</div>
+			<div class="left cmv_modify">'. $commentInfo['date_modify'] .'</div>
+		</div>
+		<div class="left cmv_body">'. $commentInfo['body'] .'</div>
+		<div class="clearfix"></div>
+		';
+		return $s;
+	}
+	
+	/**
+	 * @desc Рендерит дерево построенное CAbstractDbTree::buildTree в html UL список
+	 * @param array  $data - результат работы Funcs::buildTree
+	 * @param string $display_value будет выведено <li>$data[N][$display_value]</li>
+	 * @param array  $data_attributes для каждого будет выведено <li data-{$data_attributes_item}=$data_attributes[$data_attributes_item]
+	 * @param string $ul_css класс для списков UL, также автоматически добавляется level-N
+	 * @param string $li_css класс для элементов списков LI
+	 * @param int    $level уровень вложенности
+	**/
+	static public function renderUlTree($data, $display_value, $data_attributes, $ul_css, $li_css, $level = 1) {
+		if (count($data)) {
+			echo "<ul class=\"{$ul_css} level-{$level}\">\n";
+			foreach ($data as $item) {
+				$attr = self::_prepareUlTreeElemAttributes($item, $data_attributes);
+				if (self::$UlTreeItemRenderCallback) {
+					$class = 'CViewHelper';
+					$method = self::$UlTreeItemRenderCallback;
+					$item[$display_value] = $class::$method($item);
+				}
+				echo "<li class=\"{$li_css}\" {$attr} >{$item[$display_value]}</li>\n";
+				if (isset($item['childs'])) {
+					CViewHelper::renderUlTree($item['childs'], $display_value, $data_attributes, $ul_css, $li_css, $level + 1);
+				}
+			}
+			echo "</ul>\n";
+		}
+	}
+	/**
+	 * @see renderUlTree
+	 * @desc Готовит атрибуты для renderTableTree
+	 * @param array  $item - элемент массива - результата работы Funcs::buildTree
+	 * @param array  $data_attributes для каждого будет выведено <li data-{$data_attributes_item}=$data_attributes[$data_attributes_item]
+	**/
+	static private function _prepareUlTreeElemAttributes($item, $data_attributes) {
+		$res = array();
+		foreach ($data_attributes as $i) {
+			if (isset($item[$i])) {
+				$res[] = "data-{$i}={$item[$i]}";
+			} 
+		}
+		$s = join(' ', $res);
+		return $s;
+	}
 }
 class H {
 	static public function imgtitle($s) {
@@ -79,6 +152,11 @@ class FV {
 			$dis = 'disabled="disabled"';
 		}
 		return '<label for="'.$id.'">'.$label.'</label> <input type="'.$type.'" name="'.$id.'" id="'.$id.'" value="'.$value.'" '.$maxlength.' ' . $dis . '/>';
+	}
+	static public function  hid($id, $value = null ) {
+		self::checkValue($value, $id);
+		$type = "hidden";
+		return '<input type="'.$type.'" name="'.$id.'" id="'.$id.'" value="'.$value.'"/>';
 	}
 	static private function checkValue(&$value, $id) {
 		if ($value ===  null && @self::$obj->$id) {

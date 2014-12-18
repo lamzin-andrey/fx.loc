@@ -75,6 +75,9 @@ class CApplication {
 	**/
 	private function _quickStartActions() {
 		$this->handler = $h = $this->_load('QuickStartHandler');
+		if (is_ajax()) {
+			$h->ajaxAction();
+		}
 	}
 	/**
 	 * @desc Обработка возможных действий на главной странице
@@ -105,7 +108,7 @@ class CApplication {
 		$file = APP_ROOT . '/classes/' . $class_name . '.php';
 		if (file_exists($file)) {
 			include_once($file);
-			return new $class_name();
+			return new $class_name($this);
 		} else {
 			throw new Exception('Класс '  . $class_name . ' не найден там, где он ожидался');
 		}

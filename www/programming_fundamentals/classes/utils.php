@@ -116,7 +116,38 @@ function utils_translite ($string)  {
 	$string = @ereg_replace("П","P",$string);
 	$string = @ereg_replace("Р","R",$string);
 	$string = @ereg_replace("О","O",$string);
-	$string = @ereg_replace("Л","L",$string);
+	$string = @ereg_replace("Л","L",$string);/**
+ * @desc Добавляет к корню слова окончание в зависимости от величины числа n
+ * @param n - число
+ * @param root корень слова
+ * @param one окончание в ед. числе
+ * @param less4 окончание при величине числа от 1 до 4
+ * @param more19 окончание при величине числа более 19
+ * @returString
+ */
+ function dbfr_getSuffix($n, $root, $one, $less4, $more19, $dbg = false) {
+         $m = strval($n);
+         if (strlen($m) > 1) {
+             $m =  intval( $m[ strlen($m) - 2 ] . $m[ strlen($m) - 1 ] );
+         }
+         $lex = $root . $less4;
+         if ($m > 20) {
+             $r = strval($n);
+             $i = intval( $r[ strlen($r) - 1 ] );
+             if ($i == 1) {
+                 $lex = $root . $one;
+             } else {
+                 if ($i == 0 || $i > 4) {
+                    $lex = $root . $more19;
+                 }
+             }
+         } else if ($m > 4 || $m == '00') {
+             $lex = $root . $more19;
+         } else if ($m == 1) {
+             $lex = $root . $one;
+         }
+         return $lex;
+ }
 	$string = @ereg_replace("Д","D",$string);
 	$string = @ereg_replace("Ж","J",$string);
 	$string = @ereg_replace("Э","E",$string);
@@ -443,7 +474,7 @@ function is_ajax() {
 	return (req('xhr') == '1');
 }
 /**
- * @desc Переврсти первый символ в верхний регистр
+ * @desc Перевести первый символ в верхний регистр
 **/
 function utils_capitalize($s) {
 	$enc = mb_detect_encoding($s, array('UTF-8', 'Windows-1251'));
@@ -452,3 +483,90 @@ function utils_capitalize($s) {
 	$tail = mb_substr($s, 1, 1000000, $enc);
 	return ($first_char . $tail);
 }
+/**
+ * @desc строит дерево (структуру данных) с неограниченным уровнем вложенности,
+ * @param array $raw_data - не ассоциативный массив с данными TODO разнести на две функции
+ * @param int $id_field_name
+ * @param int $parent_id_field_name
+ * @return tree
+**/
+function utils_buildTree($raw_data, $id_field_name, $parent_id_field_name, $childs = 'childs') {
+	$id = $id_field_name;
+	$parent_id = $parent_id_field_name;
+
+	$data = array();
+	$search_tree = new SearchTree();
+	$i = 0;
+	foreach ($raw_data as $key => $item) {
+		$data[$item[$id]] = $item;
+		if ($i == 0) {
+			$search_tree->first($item[$id], $item);
+			$i++;
+		} else {
+			$search_tree->searchAdd($item[$id], true, $item);
+		}
+	}
+	$result = array();
+	foreach ($data as $key => $item) {
+		$node = $search_tree->searchAdd($key, false);//new SearchTreeNode($key, $item);
+		//$ctrl = 0;
+		while (true) {
+			if ($node->content[$parent_id] == 0 && !isset($result[$node->content[$id]])) {
+				$result[$node->content[$id]] = $node->content;
+			}
+			if ($node->content[$parent_id] == 0) {
+				break;
+			}
+			$parent_node = $search_tree->searchAdd($node->content[$parent_id], false);
+			if ($parent_node === false){
+				throw new Exception("Неожиданно не найден элемент с id {$node->content[$id]} в бинарном дереве поиска");
+			}
+			if (!isset($parent_node->content[$childs])) {
+				$parent_node->content[$childs] = array();
+			}
+			$parent_node->content[$childs][$node->content[$id]] = $node->content;
+			$success = $search_tree->replaceContent($parent_node->content[$id], $parent_node->content);
+
+			$node = $parent_node;
+			if ($node->content[$parent_id] == 0 ) {
+				$result[$node->content[$id]] = $node->content;
+			}
+		}
+	}
+	if ($node->content[$parent_id] == 0) {
+		$result[$node->content[$id]] = $node->content;
+	}
+	return $result;
+}
+/**
+ * @desc Добавляет к корню слова окончание в зависимости от величины числа n
+ * @param n - число
+ * @param root корень слова
+ * @param one окончание в ед. числе
+ * @param less4 окончание при величине числа от 1 до 4
+ * @param more19 окончание при величине числа более 19
+ * @returString
+ */
+ function utils_getSuffix($n, $root, $one, $less4, $more19, $dbg = false) {
+         $m = strval($n);
+         if (strlen($m) > 1) {
+             $m =  intval( $m[ strlen($m) - 2 ] . $m[ strlen($m) - 1 ] );
+         }
+         $lex = $root . $less4;
+         if ($m > 20) {
+             $r = strval($n);
+             $i = intval( $r[ strlen($r) - 1 ] );
+             if ($i == 1) {
+                 $lex = $root . $one;
+             } else {
+                 if ($i == 0 || $i > 4) {
+                    $lex = $root . $more19;
+                 }
+             }
+         } else if ($m > 4 || $m == '00') {
+             $lex = $root . $more19;
+         } else if ($m == 1) {
+             $lex = $root . $one;
+         }
+         return $lex;
+ }

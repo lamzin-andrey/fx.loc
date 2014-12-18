@@ -48,8 +48,8 @@ body {height:100%; padding:0px 4px; margin:0px;
 #console {height:520px; scrollbar-base-color:#000000;padding:0 6px;min-width:800px;}
 #console::-webkit-scrollbar {background-color:#000000;}
 #console p{margin:2px 0;}
-.tasklist ul li {list-style-type:none; margin-bottom:8px;}
-.tasklist ul li a{ color: #3279b2; display: inline-block; font-size: 11pt; height: 30px; vertical-align: middle;}
+.tasklist ul li {list-style-type:none; margin-bottom:12px;}
+.tasklist ul li a{ color: #3279b2; display: inline-block; font-size: 11pt; vertical-align: middle;}
 .tasklist ul {height:80%;}
 .qbtn {
 	border:solid #C3D1D7 1px;

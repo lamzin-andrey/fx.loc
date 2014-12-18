@@ -75,6 +75,19 @@ $lang['strong_password'] = 'Хороший пароль';
 $lang['password_not_match'] = 'Пароли не совпадают';
 $lang['password_match'] = 'Пароли совпадают';
 $lang['Main_page'] = 'Начало';
+$lang['comment_form_title_label'] = 'Заголовок';
+$lang['comment_form_body_label'] = 'Текст комментария';
+$lang['Send_comment'] = 'Отправить комментарий';
+$lang['Add_comment'] = 'Добавить комментарий';
+$lang['Your_comment_will_appear_after'] = 'Ваш комментарий появится через ';
+$lang['minutes'] = 'Ваш комментарий появится через ';
+$lang['minute_one_ending'] = 'у';
+$lang['minute_two_ending'] = 'ы';
+$lang['minute_word_root'] = 'минут';
+$lang['Error_Member_only'] = 'Только авторизованный пользователь может оставлять комментарии';
+$lang['Error_title_required'] = 'Поле "Заголовок" обязательно для заполнения';
+$lang['Error_body_required'] = 'Поле "Текст комментария" обязательно для заполнения';
+$lang['field_is_required'] = 'Поле обязательно для заполнения';
 
 //quick_start
 $lang['intro'] = 'Что это';

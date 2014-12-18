@@ -1,12 +1,17 @@
 <?php
 require_once APP_ROOT . '/classes/CBaseHandler.php';
+require_once APP_ROOT . '/classes/CommentTree.php';
 class QuickStartHandler extends CBaseHandler{
 	public $book_tpl = 'intro';
 	public $show_test_new_words_button = false;
 	
-	public $test_buttons = array();	//array button_id => button_text
-	public $tests = array();		//button_template
-	public function __construct() {
+	public $test_buttons = array();	   //array button_id => button_text
+	public $tests = array();		   //button_template
+	public $comments_data = array();   //комментарии
+	private $_app;
+	private $_comment_tree;
+	public function __construct($app) {
+		$this->_app = $app;
 		$this->left_inner = 'qs_tasklist.tpl.php';
 		$this->right_inner = 'qs_inner.tpl.php';
 		$this->css[] = 'qs';
@@ -26,6 +31,13 @@ class QuickStartHandler extends CBaseHandler{
 				$this->show_test_new_words_button = true;
 			}
 		}
+		$this->_comment_tree = new CommentTree($app);
+		$fields = 'comments.title, comments.body, comments.date_create, comments.date_modify, users.name, users.surname';
+		$join = 'JOIN users ON users.id = comments.uid';
+		$this->comments_data = $this->_comment_tree->buildTree("part = 'quick_start/{$this->book_tpl}'", $fields, $join);
+		/*echo "<pre>";
+		print_r($this->commentsData);
+		echo "</pre>";die(__FILE__ . ', ' . __LINE__);/**/
 		parent::__construct();
 	}
 	/**
@@ -80,4 +92,31 @@ class QuickStartHandler extends CBaseHandler{
 		$lang = utils_getCurrentLang();
 		return '<a href="'. WEB_ROOT. '/quick_start/'.$keyword.'">Далее - ' . $lang[$keyword]. '</a>';
 	}
+	
+	public function ajaxAction() {
+		$action = req('action');
+		switch ($action) {
+			case 'addComment':
+				$this->_addComment();
+				break;
+		}
+		
+	}
+	
+	private function _addComment() {
+		$this->_comment_tree->writeData( array('uid' => CApplication::getUid()) );
+		json_ok();
+		/*if ($this->_app->user_email) {
+			$uid = CApplication::getUid();
+			$title = $this->req('title');
+			$body = $this->req('body');
+			$parent_id = (int)$this->req('parent');
+			$comment_id = (int)$this->req('id');
+			$skey = $this->req('skey');
+			$sql_query("INSERT INTO comments VALUES(part, uid, title, body, date_modify, date_create) VALUES()");
+		} else {
+		}*/
+	}
+	
+	
 }

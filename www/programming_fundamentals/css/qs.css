@@ -144,3 +144,15 @@ u{text-decoration:none; color:#2A8109; font-style:italic;}
 	padding-top:1px;
 	max-width:400px;
 }
+#qsAddCommentForm, .cm_textarea  {
+	width:98%;
+	margin-bottom:8px;
+}
+#qsAddCommentForm {
+	min-width:800px;
+	padding: 14px;
+	/*height:5000px;*/
+}
+.cm_form_title input[type=text] {
+	width:98%;
+}

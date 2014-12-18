@@ -24,6 +24,14 @@
 				<? endforeach ?>
 			</div>
 			<? endif?>
+			<div>
+				<button id="addCommentBtn"><?=$lang['Add_comment']?></button>
+			</div>
+			<div class="qs_commets_list">
+				<?CViewHelper::$UlTreeItemRenderCallback = 'renderComment';?>
+				<?CViewHelper::renderUlTree($handler->comments_data, 'body', array('id' => 'id'), 'test1', 'test2'); ?>
+				<?CViewHelper::$UlTreeItemRenderCallback = null;?>
+			</div>
 		</div>
 		<hr style="color:##D2DAE2;padding:0; margin:0;"/>
 		<div class="qs_editor_place">
@@ -96,11 +104,12 @@
 			</div>
 		</div>
 		
-		<div id="qs-test-new-word-wrap" class="hide">
+		<div id="qs-test-new-word-wrap" class="hide"><?//TODO не лишнее ли ?>
 			<div class="test-new-word" id="qs-test-new-word">
 				<? include APP_ROOT . '/tpl/qs_test_new_words_view.tpl.php'; ?>
 			</div>
 		</div>
+		
 		<? foreach ($handler->tests as $id => $tpl): ?>
 			<div id="<?=$id?>-wrap" class="hide">
 				<div class="test-new-word" id="<?=$id?>">
@@ -108,6 +117,8 @@
 				</div>
 			</div>
 		<? endforeach ?>
+		
+		<? include APP_ROOT . '/tpl/qs_add_comment_view.tpl.php'; ?>
 		
 	</article>
 </div>

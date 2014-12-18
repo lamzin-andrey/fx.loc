@@ -9,10 +9,10 @@
 			initWinFunctions();
 			initTooltipFunctions();
 			initKeywordsHelp();
-			//initStdFuncsHelp();
 			initSampleTextEditor();
 			initSigninButton();
 			initSignupButton();
+			initComments();
 		}
 	);
 //============Простой редактор кода=====================================
@@ -1344,7 +1344,49 @@
 			}
 		);
 	}
-	//================/Авторизация=======================================
+	//================/Авторизация======================================
+	//================Комментарии=======================================
+	function initComments() {
+		/**
+		 * 
+		*/
+		function _v(id) {
+			return $('#' + id).val();
+		} 
+		/**
+		 * 
+		*/
+		function _onSuccess(data) {
+			if (data.status == 'error') {
+				showError(data.msg);
+				return;
+			}
+			appWindowClose();
+			var time = APP_CACHE_LIFE / 60;
+			addTooltipMessage(lang['Your_comment_will_appear_after'] + ' ' + time + ' ' + Tool.getSuffix(time, lang['minute_word_root'], lang['minute_one_ending'], lang['minute_two_ending'], '') );
+		}
+		if ($('#addCommentBtn')[0] && $('#qsAddCommentForm')[0]) {
+			$('#addCommentBtn').click(
+				function(){
+					appWindow('qsAddCommentFormWrap', lang['Add_comment']);
+				}
+			);
+			$('#cmSendForm').click(
+				function () {
+					var data = {
+						title:_v('cmTitle'),
+						body:_v('cmBody'),
+						parent:_v('parentId'),
+						id:_v('commentId'),
+						skey:_v('skey')
+					};
+					req(data, _onSuccess, defaultAjaxFail, 'addComment');
+				}
+			);
+		}
+	}
+	//===============/Комментарии=======================================
+	
 	//ajax helper
 	function req(data, success, fail, id, url, method) {
 		if (!method) {
