@@ -8,25 +8,32 @@ class CViewHelper {
 	
 	/**
 	 * @desc Рендерит дерево построенное CAbstractDbTree::buildTree в html UL список
-	 * @param array  $data - результат работы Funcs::buildTree
-	 * @param string $display_value будет выведено <li>$data[N][$display_value]</li>
-	 * @param array  $data_attributes для каждого будет выведено <li data-{$data_attributes_item}=$data_attributes[$data_attributes_item]
-	 * @param string $ul_css класс для списков UL, также автоматически добавляется level-N
-	 * @param string $li_css класс для элементов списков LI
-	 * @param int    $level уровень вложенности
+	 * @param string $commentInfo
 	**/
 	static public function renderComment($commentInfo) {
-		$s = '<div class="left userinfo">'. $commentInfo['name'] .'</div>
+		$date_modify = '';
+		$lang = utils_getCurrentLang();
+		if ($commentInfo['date_modify'] != $commentInfo['date_create']) {
+			$date_modify = '<div class="cmv_modify"><img title="'. $lang['edit_time'] .'" src="'. WEB_ROOT .'/img/edit16.png">'. utils_dateE2R($commentInfo['date_modify']) .'</div>';
+		}
+		$s = '<div class="left userinfo">'. $commentInfo['name'] . ' ' . $commentInfo['surname'].'</div>
 		<div class="left cmv_title">'. $commentInfo['title'] .'</div>
 		<div class="clearfix"></div>
-		<div class="left cmv_timestamps">
+		<div class="left cmv_timestamps oh">
 			<div class="clearfix"></div>
-			<div class="left cmv_created">'. $commentInfo['date_create'] .'</div>
-			<div class="left cmv_modify">'. $commentInfo['date_modify'] .'</div>
+			<div class="cmv_created"><img title="'. $lang['publish_time'] .'" src="'. WEB_ROOT .'/img/timer16.png">'. utils_dateE2R($commentInfo['date_create']) .'</div>
+			'. $date_modify .'
+			<div class="clearfix"></div>
 		</div>
-		<div class="left cmv_body">'. $commentInfo['body'] .'</div>
-		<div class="clearfix"></div>
-		';
+		<div class="cmv_body">'. str_replace("\n", '<br>', $commentInfo['body']) .'</div>
+		<div class="clearfix"></div>';
+		if (sess('uid')) {
+			$s .= '<a href="#" class="right cmv_alink" data-id="'. $commentInfo['id'] .'"> '. $lang['Aswer_him'] .'</a>';
+		}
+		if (sess('uid') == $commentInfo['uid']) {
+			$s .= '<a href="#" class="right cmv_elink" data-id="'. $commentInfo['id'] .'"><img class="e16c" src="'. WEB_ROOT .'/img/edit16c.png"> '. $lang['Edit'] .'</a><div class="clearfix"></div>';
+		}
+		$s .= '<div class="clearfix"></div>';
 		return $s;
 	}
 	

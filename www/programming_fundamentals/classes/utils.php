@@ -18,7 +18,7 @@ function checkMail($mail)	 {
  * выдает в поток данные в json формате
  * четные аргументы - ключи, нечетные - значения
  * в данных всегда присутствует status => ok 
- * */
+*/
 function json_ok() {
  $sz = func_num_args();
  $data['status'] = "ok";
@@ -36,6 +36,13 @@ function json_ok() {
  	}
  }
  die(json_encode($data));
+}
+/**
+ * Добавляет в массив элемент 'status' => 'ok' и выдает в поток данные в json формате
+*/
+function json_ok_arr($data) {
+	$data['status'] = 'ok';
+	die(json_encode($data));
 }
 /**
  * выдает в поток данные в json формате
@@ -546,27 +553,46 @@ function utils_buildTree($raw_data, $id_field_name, $parent_id_field_name, $chil
  * @param less4 окончание при величине числа от 1 до 4
  * @param more19 окончание при величине числа более 19
  * @returString
- */
- function utils_getSuffix($n, $root, $one, $less4, $more19, $dbg = false) {
-         $m = strval($n);
-         if (strlen($m) > 1) {
-             $m =  intval( $m[ strlen($m) - 2 ] . $m[ strlen($m) - 1 ] );
-         }
-         $lex = $root . $less4;
-         if ($m > 20) {
-             $r = strval($n);
-             $i = intval( $r[ strlen($r) - 1 ] );
-             if ($i == 1) {
-                 $lex = $root . $one;
-             } else {
-                 if ($i == 0 || $i > 4) {
-                    $lex = $root . $more19;
-                 }
-             }
-         } else if ($m > 4 || $m == '00') {
-             $lex = $root . $more19;
-         } else if ($m == 1) {
-             $lex = $root . $one;
-         }
-         return $lex;
- }
+*/
+function utils_getSuffix($n, $root, $one, $less4, $more19, $dbg = false) {
+        $m = strval($n);
+        if (strlen($m) > 1) {
+            $m =  intval( $m[ strlen($m) - 2 ] . $m[ strlen($m) - 1 ] );
+        }
+        $lex = $root . $less4;
+        if ($m > 20) {
+            $r = strval($n);
+            $i = intval( $r[ strlen($r) - 1 ] );
+           if ($i == 1) {
+                $lex = $root . $one;
+            } else {
+                if ($i == 0 || $i > 4) {
+                   $lex = $root . $more19;
+                }
+            }
+        } else if ($m > 4 || $m == '00') {
+            $lex = $root . $more19;
+        } else if ($m == 1) {
+            $lex = $root . $one;
+        }
+        return $lex;
+}
+/**
+ * @desc Перобразовывает дату и з ан8глийского формата в российский
+ * @param $date - Строка в  виде YYYY-mm-dd H:m:s (php Y-m-d H:i:s)
+ * @param $deleteSeconds - удалять ли секунды
+ * @return String
+*/
+function utils_dateE2R($date, $deleteSeconds = true) {
+	if (!preg_match("#^[0-9]{4}\-[0-9]{2}\-[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2}$#", $date, $m)) {
+		return $date;
+	}
+	$a = explode(" ", $date);
+	$b = explode("-", $a[0]);
+	$b = join(".", array_reverse($b));
+	if ($deleteSeconds) {
+		$a[1] = preg_replace("#:[0-9]{2}$#", '', $a[1]);
+	}
+	$s = $a[1] . " $b";
+	return $s;
+}

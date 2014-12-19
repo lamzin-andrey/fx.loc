@@ -156,3 +156,49 @@ u{text-decoration:none; color:#2A8109; font-style:italic;}
 .cm_form_title input[type=text] {
 	width:98%;
 }
+
+.userinfo {
+	font-size: 10pt;
+    font-weight: bold;
+}
+.cmv_title {
+	margin-bottom: 18px;
+    margin-left: 12px;
+}
+.cmv_timestamps {
+	color: #a0a0a0;
+    font-size: 10pt;
+    margin-right: 13px;
+}
+.cmv_created, .cmv_modify {
+	line-height: 16px;
+}
+.cmv_modify {
+	margin-top:4px;
+}
+.cmv_modify img{
+	opacity: 0.5;
+}
+.cmv_created img, .cmv_modify img{
+	margin-right: 2px;
+	vertical-align: top;
+}
+.cmv_body{
+	margin-right: 14px;
+}
+
+.cmv_elink {font-size:10pt;}
+
+.cmv_alink {
+	font-size:10pt; 
+	display:inline-block;
+	margin-left:12px;
+	line-height: 22px;
+}
+.cm_item {
+    margin-bottom: 18px;
+    margin-right: 10px;
+    padding: 0 2px 18px 0;
+    border-bottom: 1px solid gray;
+}
+

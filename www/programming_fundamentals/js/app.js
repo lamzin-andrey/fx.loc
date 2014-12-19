@@ -1350,13 +1350,20 @@
 		/**
 		 * 
 		*/
-		function _v(id) {
+		function _v(id, v) {
+			if (String(v) == 'undefined') {
+				v = false;
+			}
+			if (v !== false) {
+				$('#' + id).val(v)
+			}
 			return $('#' + id).val();
 		} 
 		/**
 		 * 
 		*/
 		function _onSuccess(data) {
+			hideLoader();
 			if (data.status == 'error') {
 				showError(data.msg);
 				return;
@@ -1367,8 +1374,22 @@
 		}
 		if ($('#addCommentBtn')[0] && $('#qsAddCommentForm')[0]) {
 			$('#addCommentBtn').click(
-				function(){
+				function() {
+					_v('cmTitle', '');
+					_v('cmBody', '');
+					_v('commentId', '');
 					appWindow('qsAddCommentFormWrap', lang['Add_comment']);
+					return false;
+				}
+			);
+			$('.cmv_alink').click(
+				function() {
+					_v('cmTitle', '');
+					_v('cmBody', '');
+					_v('commentId', '');
+					_v('parentId', $(this).data('id'));
+					appWindow('qsAddCommentFormWrap', lang['Add_comment']);
+					return false;
 				}
 			);
 			$('#cmSendForm').click(
@@ -1380,7 +1401,30 @@
 						id:_v('commentId'),
 						skey:_v('skey')
 					};
+					showLoader();
 					req(data, _onSuccess, defaultAjaxFail, 'addComment');
+					return false;
+				}
+			);
+			/**
+			 * 
+			*/
+			function _onLoadCommentSuccess(data) {
+				if (data.status == 'error') {
+					showError(data.msg);
+					return;
+				}
+				_v('cmTitle', data.title);
+				_v('cmBody', data.body);
+				_v('commentId', data.id);
+				hideLoader();
+				appWindow('qsAddCommentFormWrap', lang['Edit_comment']);
+			}
+			$('.cmv_elink').click(
+				function() {
+					var data = {id:$(this).data('id')};
+					req(data, _onLoadCommentSuccess, defaultAjaxFail, 'getComment');
+					return false;
 				}
 			);
 		}
@@ -1404,6 +1448,7 @@
 		});
 	}
 	function defaultAjaxFail() {
+		hideLoader();
 		showError(lang['default_error']);
 	}
 })(jQuery)

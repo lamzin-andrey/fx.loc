@@ -32,7 +32,7 @@ class QuickStartHandler extends CBaseHandler{
 			}
 		}
 		$this->_comment_tree = new CommentTree($app);
-		$fields = 'comments.title, comments.body, comments.date_create, comments.date_modify, users.name, users.surname';
+		$fields = 'comments.title, comments.body, comments.date_create, comments.date_modify, comments.uid, users.name, users.surname';
 		$join = 'JOIN users ON users.id = comments.uid';
 		$this->comments_data = $this->_comment_tree->buildTree("part = 'quick_start/{$this->book_tpl}'", $fields, $join);
 		/*echo "<pre>";
@@ -99,6 +99,9 @@ class QuickStartHandler extends CBaseHandler{
 			case 'addComment':
 				$this->_addComment();
 				break;
+			case 'getComment':
+				$this->_getComment();
+				break;
 		}
 		
 	}
@@ -106,16 +109,14 @@ class QuickStartHandler extends CBaseHandler{
 	private function _addComment() {
 		$this->_comment_tree->writeData( array('uid' => CApplication::getUid()) );
 		json_ok();
-		/*if ($this->_app->user_email) {
-			$uid = CApplication::getUid();
-			$title = $this->req('title');
-			$body = $this->req('body');
-			$parent_id = (int)$this->req('parent');
-			$comment_id = (int)$this->req('id');
-			$skey = $this->req('skey');
-			$sql_query("INSERT INTO comments VALUES(part, uid, title, body, date_modify, date_create) VALUES()");
-		} else {
-		}*/
+	}
+	
+	private function _getComment() {
+		$data = $this->_comment_tree->getRecord(req('id'), 'id');
+		if ($data) {
+			json_ok_arr($data);
+		}
+		json_error('msg', $this->_app->lang['Error_record_not_found'] );
 	}
 	
 	

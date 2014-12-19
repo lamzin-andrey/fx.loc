@@ -44,43 +44,21 @@ var Tool = {
              lex = root + one;
          }
          return lex;
+	},
+	/**
+	 * @desc Добавляет к корню слова окончание в зависимости от величины числа n
+	 * @param id Идентификатор группы полей
+	 */
+	clearInputs:function(id) {
+		$('#' + id + ' input, #' + id + ' textarea').each(
+			function(i, j) {
+				if (j.type != 'button' && j.type != 'submit') {
+					$(j).val('');
+				}
+				if (j.type == 'checkbox') {
+					$(j).prop('checked', false);
+				}
+			}
+		);
 	}
-} 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}

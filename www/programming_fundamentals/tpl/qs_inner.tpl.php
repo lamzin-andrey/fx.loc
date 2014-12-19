@@ -24,12 +24,14 @@
 				<? endforeach ?>
 			</div>
 			<? endif?>
+			<? if ($app->user_email): ?>
 			<div>
 				<button id="addCommentBtn"><?=$lang['Add_comment']?></button>
 			</div>
+			<? endif ?>
 			<div class="qs_commets_list">
 				<?CViewHelper::$UlTreeItemRenderCallback = 'renderComment';?>
-				<?CViewHelper::renderUlTree($handler->comments_data, 'body', array('id' => 'id'), 'test1', 'test2'); ?>
+				<?CViewHelper::renderUlTree($handler->comments_data, 'body', array('id' => 'id'), 'vcomments nomark', 'cm_item'); ?>
 				<?CViewHelper::$UlTreeItemRenderCallback = null;?>
 			</div>
 		</div>

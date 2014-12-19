@@ -230,6 +230,11 @@ class CAbstractDbTree{
 	protected function table($name) {
 		$this->_table = $name;
 		//TODO add cache
+		$cache_key = APP_ROOT . '/files/cache/' . md5($name);
+		if (file_exists($cache_key) && (strtotime(now()) -  filemtime($cache_key) <= APP_CACHE_LIFE) ) {
+			$this->_field_types = json_decode( file_get_contents($cache_key) );
+		}
+		
 		$sql_query = "SELECT * FROM {$name} LIMIT 1;";
 		$res = mysql_query($sql_query);
 		if ($res) {
@@ -243,6 +248,7 @@ class CAbstractDbTree{
 				break;
 			}
 		}
+		file_put_contents($cache_key, json_encode($this->_field_types));
 	}
 	/**
 	 * @desc строит дерево (структуру данных) с неограниченным уровнем вложенности,
@@ -256,6 +262,11 @@ class CAbstractDbTree{
 	 * @return tree
 	**/
 	public function buildTree($condition, $fields = '*', $join = '', $group_by = '', $order_by = '', $id_field_name = 'id', $parent_id_field_name = 'parent_id', $childs = 'childs') {
+		$cache_key = APP_ROOT . '/files/cache/' . md5($condition);
+		if (file_exists($cache_key) && (strtotime(now()) -  filemtime($cache_key) <= APP_CACHE_LIFE) ) {
+			return json_decode( file_get_contents($cache_key) );
+		}
+		
 		$id = $id_field_name;
 		$parent_id = $parent_id_field_name;
 		
@@ -265,6 +276,9 @@ class CAbstractDbTree{
 		
 		$sql = "SELECT {$fields} FROM {$this->_table} {$join} WHERE {$condition} {$group_by} {$order_by}";
 		$raw_data = query($sql);
+		if ( !count($raw_data) ) {
+			return $raw_data;
+		}
 
 		$data = array();
 		$search_tree = new SearchTree();
@@ -308,6 +322,38 @@ class CAbstractDbTree{
 		if ($node->content[$parent_id] == 0) {
 			$result[$node->content[$id]] = $node->content;
 		}
+		file_put_contents($cache_key, json_encode($result));
 		return $result;
 	}
+	/**
+	 * @desc Получить поля для апдейта
+	 * @param  $id Идентификатор записи
+	 * @param  string $additional_fields перечисление сеоез запятую дополнительных плоей
+	 * @return $row | false row Содержит выборку полей заданных для update и поле на которое назначен первичный ключ
+	**/
+	public function getRecord($id, $additional_fields = false) {
+		$id = (int)$id;
+		$fields = join(', ', $this->_update) . ', ' . $this->_id_field_name;
+		if ($additional_fields) {
+			$fields .= ', ' . $additional_fields;
+		}
+		$sql_query = 'SELECT '. $fields . ' FROM ' . $this->_table . ' WHERE ' . $this->_id_field_name . ' = ' . $id;
+		$row = dbrow($sql_query, $numRow);
+		if (!$numRow) {
+			return false;
+		}
+		return $row;
+	}
+	/*
+	 * function fullscreen3(element) {
+  if(element.requestFullScreen) {
+    element.requestFullScreen();
+  } else if(element.mozRequestFullScreen) {
+    element.mozRequestFullScreen();
+  } else if(element.webkitRequestFullScreen) {
+    element.webkitRequestFullScreen();
+  }
+}
+	 * 
+	 * */
 }

@@ -88,6 +88,12 @@ $lang['Error_Member_only'] = 'Только авторизованный поль
 $lang['Error_title_required'] = 'Поле "Заголовок" обязательно для заполнения';
 $lang['Error_body_required'] = 'Поле "Текст комментария" обязательно для заполнения';
 $lang['field_is_required'] = 'Поле обязательно для заполнения';
+$lang['Edit_comment'] = 'Редактировать комментарий';
+$lang['Error_record_not_found'] = 'Запись не найдена';
+$lang['publish_time'] = 'Отправлен';
+$lang['edit_time'] = 'Редактирован';
+$lang['Aswer_him'] = 'Ответить ему';
+$lang['Edit'] = 'Редактировать';
 
 //quick_start
 $lang['intro'] = 'Что это';

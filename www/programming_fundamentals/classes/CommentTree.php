@@ -46,7 +46,7 @@ class CommentTree extends CAbstractDbTree{
 		$v = parent::req($name);
 		if ($name == 'skey') {
 			if (!$v) {
-				json_error('msg', $lang['default_error']);
+				json_error('msg', $this->_app->lang['default_error']);
 			}
 			$v = 'quick_start/' . $v;
 		}
