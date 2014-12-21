@@ -14,7 +14,7 @@
 		}
 	?>
 	<div class="hide"><?	include APP_ROOT . '/files/quick_book/functionsdiv.php';?></div>
-		<div class="textcontent scroll-y">
+		<div class="textcontent scroll-y" id="article">
 			<? include APP_ROOT . "/files/quick_book/" . $handler->book_tpl . '.php';?>
 			<? if ($handler->show_test_new_words_button):?>
 			<div class="testsButtons">
@@ -36,7 +36,7 @@
 					</div>
 				</div>
 				
-				<div class="qs_commets_list hide">
+				<div id="qsCmList" class="qs_commets_list">
 					<? if ($app->user_email): ?>
 					<div>
 						<div id="addCommentBtn" class="qbtn btn add_comment_btn">

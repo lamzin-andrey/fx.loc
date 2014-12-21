@@ -1459,6 +1459,25 @@
 				}
 			);
 		}
+		//кнопка показать скрыть комментарии
+		$('#qsCmList').hide();
+		$('#comments_title').click(
+			function() {
+				if ( $('#qsCmList').css('display') == 'none' ) {
+					$('#qsCmList').slideDown(500);
+					setTimeout(
+						function() {
+							$('#article').animate({
+								'scrollTop': $('#article')[0].scrollTop + parseInt($('#qsCmList')[0].offsetHeight / 3, 10)
+							})
+						}
+						,150
+					);
+				} else {
+					$('#qsCmList').slideUp(500);
+				}
+			}
+		);
 	}
 	//===============/Комментарии=======================================
 	
