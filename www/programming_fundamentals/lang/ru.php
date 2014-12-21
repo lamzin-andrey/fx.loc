@@ -96,6 +96,7 @@ $lang['Aswer_him'] = 'Ответить ему';
 $lang['Edit'] = 'Редактировать';
 $lang['Comments_upcase'] = 'КОММЕНТАРИИ';
 $lang['Captcha_reg_legend'] = 'Защита от автоматической регистрации';
+$lang['Captcha_comm_legend'] = 'Защита от автоматических сообщений';
 $lang['code_is_not_valid'] = 'Введенные символы не совпадают с изображением';
 
 //quick_start

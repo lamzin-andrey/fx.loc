@@ -213,3 +213,15 @@ body {height:100%; padding:0px 4px; margin:0px;
 }
 #alayer {float:right}
 /** end auth form style **/
+.comm_cap_legend, .commcap input {
+	display: table-cell;
+    vertical-align: top;
+    margin-left:15px;
+}
+.commcap img{
+	width: 100px;
+	border:solid 1px #6A2626;
+}
+.commcap {
+	vertical-align: top;
+}

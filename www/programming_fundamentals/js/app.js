@@ -13,6 +13,7 @@
 			initSigninButton();
 			initSignupButton();
 			initComments();
+			initScrollSaver();
 		}
 	);
 //============Простой редактор кода=====================================
@@ -1441,6 +1442,9 @@
 						id:_v('commentId'),
 						skey:_v('skey')
 					};
+					if ($('#commfstr')[0]) {
+						data.commfstr = $('#commfstr').val();
+					}
 					showLoader();
 					req(data, _onSuccess, defaultAjaxFail, 'addComment');
 					return false;
@@ -1495,6 +1499,25 @@
 	}
 	//===============/Комментарии=======================================
 	
+	function initScrollSaver() {
+		var current = window.location.href, key = 'savedUrl', saved = localStorage.getItem(key), n, url;
+		if ( current.indexOf('?') > current.indexOf('#') ) {
+			n = '?';
+		} else {
+			n = '#';
+		}
+		url = current.split(n)[0];
+		if (current == saved) {
+			n = localStorage.getItem(url);
+			if (n) {
+				$('#article').prop('scrollTop', n);
+			}
+		}
+		localStorage.setItem(key, current);
+		$('#article')[0].onmousewheel = function () {
+			localStorage.setItem(url, $('#article').prop('scrollTop') );
+		}
+	}
 	//ajax helper
 	function req(data, success, fail, id, url, method) {
 		if (!method) {

@@ -39,6 +39,12 @@ class CommentTree extends CAbstractDbTree{
 		if (!$this->_app->user_email) {
 			json_error('msg', $lang['Error_Member_only']);
 		}
+		if (isset($this->_app->comm_captcha)) {
+			$enter = req('commfstr');
+			if ($enter != sess('capcode')) {
+				json_error('msg', $lang['code_is_not_valid']);
+			}
+		}
 		parent::validate();
 	}
 	

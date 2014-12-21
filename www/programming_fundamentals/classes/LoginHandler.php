@@ -58,7 +58,7 @@ class LoginHandler extends CBaseHandler {
 		$name  = req('name');
 		$sname = req('sname');
 		
-		if ($this->_app->reg_captcha) {
+		if (isset($this->_app->reg_captcha)) {
 			$enter = req('regfstr');
 			if ($enter != sess('capcode')) {
 				json_error('sError', $lang['code_is_not_valid']);

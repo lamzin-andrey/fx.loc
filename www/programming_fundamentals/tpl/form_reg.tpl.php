@@ -23,7 +23,7 @@
 					<input type="password" value="" id="password_confirm" name="password_confirm">
 				</div>
 
-				<? if(isset($app->reg_captcha)): ?>
+				<? if(isset($app->comm_captcha)): ?>
 					<div class="tcenter regcap">
 						<label class="slabel" for="str"><?=$lang['Captcha_reg_legend']?></label><br>
 						<img id="refimg" src="<?=WEB_ROOT?>/img/random">

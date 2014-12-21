@@ -197,6 +197,7 @@ function utils_translite ($string)  {
  }
  
 function now() {
+	@date_default_timezone_set('Europe/Moscow');
     $d = date("Y-m-d H:i:s");
     return date("Y-m-d H:i:s", strtotime($d) + SUMMER_TIME);
 }
