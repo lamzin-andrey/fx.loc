@@ -10,6 +10,8 @@ class CApplication {
 	public $user_surname;
 	public $base_url;
 	public $layout = 'master.tpl.php';
+	public $reg_captcha = true;
+	
 	public function __construct() {
 		@session_start();
 		$this->lang = utils_getCurrentLang();

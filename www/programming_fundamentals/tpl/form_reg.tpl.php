@@ -22,9 +22,21 @@
 					<label class="slabel" for="password_confirm"><?=$lang['Password_confirmation']?></label><span id="password_equ" class="password_no_equ hide"><?=$lang['password_not_match']?></span><br>
 					<input type="password" value="" id="password_confirm" name="password_confirm">
 				</div>
+
+				<? if(isset($app->reg_captcha)): ?>
+					<div class="tcenter regcap">
+						<label class="slabel" for="str"><?=$lang['Captcha_reg_legend']?></label><br>
+						<img id="refimg" src="<?=WEB_ROOT?>/img/random">
+					</div>
+					<div class="aphone">
+						<input type="text" value="" id="regfstr" name="regfstr">
+					</div>
+				<? endif ?>
+				
 				<div class="right prmf">
 					<input type="button" value="<?=$lang['SignUp']?>" class="btn" id="breg" name="breg">
 				</div>
+				<div class="clearfix"></div>
 		</div>
 	</div>
 </div>

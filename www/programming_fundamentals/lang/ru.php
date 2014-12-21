@@ -95,7 +95,8 @@ $lang['edit_time'] = 'Редактирован';
 $lang['Aswer_him'] = 'Ответить ему';
 $lang['Edit'] = 'Редактировать';
 $lang['Comments_upcase'] = 'КОММЕНТАРИИ';
-$lang['snake'] = 'Змейка';
+$lang['Captcha_reg_legend'] = 'Защита от автоматической регистрации';
+$lang['code_is_not_valid'] = 'Введенные символы не совпадают с изображением';
 
 //quick_start
 $lang['intro'] = 'Что это';
@@ -121,6 +122,7 @@ $lang['pseudofile'] = 'Замена текстовым файлам';
 $lang['first_canvas'] = 'Холст и краски';
 $lang['observer'] = 'Паттерн наблюдатель';
 $lang['Copy_this_code'] = 'Копировать этот пример в редактор кода';
+$lang['snake'] = 'Змейка';
 
 
 $lang['delete_errors_and_try_again'] = "\n-----------------\nудалите ошибки и попробуйте снова";

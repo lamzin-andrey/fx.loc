@@ -185,7 +185,7 @@ body {height:100%; padding:0px 4px; margin:0px;
 	background-color: white;
 	border: 1px solid #c4c4c4;
 	border-radius: 0 0 9px 9px;
-	float: right;
+	/*float: right;*/
 	margin: 0 auto;
 	padding: 9px;
 	width: 407px;
@@ -207,4 +207,9 @@ body {height:100%; padding:0px 4px; margin:0px;
 .password_no_equ {
 	background-color: #aa0000;
 }
+.regcap img{
+	width: 100px;
+	border:solid 1px #6A2626;
+}
+#alayer {float:right}
 /** end auth form style **/

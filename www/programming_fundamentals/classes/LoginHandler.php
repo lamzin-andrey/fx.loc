@@ -1,8 +1,9 @@
 <?php
 require_once APP_ROOT . '/classes/CBaseHandler.php';
 class LoginHandler extends CBaseHandler {
-	
-	public function __construct() {
+	private $_app;
+	public function __construct($app) {
+		$this->_app = $app;
 		switch (@$_REQUEST["action"]) {
 			case "login":
 				$this->_login();
@@ -56,6 +57,14 @@ class LoginHandler extends CBaseHandler {
 		$pwd_c = req('pc');
 		$name  = req('name');
 		$sname = req('sname');
+		
+		if ($this->_app->reg_captcha) {
+			$enter = req('regfstr');
+			if ($enter != sess('capcode')) {
+				json_error('sError', $lang['code_is_not_valid']);
+			}
+		}
+		
 		if (!trim($email)) {
 			json_error('sError', $lang['email_required']);
 		}

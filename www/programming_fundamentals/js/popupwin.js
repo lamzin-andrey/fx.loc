@@ -131,6 +131,8 @@
 					top  = '0px';
 					width = '100%';
 					height = h + 'px';
+					overflowX = 'scroll';
+					overflowY = 'scroll';
 				}
 			}
 			if ($(id).offsetWidth > $(content).offsetWidth) {

@@ -1330,13 +1330,22 @@
 		$("#breg").click(
 			function () {
 				var pwd = $('#rpassword').val(), pwdC = $('#password_confirm').val(), email = $('#rlogin').val(),
-					name = $('#uname').val(), sname = $('#usname').val();
+					name = $('#uname').val(), sname = $('#usname').val(), data;
 				if (pwd == pwdC && pwd.length && email.length) {
-					req({email:email, password:pwd, pc:pwdC, name: name, sname: sname}, _onSuccess, defaultAjaxFail, 'signup', WEB_ROOT + '/login');
+					data = {email:email, password:pwd, pc:pwdC, name: name, sname: sname};
+					if ($('#regfstr')[0]) {
+						data.regfstr = $('#regfstr').val();
+					}
+					req(data, _onSuccess, defaultAjaxFail, 'signup', WEB_ROOT + '/login');
 				} else {
 					showError(lang['email_required'] + ' ' + lang['and_password_required']);
 				}
 				//appWindowClose();
+			}
+		);
+		$("#refimg").click(
+			function(){
+				$("#refimg").prop('src', '/programming_fundamentals/img/random?r=' + Math.random());
 			}
 		);
 		function _checkStrongPassword(s) {
@@ -1468,11 +1477,16 @@
 					setTimeout(
 						function() {
 							$('#article').animate({
-								'scrollTop': $('#article')[0].scrollTop + parseInt($('#qsCmList')[0].offsetHeight / 3, 10)
+								//'scrollTop': $('#article')[0].scrollTop + parseInt($('#qsCmList')[0].offsetHeight / 3, 10)
 							})
 						}
 						,150
 					);
+					
+					$('#article').animate({
+						'scrollTop': '+=200',
+					}, 'slow')
+					
 				} else {
 					$('#qsCmList').slideUp(500);
 				}
