@@ -153,7 +153,7 @@ class CAbstractDbTree{
 				return floatval($v);
 		}
 		$s = str_replace("'", '&quot;', trim(req($name, $this->_request)) );
-		$s = strip_tags($s, 'b,i,u,s,a,ul,li');
+		$s = strip_tags($s, '<b><i><u><s><a><ul><li>');
 		$s = preg_replace("#union#i", 'un<i></i>ion', $s);
 		return $s;
 	}

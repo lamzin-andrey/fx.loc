@@ -50,6 +50,21 @@ class CommentTree extends CAbstractDbTree{
 			}
 			$v = 'quick_start/' . $v;
 		}
+		$s = str_replace('[/code]', '</pre>', $v);
+		$s = str_replace("[code]\n", '<pre>', $s);
+		$v = str_replace('[code]', '<pre>', $s);
 		return $v;
+	}
+	/**
+	 * @desc Получить поля для апдейта
+	 * @param  $id Идентификатор записи
+	 * @param  string $additional_fields перечисление сеоез запятую дополнительных плоей
+	 * @return $row | false row Содержит выборку полей заданных для update и поле на которое назначен первичный ключ
+	**/
+	public function getRecord($id, $additional_fields = false) {
+		$row = parent::getRecord($id, $additional_fields);
+		$row['body'] = str_replace('<pre>', "[code]\n", $row['body']);
+		$row['body'] = str_replace('</pre>', '[/code]', $row['body']);
+		return $row;
 	}
 }

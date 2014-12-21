@@ -25,7 +25,7 @@ class CViewHelper {
 			'. $date_modify .'
 			<div class="clearfix"></div>
 		</div>
-		<div class="cmv_body">'. str_replace("\n", '<br>', $commentInfo['body']) .'</div>
+		<div class="cmv_body">'. str_replace("\n", "<br>", $commentInfo['body']) .'</div>
 		<div class="clearfix"></div>';
 		if (sess('uid')) {
 			$s .= '<a href="#" class="right cmv_alink" data-id="'. $commentInfo['id'] .'"> '. $lang['Aswer_him'] .'</a>';

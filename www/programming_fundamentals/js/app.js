@@ -879,62 +879,85 @@
 			return sKeys;
 		}
 		/**
+		 * @desc Подсветка JS кода
+		 * @see _highlightWordsInHelp
+		 * @param keyMap - карта слов требующих подсветки в виде массива, получена во время работы  _getKeyMap
+		 * @param sKeys  - специальная строка с ключевыми словами, требующими подсветки, результат _getKeyMap
+		 * @param sKeysSF - специальная строка с именами стандартных функций, результат _getKeyMap
+		 * @param String wrapAsExample - префикс имени функции, в которую будет "завернут" код
+		 * 								 если не задано, то код в функцию не заворачивается
+		*/
+		function _highlightJsCode(content, sKeys, sKeysSF, wrapAsExample) {
+			var list, j, copy;
+			content = content.replace(/\\"/mig, 'SLASHED_D_QUOTES');
+			content = content.replace(/\s?"([^"]*)"/mig, '<span class="strcolor"> "$1"</span>');
+			content = content.replace(/SLASHED_D_QUOTES/mig, '\\"');
+			content = content.replace(/\\\//mig, 'SLASHED_D_QUOTES');
+			copy = content;
+			content = content.replace(/(\/[^\/]+\/[mig]{1,3})/mig, '<span class="recolor"> $1 </span>');
+			if (copy == content) {
+				content = content.replace(/(\/[^\/]+\/)[^\/]]*$/mig, '<span class="recolor"> $1 </span>');
+			}
+			content = content.replace(/SLASHED_D_QUOTES/mig, '\\/');
+			content = content.replace(/\s?'([^']*)'/mig, '<span class="strcolor"> \'$1\'</span>');
+			content = content.replace(/\s?\/\/([^\n]+)\n?$/mig, '<span class="strcolor">//$1</span>\n');
+			content = content.replace(/\/\*([^*]*)\*\//mig, '<span class="strcolor">/*$1*/</span>');
+
+			if (wrapAsExample) {
+				list = content.split('\n');
+				buf = [];
+				for (j = 0; j < list.length; j++) {
+					if (list[j].length) {
+						//if (wrapAsExample) {
+						buf.push(' QSTAB ' + list[j]);
+						/*} else {
+							buf.push(list[j]);
+						}*/
+					}
+				}
+				content = 'function ' + wrapAsExample + 'Example() { QSNEW_LINE ' + buf.join(' QSNEW_LINE ') + ' QSNEW_LINE }';
+			} else {
+				content = content.replace(/\n/g, ' QSNEW_LINE '); //buf.join(' QSNEW_LINE ');
+			}
+		
+			content = content.replace(/\t/gim, ' QSTAB ');
+			content = content.replace(/,/gim, ' QSZP ');
+			content = content.replace(/:/gim, ' QSDP ');
+			content = content.replace(/\./gim, ' QSDOT ');
+			content = content.replace(/\(/gim, ' QSBRCK ');
+			content = content.replace(/;/gim, ' QSENDOP ');
+			list = content.split(/\s/);
+			for (j = 0; j < list.length; j++) {
+				if (sKeys.indexOf('|' + list[j] + '|') != -1) {
+					list[j] = '<b>' + list[j] + '</b>';
+				}
+				if (sKeysSF.indexOf('|' + list[j] + '|') != -1) {
+					list[j] = '<i>' + list[j] + '</i>';
+				}
+			}
+			content = list.join(' ');
+			content = content.replace(/ QSTAB /gim, '\t');
+			content = content.replace(/ QSNEW_LINE /gim, '\n');
+			content = content.replace(/ QSZP /gim, ',');
+			content = content.replace(/ QSDP/gim, ':');
+			content = content.replace(/ QSDOT /gim, '.');
+			content = content.replace(/ QSBRCK /gim, '(');
+			content = content.replace(/ QSENDOP /gim, ';');
+			return content;
+		}
+		/**
 		 * @desc Подсветка синтаксиса для текста в всплывающем окне
 		 * @see initKeywordsHelp, initStdFuncsHelp
 		 * @param keyMap - карта слов требующих подсветки в виде массива, получена во время работы  _getKeyMap
 		 * @param sKeys  - специальная строка с ключевыми словами, требующими подсветки, результат _getKeyMap
-		 * @param sKeysSF - специальная строка с именами стандартных функций , результат _getKeyMap
+		 * @param sKeysSF - специальная строка с именами стандартных функций, результат _getKeyMap
 		 * 
 		*/
 		function _highlightWordsInHelp(keyMap, sKeys, sKeysSF) {
 			var i, j,content, saveContent, list, buf;
 			for (i in keyMap) {
 				saveContent = content = keyMap[i];
-				content = content.replace(/\\"/mig, 'SLASHED_D_QUOTES');
-				content = content.replace(/\s?"([^"]*)"/mig, '<span class="strcolor"> "$1"</span>');
-				content = content.replace(/SLASHED_D_QUOTES/mig, '\\"');
-				content = content.replace(/\\\//mig, 'SLASHED_D_QUOTES');
-				copy = content;
-				content = content.replace(/(\/[^\/]+\/[mig]{1,3})/mig, '<span class="recolor"> $1 </span>');
-				if (copy == content) {
-					content = content.replace(/(\/[^\/]+\/)[^\/]]*$/mig, '<span class="recolor"> $1 </span>');
-				}
-				content = content.replace(/SLASHED_D_QUOTES/mig, '\\/');
-				content = content.replace(/\s?'([^']*)'/mig, '<span class="strcolor"> \'$1\'</span>');
-				content = content.replace(/\s?\/\/([^\n]+)\n?$/mig, '<span class="strcolor">//$1</span>\n');
-				content = content.replace(/\/\*([^*]*)\*\//mig, '<span class="strcolor">/*$1*/</span>');
-				list = content.split('\n');
-				buf = [];
-				for (j = 0; j < list.length; j++) {
-					if (list[j].length) {
-						buf.push(' QSTAB ' + list[j]);
-					}
-				}
-				content = 'function ' + i + 'Example() { QSNEW_LINE ' + buf.join(' QSNEW_LINE ') + ' QSNEW_LINE }';
-				content = content.replace(/\t/gim, ' QSTAB ');
-				content = content.replace(/,/gim, ' QSZP ');
-				content = content.replace(/:/gim, ' QSDP ');
-				content = content.replace(/\./gim, ' QSDOT ');
-				content = content.replace(/\(/gim, ' QSBRCK ');
-				content = content.replace(/;/gim, ' QSENDOP ');
-				list = content.split(/\s/);
-				for (j = 0; j < list.length; j++) {
-					if (sKeys.indexOf('|' + list[j] + '|') != -1) {
-						list[j] = '<b>' + list[j] + '</b>';
-					}
-					if (sKeysSF.indexOf('|' + list[j] + '|') != -1) {
-						list[j] = '<i>' + list[j] + '</i>';
-					}
-				}
-				content = list.join(' ');
-				content = content.replace(/ QSTAB /gim, '\t');
-				content = content.replace(/ QSNEW_LINE /gim, '\n');
-				
-				content = content.replace(/ QSZP /gim, ',');
-				content = content.replace(/ QSDP/gim, ':');
-				content = content.replace(/ QSDOT /gim, '.');
-				content = content.replace(/ QSBRCK /gim, '(');
-				content = content.replace(/ QSENDOP /gim, ';');
+				content = _highlightJsCode(content, sKeys, sKeysSF, i);
 				keyMap[i] = {hl:content, pl:saveContent};
 			}
 			return keyMap;
@@ -958,6 +981,17 @@
 			$('#keywordLog').html('<pre style="white-space: pre-wrap; padding:10px; tab-size:2;-moz-tab-size: 2; -o-tab-size:2;">' + s + '</pre>');
 			appWindow('keywordLogWrap', lang['information']);
 		}
+		//Подсветка синтаксиса в примерах кода в комментариях пользователя
+		$('.textcontent .vcomments pre').each(
+			function (i, pre) {
+				var s = $(pre).html().replace(/<br>/g, '\n');
+				s = _highlightJsCode(s, sKeys, sKeysSF);
+				//s = s.replace(/<br>/g, '\n');
+				$(pre).html(s);
+			}
+		);
+		
+		//добавление подсветки синтаксиса в подсказки примеров кода
 		$('.textcontent pre b, .textcontent pre i').each(
 			function (i, b) {
 				var km = (b.tagName == 'B' ? keyMap :( b.tagName == 'I' ? keyMapSF : keyMap )); //TODO last keyMap заменить на keyMapUF когда тот появится
@@ -1347,9 +1381,6 @@
 	//================/Авторизация======================================
 	//================Комментарии=======================================
 	function initComments() {
-		/**
-		 * 
-		*/
 		function _v(id, v) {
 			if (String(v) == 'undefined') {
 				v = false;
