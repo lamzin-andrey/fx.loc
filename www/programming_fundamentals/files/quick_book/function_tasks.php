@@ -369,8 +369,4 @@
 Это позволяет контролировать дубли. Также при успешном добавлении увеличивается значение счетчика ctrlLength.val. После окончания вывода проверяется, равно ли значение счетчика факториалу длины исходного массива.</p>
 <p></p>
 <p></p>
-<div style="width:96%">
-<div class="left"><?=QuickStartHandler::aback('arrays')?></div>
-<div class="right"><?=QuickStartHandler::anext('graph2d')?></div>
-<div class="clearfix"></div>
-</div>
+<?=QuickStartHandler::prevnext('arrays', 'graph2d');?>

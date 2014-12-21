@@ -143,9 +143,4 @@
 	}
 }
 </pre>
-
-<div style="width:96%">
-<div class="left"><a href="<?=WEB_ROOT?>/quick_start/arithmetic">Назад - <?=$lang['arithmetic']?></a></div>
-<div class="right"><a href="<?=WEB_ROOT?>/quick_start/cycles">Далее - <?=$lang['cycles']?></a></div>
-<div class="clearfix"></div>
-</div>
+<?=QuickStartHandler::prevnext('arithmetic', 'cycles');?>

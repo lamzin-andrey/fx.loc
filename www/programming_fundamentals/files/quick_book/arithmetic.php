@@ -122,8 +122,4 @@
 		<u>writeln</u>('Результат: ' + result);
 	}
 </pre>
-<div style="width:96%">
-<div class="left"><a href="<?=WEB_ROOT?>/quick_start/arithmetic">Назад - <?=$lang['arithmetic']?></a></div>
-<div class="right"><a href="<?=WEB_ROOT?>/quick_start/branching">Далее - <?=$lang['branching']?></a></div>
-<div class="clearfix"></div>
-</div>
+<?=QuickStartHandler::prevnext('begin', 'branching');?>

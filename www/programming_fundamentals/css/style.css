@@ -58,6 +58,8 @@ body {height:100%; padding:0px 4px; margin:0px;
 	border-radius: 4px;
 	background:linear-gradient(to right bottom, #ffffff, #ffffff,  #C3D1D7);
 	cursor:pointer;
+	font-size:10pt;
+	line-height:16px;
 }
 .addscript, .text-right {
 	text-align:right;

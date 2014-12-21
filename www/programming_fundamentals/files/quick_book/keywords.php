@@ -21,9 +21,5 @@
 </p>
 <p> Если этот текст случится читать человеку занимающимся профессионально веб-разработкой, он скорее всего тут же спросит, где XMLHttpRequest, почему его нет в списке, хотя там есть Array, String и прочие им подобные.</p>
 <p> Ответ прост: этот сайт предназначен для освоения человеком азов программирования вообще, а не программирования для web. Если получится, я добавлю раздел азов web-программирования на JavaScript, но это в очень отдаленной перспективе. И то буду очень долго думать, есть ли в этом добавлении раздела смысл: информации в сети по этой теме более чем достаточно, на том же  <a href="http://learn.javascript.ru/" target="_blank">http://learn.javascript.ru/</a></p>
-<div style="width:96%">
-<div class="left"><a href="<?=WEB_ROOT?>/quick_start/security">Назад - <?=$lang['security']?></a></div>
-<div class="right"><a href="<?=WEB_ROOT?>/quick_start/variables">Далее - <?=$lang['variables']?></a></div>
-<div class="clearfix"></div>
-</div>
-</p>
+<?=QuickStartHandler::prevnext('security', 'variables');?>
+

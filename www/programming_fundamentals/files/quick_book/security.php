@@ -5,9 +5,4 @@
 <p>Избежать этого просто:</p>
 <p>Никогда не выполняйте на этом сайте код, который вам прислали неизвестные "друзья" если вы его не понимаете до каждого символа.</p>
 <p></p>
-<div style="width:96%">
-<div class="left"><a href="<?=WEB_ROOT?>/quick_start/wtf">Назад - <?=$lang['wtf']?></a></div>
-<div class="right"><a href="<?=WEB_ROOT?>/quick_start/keywords">Далее - <?=$lang['keywords']?></a></div>
-<div class="clearfix"></div>
-</div>
-</p>
+<?=QuickStartHandler::prevnext('wtf', 'keywords');?>

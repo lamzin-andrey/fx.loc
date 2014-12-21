@@ -92,7 +92,21 @@ class QuickStartHandler extends CBaseHandler{
 		$lang = utils_getCurrentLang();
 		return '<a href="'. WEB_ROOT. '/quick_start/'.$keyword.'">Далее - ' . $lang[$keyword]. '</a>';
 	}
-	
+	/**
+	 * @desc Навигация для страниц быстрого старта
+	*/
+	static public function prevnext($keyprev, $keynext){
+		$s = '<div class="btm_navbar">';
+		if ($keyprev) {
+			$s .= '<div class="left">' . QuickStartHandler::aback($keyprev) . '</div>';
+		}
+		if ($keynext) {
+			$s .= '<div class="right">' . QuickStartHandler::anext($keynext) . '</div>';
+		}
+		$s .= '<div class="clearfix"></div>
+			  </div>';
+		return $s;
+	}
 	public function ajaxAction() {
 		$action = req('action');
 		switch ($action) {

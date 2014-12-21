@@ -18,22 +18,45 @@
 			<? include APP_ROOT . "/files/quick_book/" . $handler->book_tpl . '.php';?>
 			<? if ($handler->show_test_new_words_button):?>
 			<div class="testsButtons">
-				<button id="runTest" >Тест на новые слова</button>
+				<div id="runTest" class="qbtn btn">
+					<span>Тест на новые слова</span>
+				</div>
 				<? foreach ($handler->test_buttons as $id => $text): ?>
-					<button id="<?=$id ?>" ><?=$text ?></button>
+					<div id="<?=$id ?>" class="qbtn btn">
+						<span><?=$text ?></span>
+					</div>
+					
 				<? endforeach ?>
 			</div>
 			<? endif?>
-			<? if ($app->user_email): ?>
-			<div>
-				<button id="addCommentBtn"><?=$lang['Add_comment']?></button>
-			</div>
+			<? if ($handler->comments_data): ?>
+				<div class="center ctitleplace">
+					<div id="comments_title" class="qbtn btn">
+						<img src="<?=WEB_ROOT?>/img/updown16.png"><span><?=$lang['Comments_upcase']?></span>
+					</div>
+				</div>
+				
+				<div class="qs_commets_list hide">
+					<? if ($app->user_email): ?>
+					<div>
+						<div id="addCommentBtn" class="qbtn btn add_comment_btn">
+							<img src="<?=WEB_ROOT?>/img/cmplus.png"><span><?=$lang['Add_comment']?></span>
+						</div>
+					</div>
+					<? endif ?>
+					<?CViewHelper::$UlTreeItemRenderCallback = 'renderComment';?>
+					<?CViewHelper::renderUlTree($handler->comments_data, 'body', array('id' => 'id'), 'vcomments nomark', 'cm_item'); ?>
+					<?CViewHelper::$UlTreeItemRenderCallback = null;?>
+				</div>
+			<? else: ?>
+				<? if ($app->user_email): ?>
+				<div>
+					<div id="addCommentBtn" class="qbtn btn add_comment_btn">
+						<img src="<?=WEB_ROOT?>/img/cmplus.png"><span><?=$lang['Add_comment']?></span>
+					</div>
+				</div>
+				<? endif ?>
 			<? endif ?>
-			<div class="qs_commets_list">
-				<?CViewHelper::$UlTreeItemRenderCallback = 'renderComment';?>
-				<?CViewHelper::renderUlTree($handler->comments_data, 'body', array('id' => 'id'), 'vcomments nomark', 'cm_item'); ?>
-				<?CViewHelper::$UlTreeItemRenderCallback = null;?>
-			</div>
 		</div>
 		<hr style="color:##D2DAE2;padding:0; margin:0;"/>
 		<div class="qs_editor_place">

@@ -183,8 +183,4 @@
 	<p><b>for</b> (<b>var</b> i = array.length; i--)</p>
 	напишите пожалуйста в комментариях. 
 </div>
-<div style="width:96%">
-<div class="left"><a href="<?=WEB_ROOT?>/quick_start/branching">Назад - <?=$lang['branching']?></a></div>
-<div class="right"><a href="<?=WEB_ROOT?>/quick_start/strings">Далее - <?=$lang['strings']?></a></div>
-<div class="clearfix"></div>
-</div>
+<?=QuickStartHandler::prevnext('branching', 'strings');?>

@@ -94,6 +94,8 @@ $lang['publish_time'] = 'Отправлен';
 $lang['edit_time'] = 'Редактирован';
 $lang['Aswer_him'] = 'Ответить ему';
 $lang['Edit'] = 'Редактировать';
+$lang['Comments_upcase'] = 'КОММЕНТАРИИ';
+$lang['snake'] = 'Змейка';
 
 //quick_start
 $lang['intro'] = 'Что это';
