@@ -105,7 +105,7 @@
 		}
 		function lines(s, n){
 			var total = s.split('\n').length, i = 0,
-				div = $('#qseLines'), css;/*, exists = div.find('.qse_l').length;*/
+				div = $('#qseLines'), css, h;
 			div.html('');
 			for (i; i < total; i++) {
 				if ((i + 1) == n) {
@@ -142,8 +142,13 @@
 				}
 			}*/
 			//console.log();
-			$('#qseLineWrapper').css('max-height', ($('#qs_editor_s').height() + 5) + 'px');
+			h = ($('#qs_editor_s').height() + 5) + 'px';
+			$('#qseLineWrapper').css('max-height', h);
 			$('#qseLines')[0].style.top = (-1 * $('#qs_editor_s')[0].scrollTop) + 'px';
+			if ($('#tabhook')[0]) {
+				$('#tabhook')[0].style.height = h;
+				$('#tabhook')[0].style.top = $('#qseLines')[0].offsetHeight;
+			}
 		}
 		function onKeyDown(e) {
 			//Контроль Tab клавиши

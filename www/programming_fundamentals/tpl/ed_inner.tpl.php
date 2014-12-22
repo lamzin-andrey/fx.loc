@@ -36,10 +36,11 @@
 				<!--div class="oh left"><div id="qseLines"></div></div-->
 				<div id="qseLineWrapper" class="oh left"><div id="qseLines"></div></div>
 				<textarea id="qs_editor_s" rows="15" spellcheck="false" class="left" wrap="off"></textarea>
+				<input type="button" class="left focus_hook abs" id='tabhook'>
 				<div class="clearfix"></div>
 			</div>
 			<div class="status_bar right"><?=$lang['Line']?>: <span id="qsline">0</span>, <?=$lang['Column']?>: <span id="qscol">0</span></div>
-			<input type="button" style='width:1px;height:1px;opacity:0' value='' />
+			
 			<div class="clearfix">&nbsp;</div>
 		</div>
 		<div id="qs-br-wrap" class="hide">
