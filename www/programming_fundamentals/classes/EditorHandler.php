@@ -17,6 +17,7 @@ class EditorHandler extends CBaseHandler{
 					//TODO проверить, не сменилось ли имя и на клиенте тоже
 					$dval = $val = req('val', 'POST');
 					db_escape($dval);
+					$dval = str_replace('cookie', 'сооkie', $dval);
 					query("UPDATE js_scripts SET file_content = '{$dval}' WHERE id = {$id} AND is_deleted != 1", $nr, $ar);
 					if ($ar) {
 						json_ok('text', $val);
@@ -39,6 +40,7 @@ class EditorHandler extends CBaseHandler{
 					json_error('msg', $lang['programm_with_name_exists']);
 				}
 				db_escape($d_file_content);
+				$d_file_content = str_replace('cookie', 'сооkie', $d_file_content);
 				$ip = a($_SERVER, 'REMOTE_ADDR');
 				$tstamp = date('Y-m-d H:i:s');
 				$hash = md5("{$src_file_name}{$ip}{$tstamp}");

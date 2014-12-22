@@ -392,7 +392,7 @@
 			}
 			appWindow('fixcon', lang['Output']);
 			try {
-				eval('(' + $(mid).val() + ')()');
+				eval('(' + $(mid).val().replace('cookie', 'сооkie') + ')()');
 			} catch(E) {
 				showExecuteError(lang['on_execute_your_script_was_errors'] + ' ' + E.message + ' ' + lang['delete_errors_and_try_again']);
 			}
@@ -1398,7 +1398,10 @@
 			if (v !== false) {
 				$('#' + id).val(v)
 			}
-			return $('#' + id).val();
+			if ($('#' + id)[0] && $('#' + id).val) {
+				return $('#' + id).val();
+			}
+			return 0;
 		} 
 		/**
 		 * 
@@ -1410,10 +1413,9 @@
 				return;
 			}
 			appWindowClose();
-			var time = APP_CACHE_LIFE / 60;
-			addTooltipMessage(lang['Your_comment_will_appear_after'] + ' ' + time + ' ' + Tool.getSuffix(time, lang['minute_word_root'], lang['minute_one_ending'], lang['minute_two_ending'], '') );
+			addTooltipMessage(lang['Your_comment_will_appear_after_accept']);
 		}
-		if ($('#addCommentBtn')[0] && $('#qsAddCommentForm')[0]) {
+		if ( ($('#addCommentBtn')[0] && $('#qsAddCommentForm')[0]) || $('#acceptMark')[0] ) {
 			$('#addCommentBtn').click(
 				function() {
 					_v('cmTitle', '');
@@ -1464,6 +1466,9 @@
 				hideLoader();
 				appWindow('qsAddCommentFormWrap', lang['Edit_comment']);
 			}
+			function _onLoadCommentAccept(data) {
+				$('#qsCmList li[data-id=' +  data.id + ']').remove();
+			}
 			$('.cmv_elink').click(
 				function() {
 					var data = {id:$(this).data('id')};
@@ -1471,9 +1476,19 @@
 					return false;
 				}
 			);
+			
+			$('.cmv_acceptlink').click(
+				function() {
+					var data = {id:$(this).data('id')};
+					req(data, _onLoadCommentAccept, defaultAjaxFail, 'acceptComment');
+					return false;
+				}
+			);
 		}
 		//кнопка показать скрыть комментарии
-		$('#qsCmList').hide();
+		if (!$('#acceptMark')[0]) {
+			$('#qsCmList').hide();
+		}
 		$('#comments_title').click(
 			function() {
 				if ( $('#qsCmList').css('display') == 'none' ) {
@@ -1514,8 +1529,10 @@
 			}
 		}
 		localStorage.setItem(key, current);
-		$('#article')[0].onmousewheel = function () {
-			localStorage.setItem(url, $('#article').prop('scrollTop') );
+		if ($('#article')[0]) {
+			$('#article')[0].onmousewheel = function () {
+				localStorage.setItem(url, $('#article').prop('scrollTop') );
+			}
 		}
 	}
 	//ajax helper

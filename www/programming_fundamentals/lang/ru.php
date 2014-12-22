@@ -80,6 +80,7 @@ $lang['comment_form_body_label'] = 'Текст комментария';
 $lang['Send_comment'] = 'Отправить комментарий';
 $lang['Add_comment'] = 'Добавить комментарий';
 $lang['Your_comment_will_appear_after'] = 'Ваш комментарий появится через ';
+$lang['Your_comment_will_appear_after_accept'] = 'Ваш комментарий появится после проверки';
 $lang['minutes'] = 'Ваш комментарий появится через ';
 $lang['minute_one_ending'] = 'у';
 $lang['minute_two_ending'] = 'ы';
@@ -98,6 +99,7 @@ $lang['Comments_upcase'] = 'КОММЕНТАРИИ';
 $lang['Captcha_reg_legend'] = 'Защита от автоматической регистрации';
 $lang['Captcha_comm_legend'] = 'Защита от автоматических сообщений';
 $lang['code_is_not_valid'] = 'Введенные символы не совпадают с изображением';
+$lang['Accept'] = 'Одобрить';
 
 //quick_start
 $lang['intro'] = 'Что это';

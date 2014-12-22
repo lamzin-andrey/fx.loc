@@ -8,6 +8,7 @@ class CApplication {
 	public $user_email;
 	public $user_name;
 	public $user_surname;
+	public $role = 0;
 	public $base_url;
 	public $layout = 'master.tpl.php';
 	//public $reg_captcha = true;
@@ -42,6 +43,9 @@ class CApplication {
 			case $work_fiolder . '/login':
 				$this->_loginActions();
 				break;
+			case $work_fiolder . '/newcomments':
+				$this->_editCommentsActions();
+				break;
 			default:
 				if (strpos($url, 'programming_fundamentals/quick_start/') !== false) {
 					$this->_quickStartActions();
@@ -74,10 +78,19 @@ class CApplication {
 		$this->handler = $h = $this->_load('TasklistHandler');
 	}
 	/**
-	 * @desc Обработка возможных действий на главной странице
+	 * @desc Обработка возможных действий на странице быстрый чтарт
 	**/
 	private function _quickStartActions() {
 		$this->handler = $h = $this->_load('QuickStartHandler');
+		if (is_ajax()) {
+			$h->ajaxAction();
+		}
+	}
+	/**
+	 * @desc Обработка возможных действий на странице модерирования комментариев
+	**/
+	private function _editCommentsActions() {
+		$this->handler = $h = $this->_load('AcceptCommentHandler', 1);
 		if (is_ajax()) {
 			$h->ajaxAction();
 		}
@@ -106,8 +119,14 @@ class CApplication {
 	}
 	/**
 	 * @desc Обработка возможных действий на странице
+	 * @param $class_name - Имя класса, который надо подгрузить
+	 * @param $access_level = 0 - минимально необходимые права
 	**/
-	private function _load($class_name) {
+	private function _load($class_name, $level = 0) {
+		if ($this->role < $level) {
+			utils_302(WEB_ROOT);
+			return;
+		}
 		$file = APP_ROOT . '/classes/' . $class_name . '.php';
 		if (file_exists($file)) {
 			include_once($file);
@@ -199,12 +218,13 @@ class CApplication {
 	*/
 	private function _loadAuthUserData() {
 		if ($uid = (int)sess('uid')) {
-			$data = dbrow("SELECT id, email, name, surname FROM users WHERE id = '{$uid}'", $nR);
+			$data = dbrow("SELECT id, email, name, surname, role FROM users WHERE id = '{$uid}'", $nR);
 			//$guid = 0;
 			if ($nR) {
 				$this->user_email = $data['email'];
 				$this->user_name = $data['name'];
 				$this->user_surname = $data['surname'];
+				$this->role = $data['role'];
 			}
 		}
 	}

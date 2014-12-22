@@ -189,7 +189,7 @@ u{text-decoration:none; color:#2A8109; font-style:italic;}
 
 .cmv_elink {font-size:10pt;}
 
-.cmv_alink {
+.cmv_alink, .cmv_acceptlink {
 	font-size:10pt; 
 	display:inline-block;
 	margin-left:12px;

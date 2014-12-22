@@ -178,7 +178,7 @@ class CAbstractDbTree{
 	 * @param  $auth_user_uid   - Идентификатор авторизованного пользователя 
 	 * @param  $field_owner_id  - Имя поля, хранящего идентификатор владельца записи
 	*/
-	protected function setUpdateOwnerCondition($auth_user_uid, $field_owner_id) {
+	public function setUpdateOwnerCondition($auth_user_uid, $field_owner_id) {
 		$this->_auth_user_id = $auth_user_uid;
 		$this->_field_owner_id = $field_owner_id;
 	}
@@ -325,6 +325,37 @@ class CAbstractDbTree{
 		}
 		file_put_contents($cache_key, json_encode($result));
 		return $result;
+	}
+	/**
+	 * @desc строит дерево (структуру данных) с неограниченным уровнем вложенности,
+	 * @param string $condition - фрагмент sql запроса, условие выборки (без WHERE)
+	 * @param string $fields    - фрагмент sql запроса, выбираемые поля, нге обязательно указывать id parent_id они включаются из соотв. аргументов
+	 * @param string $join - фрагмент sql запроса, присоединение других таблиц
+	 * @param string $group_by  - фрагмент sql запроса
+	 * @param string $order_by  - фрагмент sql запроса
+	 * @return tree
+	**/
+	public function getRawList($condition, $fields = '*', $join = '', $group_by = '', $order_by = '', $id_field_name = 'id') {
+		//$cache_key = APP_ROOT . '/files/cache/' . md5($condition);
+		/*if (file_exists($cache_key) && (strtotime(now()) -  filemtime($cache_key) <= APP_CACHE_LIFE) ) {
+			return json_decode( file_get_contents($cache_key), true );
+		}*/
+		$id = $this->_id_field_name;
+		
+		if ($fields != '*') {
+			$fields = "{$this->_table}.{$id}, {$fields}";
+		}
+		
+		$sql = "SELECT {$fields} FROM {$this->_table} {$join} WHERE {$condition} {$group_by} {$order_by}";
+		$raw_data = query($sql);
+		if ( !count($raw_data) ) {
+			return $raw_data;
+		}
+		$data = array();
+		foreach ($raw_data as $key => $item) {
+			$data[ $item['id'] ] = $item;
+		}
+		return $data;
 	}
 	/**
 	 * @desc Получить поля для апдейта
