@@ -196,9 +196,12 @@ function utils_translite ($string)  {
  	return $v . utils_utf8(' Руб.');
  }
  
-function now() {
+function now($ignore_summer_time = false) {
 	@date_default_timezone_set('Europe/Moscow');
     $d = date("Y-m-d H:i:s");
+    if ($ignore_summer_time) {
+		return $d;
+	}
     return date("Y-m-d H:i:s", strtotime($d) + SUMMER_TIME);
 }
 /**

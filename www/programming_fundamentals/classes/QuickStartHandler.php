@@ -32,9 +32,11 @@ class QuickStartHandler extends CBaseHandler{
 			}
 		}
 		$this->_comment_tree = new CommentTree($app);
-		$fields = 'comments.title, comments.body, comments.date_create, comments.date_modify, comments.uid, users.name, users.surname';
-		$join = 'JOIN users ON users.id = comments.uid';
-		$this->comments_data = $this->_comment_tree->buildTree("part = 'quick_start/{$this->book_tpl}' AND is_accept = 1 AND comments.is_deleted = 0", $fields, $join);
+		if (!is_ajax()) {
+			$fields = 'comments.title, comments.body, comments.date_create, comments.date_modify, comments.uid, users.name, users.surname';
+			$join = 'JOIN users ON users.id = comments.uid';
+			$this->comments_data = $this->_comment_tree->buildTree("part = 'quick_start/{$this->book_tpl}' AND is_accept = 1 AND comments.is_deleted = 0", $fields, $join);
+		}
 		parent::__construct();
 	}
 	/**

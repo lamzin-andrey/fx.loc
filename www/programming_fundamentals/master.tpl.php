@@ -18,7 +18,6 @@
 	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/app.js"></script>
 	<script type="text/javascript" >
 		var WEB_ROOT = '<?=WEB_ROOT?>';
-		var APP_CACHE_LIFE = '<?=APP_CACHE_LIFE?>';
 	</script>
 	<?
 	if (isset($handler->js) && is_array($handler->js) && count($handler->js)) {

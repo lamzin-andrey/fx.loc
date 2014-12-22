@@ -246,6 +246,9 @@ canvas (canvas буквально  - холст). В нашем случае н�
 	<span class="strcolor">//вывести текст
 </span>	<b>function</b> <u>_drawText</u>(ctx, _x, _y, _w, _h) {
 		<b>var</b> text = localStorage.getItem(<span class="strcolor">'my_content'</span>), caretX = _x, caretY = verticalStart + _y, needNextStr = <b>false</b>;
+		if (!text) {
+			text = <span class="strcolor">'Надо сохранить в хранилище текст с именем "my_content" воспользовавшись примером "Замена текстовым файлам"'</span>;
+		}
 		ctx.fillStyle = <span class="strcolor">"#FF0000"</span>;	
 		ctx.font = <span class="strcolor">"12px Geneva"</span>;
 		s = <span class="strcolor">''</span>;
@@ -304,6 +307,42 @@ canvas (canvas буквально  - холст). В нашем случае н�
 		document.body.<i>removeChild</i>(_2d.canvas);
 		document.body.onkeydown = <b>null</b>;
 	}
+	<span class="strcolor">
+	//==================================================================
+	</span>
+	<span class="strcolor">//Вспомогательная функция для создания холста на весь экран</span>
+	<b>function</b> <u>createFullScreenContext</u>(color, parentElement, zIndex) {
+		<b>if</b> (!zIndex) {
+			zIndex = 5;  <span class="strcolor">//значение по умолчанию
+</span>		}
+		<b>if</b> (!color) {     <span class="strcolor">//Стиль заливки по умолчанию - темно-зеленый
+</span>			color = <span class="strcolor">'#00AA00'</span>;
+		}
+		<b>if</b> (!parentElement) {
+			parentElement = document.body;  <span class="strcolor">//значение по умолчанию
+</span>		}
+	    <b>var</b> canvas = document.<i>createElement</i>(<span class="strcolor">'canvas'</span>),       <span class="strcolor">//Создали "холст"
+</span>		    context,
+		    i, firstTextY, text, sz;
+	        canvas.width  = screen.width;               <span class="strcolor">//ширина холста
+</span>	        canvas.height = screen.height;              <span class="strcolor">//высота холста
+</span>	
+		parentElement.<i>appendChild</i>(canvas); <span class="strcolor">//добавляем на страницу наш холст, можно начинать рисовать
+</span>		<span class="strcolor">//делаем холст "ближе к нам", чтобы он перекрыл все остальное на странице
+</span>		canvas.style.zIndex = zIndex;
+		canvas.style.position = <span class="strcolor">'absolute'</span>;
+		canvas.style.top = <span class="strcolor">'0px'</span>;
+		canvas.style.left = <span class="strcolor">'0px'</span>;
+	
+		context = canvas.<i>getContext</i>(<span class="strcolor">"2d"</span>);   <span class="strcolor">//Получить контекст рисования
+</span>		context.fillStyle = color;  
+		<span class="strcolor">//Рисуем прямоугольник на весь холст
+</span>		context.<i>fillRect</i>(0, 0, canvas.width, canvas.height);
+		<b>return</b> {context:context, canvas:canvas};
+	}
+	<span class="strcolor">
+	//==================================================================
+	</span>
 }
 </pre>
 <p>В общем-то при решении задачи не использовано ничего нового. Для отрисовки окна я использовал те же функции что и в примерах этой статьи выше - <i>fillRect</i> и <i>fillText</i>. Для получения текста, выводимого в окне я использую метод localStorage.</i>getItem</i>. Чтобы обеспечить прокрутку текста на одну строку я назначил обработку событий нажатия клавиш клавиатуры "вверх" и "вниз" функции <u>moveText</u>, которая перерисовывает все после кажлого нажатия кнопки, смещая текст. Я использую переменную verticalStart чтобы запоминать смещение от начала текста, и я вывожу его только когда очередная строка займет место ниже чем область окна. 

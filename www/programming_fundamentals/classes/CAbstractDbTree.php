@@ -263,8 +263,8 @@ class CAbstractDbTree{
 	**/
 	public function buildTree($condition, $fields = '*', $join = '', $group_by = '', $order_by = '', $id_field_name = 'id', $parent_id_field_name = 'parent_id', $childs = 'childs') {
 		$cache_key = APP_ROOT . '/files/cache/' . md5($condition);
-		if (file_exists($cache_key) && (strtotime(now()) -  filemtime($cache_key) <= APP_CACHE_LIFE) ) {
-			//die("D = " . (strtotime(now()) -  filemtime($cache_key)  )  . ', APP_CACHE_LIFE = ' . APP_CACHE_LIFE);
+		if (file_exists($cache_key) && (strtotime(now(true)) -  filemtime($cache_key) <= APP_CACHE_LIFE) ) {
+			//die("D = " . (strtotime(now(true)) -  filemtime($cache_key)  )  . ', APP_CACHE_LIFE = ' . APP_CACHE_LIFE);
 			return json_decode( file_get_contents($cache_key), true );
 		}
 		
