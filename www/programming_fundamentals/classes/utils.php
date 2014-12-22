@@ -600,3 +600,54 @@ function utils_dateE2R($date, $deleteSeconds = true) {
 	$s = $a[1] . " $b";
 	return $s;
 }
+/**
+ * @desc
+ * @param $app_root       - путь к корню приложения на веб сервере. По этому адресу должен быть каталог YYYY/mm
+ * @param $tmp_file       - временный файл, попытаемся определить его расширение
+ * @param $src_file_name - если не удастся определить расширение, берется из исходного имени файла
+ * @param $is_image - true если это изображение
+ * @param $dest_file_name - если задано, то оно и используется вместо md5.ext
+ * @return $app_root/YYYY/mm/md5.ext
+*/
+function utils_getFilePath($app_root, $tmp_file, $src_file_name, &$is_image, $dest_file_name = false) {
+	$is_image = false;
+	$folder = $app_root . date('/Y/m/');
+	if ($dest_file_name) {
+		return "{$folder}{$dest_file_name}";
+	}
+	$a = @getimagesize($tmp_file);
+	$ext = '';
+	if (is_array($a) && a($a, 'mime')) {
+		switch ($a['mime']) {
+			case 'image/jpeg':
+				$ext = 'jpg';
+				$is_image = true;
+				break;
+			case 'image/png':
+				$ext = 'png';
+				$is_image = true;
+				break;
+			case 'image/gif':
+				$ext = 'gif';
+				$is_image = true;
+				break;
+			case 'application/x-shockwave-flash':
+				$ext = 'swf';
+				break;
+		}
+	} else {
+		$ext = preg_replace("#.+\.([A-z0-9]+)$#", '$1', $src_file_name);
+		switch ($ext) {
+			case 'mp3':
+			case 'ogg':
+			break;
+			default:
+			$ext = '';
+		}
+	}
+	if ($ext) {
+		$md5 = md5('YmdHis'.$src_file_name);
+		return "{$folder}{$md5}.{$ext}";
+	}
+	return false;
+}

@@ -100,6 +100,14 @@ $lang['Captcha_reg_legend'] = 'Защита от автоматической р
 $lang['Captcha_comm_legend'] = 'Защита от автоматических сообщений';
 $lang['code_is_not_valid'] = 'Введенные символы не совпадают с изображением';
 $lang['Accept'] = 'Одобрить';
+$lang['resources'] = 'Ресурсы';
+$lang['no_res_files_message'] = 'У вас пока нет ни одного загруженного файла';
+$lang['Append_file'] = 'Добавить файл';
+
+$lang['upload_resource_title'] = 'Загрузка ресурса';
+$lang['Load_image_or_sound'] = 'Загрузите файл изображения или звука (png, jpg, svg, ogg, mp3) Макс. 5 Мб.';
+$lang['Select_file'] = 'Выберите файл';
+$lang['Sens_name'] = 'Узнаваемое имя';
 
 //quick_start
 $lang['intro'] = 'Что это';

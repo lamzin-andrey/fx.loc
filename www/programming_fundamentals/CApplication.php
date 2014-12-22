@@ -22,29 +22,32 @@ class CApplication {
 		//TODO роутер
 		$aUrl = explode('?', $_SERVER['REQUEST_URI']);
 		$this->base_url = $url = trim($aUrl[0], '/');
-		$work_fiolder = 'programming_fundamentals';
+		$work_folder = WORK_FOLDER;
 		switch ($url) {
-			case $work_fiolder . '/console':
+			case $work_folder . '/console':
 				$this->_consolePageActions();
 				break;
-			case $work_fiolder . '/quick_start':
+			case $work_folder . '/quick_start':
 				$this->_quickStartActions();
 				break;
-			case $work_fiolder . '/tasklist':
+			case $work_folder . '/tasklist':
 				$this->_tasklistActions();
 				break;
-			case $work_fiolder . '/editor':
-			case $work_fiolder . '/text_editor':
+			case $work_folder . '/editor':
+			case $work_folder . '/text_editor':
 				$this->_editorActions();
 				break;
-			case $work_fiolder:
+			case $work_folder:
 				$this->_promoPageActions();
 				break;
-			case $work_fiolder . '/login':
+			case $work_folder . '/login':
 				$this->_loginActions();
 				break;
-			case $work_fiolder . '/newcomments':
+			case $work_folder . '/newcomments':
 				$this->_editCommentsActions();
+				break;
+			case $work_folder . '/resources':
+				$this->_resourcesActions();
 				break;
 			default:
 				if (strpos($url, 'programming_fundamentals/quick_start/') !== false) {
@@ -106,6 +109,25 @@ class CApplication {
 	**/
 	private function _consolePageActions() {
 		$this->handler = $h = $this->_load('ConsoleHandler');
+		if (count($_FILES)) {
+			$h->processUploadFile();
+			$messages = sess('messages', null, array());
+			$messages[] = array(__FUNCTION__ . '_messages' => $h->messages);
+			$messages[] = array(__FUNCTION__ . '_errors' => $h->errors);
+			sess('messages', $messages);
+			utils_302($_SERVER['REQUEST_URI']);
+		} else {
+			$h->loadUsersScripts();
+		}
+	}
+	/**
+	 * @desc Обработка возможных действий на странице загрузки ресурсов
+	**/
+	private function _resourcesActions() {
+		if (!sess('uid')) {
+			utils_302(WEB_ROOT);
+		}
+		$this->handler = $h = $this->_load('ResourceHandler');
 		if (count($_FILES)) {
 			$h->processUploadFile();
 			$messages = sess('messages', null, array());

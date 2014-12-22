@@ -6,7 +6,8 @@
 		'#' => 'CurrentTask',
 		WEB_ROOT . '/tasklist' => 'TaskList',
 		WEB_ROOT . '/quick_start' => 'QuickStart',
-		WEB_ROOT . '/text_editor' => 'text_editor'
+		WEB_ROOT . '/text_editor' => 'text_editor',
+		WEB_ROOT . '/resources' => 'resources'
 	);
 ?><? foreach ($links as $link => $langkey): ?>
 <? if ('/' . $app->base_url != $link):?>

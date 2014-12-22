@@ -14,6 +14,7 @@
 			initSignupButton();
 			initComments();
 			initScrollSaver();
+			initResourcesPage();
 		}
 	);
 //============Простой редактор кода=====================================
@@ -1570,4 +1571,15 @@
 		hideLoader();
 		showError(lang['default_error']);
 	}
+	//====================Ресурсы=======================================
+	function initResourcesPage() {
+		if ( $('#uploadResShowForm')[0] ) {
+			$('#uploadResShowForm').click(
+				function() {
+					appWindow('addResourceFormWrapper', lang['upload_resource_title']);
+				}
+			);
+		}
+	}
+	//====================/Ресурсы======================================
 })(jQuery)
