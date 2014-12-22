@@ -1020,6 +1020,16 @@
 						<div class="ce_pre left"></div>\
 						<div class="clearfix"></div>\
 					</div>');
+				if (pre.hasClass('no_lines')) {
+					return;
+				}
+				if (pre.hasClass('no_copy')) {
+					tpl = $('<div class="code_example">\
+						<div class="ce_ls left"></div>\
+						<div class="ce_pre left"></div>\
+						<div class="clearfix"></div>\
+					</div>');
+				}
 				pre.after(tpl);
 				var n = pre.text().split('\n').length;
 				tpl.find('.ce_pre').first()[0].appendChild(pre[0]);

@@ -130,7 +130,7 @@
 <pre>
 <b>function</b> switchExample() {
 	<b>var</b> surname =  <u>readln</u>(<span class="strcolor">'Введите известную фамилию'</span>);
-	writeln("surname");
+	writeln(surname);
 	<b>switch</b> (surname) {
 		<b>case</b> <span class="strcolor">'Гагарин'</span>:
 			<u>writeln</u>(<span class="strcolor">'Первый космонавт'</span>);
