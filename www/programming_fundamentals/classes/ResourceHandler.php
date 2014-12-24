@@ -120,6 +120,10 @@ class ResourceHandler extends CBaseHandler {
 			}
 			return false;
 		}
+		if (filesize($tmp_file) > 5 * 1024) {
+			$error_str = 'file_too_big';
+			return false;
+		}
 		$target = utils_getFilePath(APP_ROOT . '/files', $tmp_file, $filename, $is_image);
 		if (!$target) {
 			$error_str = 'invalid_file_resource';
