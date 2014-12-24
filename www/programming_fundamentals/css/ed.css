@@ -163,3 +163,8 @@ u{text-decoration:none; color:#2A8109; font-style:italic;}
 #qseLineWrapper {
 	resize:none;
 }
+#qsSetRelDlg {
+}
+#qsSetRelDlg select{
+	min-width:100px;
+}

@@ -121,6 +121,18 @@ class EditorHandler extends CBaseHandler{
 					json_error('msg', $lang['load_file_fail']);
 				}
 				break;
+			case 'loadAssignedFiles':
+				$uid = CApplication::getUid();
+				$id = (int)req('id', 'POST');
+				$all = query("SELECT id, display_file_name FROM js_scripts WHERE user_id = {$uid} AND is_deleted = 0 ORDER BY (id = {$id}) DESC", $num);
+				if ($num) {
+					$data = query("SELECT p.file_id, js.display_file_name FROM projects AS p
+									JOIN js_scripts AS js ON js.id = p.file_id
+									WHERE head = {$id} AND js.is_deleted = 0");
+					json_ok('all', $all, 'sets', $data, 'id', $id);
+				}
+				json_error('msg', $lang['load_file_fail']);
+				break;
 		}
 	}
 }

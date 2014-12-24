@@ -111,6 +111,8 @@ $lang['invalid_file_resource'] = 'Загрузите файл изображен
 $lang['Select_file'] = 'Выберите файл';
 $lang['Sens_name'] = 'Узнаваемое имя';
 $lang['success_delete_file'] = 'Файл удален';
+$lang['Project'] = 'Проект. Добавьте файлы, подсказку к функциям из которых вы хотели бы видеть.';
+$lang['Relations_for_file'] = 'Связи для файла ';
 
 //quick_start
 $lang['intro'] = 'Что это';

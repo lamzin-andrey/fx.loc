@@ -655,6 +655,56 @@
 			}
 			req(data, onRename, onFailRename, 'renameFile', WEB_ROOT + '/editor/');
 		}
+		//Показать диалог назначения связей
+		function showProjectSettingDlg(){
+			function onFailRename() {//TODO
+				showError(lang['alien_file_or_other_ipdate_page']);
+				$('#qsBrDlgBg').addClass('hide');
+				$('#qsRenameForm').addClass('hide');
+			}
+			function onSaveRelation(data) {//TODO
+				$('#qsBrDlgBg').addClass('hide');
+				$('#qsRenameForm').addClass('hide');
+				if (data.status == 'ok') {
+					var obj;
+					if (obj = $('#titlefile-' + data.id)[0]) {
+						$(obj).text(data.text);
+					}
+				} else {
+					showError(data.msg);
+				}
+			}
+			function _onRelationData(data) {
+				$('#qsrdSets')[0].options.length = 0;
+				$('#qsrdAll')[0].options.length = 0;
+				var exclude = [data.id], sExclude, k = 0;
+				$(data.sets).each(
+					function (i, obj) {
+						$('#qsrdSets')[0].options[k] = new Option(obj.display_file_name, obj.id);
+						exclude.push(obj.id);
+						k++;
+					}
+				);
+				sExclude = ',' + exclude.join(',') + ',';
+				k = 0;
+				$(data.all).each(
+					function (i, obj) {
+						if ( sExclude.indexOf(',' + obj.id + ',') == -1 ) {
+							$('#qsrdAll')[0].options[k] = new Option(obj.display_file_name, obj.id);
+							k++;
+						}
+					}
+				);
+				appWindow('qsSetRelDlgWrap', lang['Relations_for_file'] + $('#currentFileName').text());
+			}
+			req({id:fileId}, _onRelationData, defaultAjaxFail, 'loadAssignedFiles', WEB_ROOT + '/editor/');
+			/*var data = {displayText:$('#qsEditTitle').val(), id:$('#qsEditTitleCurrentId').val()}
+			if (!data.displayText.length) {
+				showError(lang['file_name_require']);
+				return;
+			}
+			req(data, onRename, onFailRename, 'renameFile', WEB_ROOT + '/editor/');*/
+		}
 		//плюшки для редактора
 		/**
 		 * @desc строит список функций, встречающихся в открытом файле
@@ -817,6 +867,7 @@
 		$('#qsEditorSaveAs').click(showSaveAs);
 		$('#qsEditorOpenFile').click(showOpenFileDlg);
 		$('#qsEditTitleSaveBtn').click(sendRenameFile);
+		$('#qsEditorSetPro').click(showProjectSettingDlg);
 		if (localStorage.getItem('qsLastText')) {
 			$(mid).val( localStorage.getItem('qsLastText') );
 			setMenuIconState();

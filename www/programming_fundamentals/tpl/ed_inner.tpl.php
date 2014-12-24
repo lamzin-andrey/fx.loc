@@ -28,6 +28,9 @@
 				<li>
 					<img class="btn" src="<?=WEB_ROOT?>/img/open32.png" id="qsEditorOpenFile" title="<?=$lang['Openfile']?>"/>
 				</li>
+				<li>
+					<img class="btn" src="<?=WEB_ROOT?>/img/project32.png" id="qsEditorSetPro" title="<?=$lang['Project']?>"/>
+				</li>
 				<li class="cfnameli" >
 					<span class="cfname"><span id="currentFileName">Несохраненный_файл</span><span>.js</span></span>
 				</li>
@@ -86,6 +89,23 @@
 	
 			</div>
 		</div>
+		
+		<div id="qsSetRelDlgWrap" class="hide">
+			<div class="" id="qsSetRelDlg">
+				<div class="left">
+					<select multiple id="qsrdAll"></select>
+				</div>
+				<div class="left qsrelbuttons">
+					<button id="qsrdLTR">&gt;&gt;</button><br>
+					<button id="qsrdLTR">&lt;&lt;</button>
+				</div>
+				<div class="left">
+					<select multiple id="qsrdSets"></select>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		
 		<div class="abs codehint hide" id="codeTooltip">innerHTML, locale</div>
 		
 	</article>
