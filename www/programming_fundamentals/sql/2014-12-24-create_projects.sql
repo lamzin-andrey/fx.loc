@@ -3,6 +3,6 @@ DROP TABLE IF EXISTS `projects`;
 
 CREATE TABLE IF NOT EXISTS `projects`
 (
-   head INTEGER COMMENT 'Номер файла определяющего множество, к которому относятся остальные',
-   file_id INTEGER COMMENT 'Номер файла относящегося к head'
+   head INTEGER COMMENT 'РќРѕРјРµСЂ С„Р°Р№Р»Р° РѕРїСЂРµРґРµР»СЏСЋС‰РµРіРѕ РјРЅРѕР¶РµСЃС‚РІРѕ, Рє РєРѕС‚РѕСЂРѕРјСѓ РѕС‚РЅРѕСЃСЏС‚СЃСЏ РѕСЃС‚Р°Р»СЊРЅС‹Рµ',
+   file_id INTEGER COMMENT 'РќРѕРјРµСЂ С„Р°Р№Р»Р° РѕС‚РЅРѕСЃСЏС‰РµРіРѕСЃСЏ Рє head'
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8;
