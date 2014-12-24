@@ -49,12 +49,18 @@ class ResourceHandler extends CBaseHandler {
 		} elseif ((int)req('id') && req('action') == 'delete') {
 			$id = (int)req('id');
 			$query = "UPDATE resources SET is_deleted  = 1	WHERE id = {$id}";
-			
 			query($query, $numRows, $affectedRows);
 			if ($affectedRows) {
 				$this->messages[] = $this->delete_action_msg = $this->lang['success_delete_file'];
 			} else {
 				$this->messages[] = $this->delete_action_msg = $this->lang['default_error'];
+			}
+			$path = dbvalue("SELECT file_path FROM resources WHERE id = {$id}");
+			if ($path) {
+				$path = APP_ROOT . $path;
+				if (file_exists($path)) {
+					@unlink($path);
+				}
 			}
 		}
 	}
