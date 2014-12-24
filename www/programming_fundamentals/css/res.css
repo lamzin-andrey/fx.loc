@@ -1,3 +1,38 @@
 #resDisplayName {
 	width:100%;
 }
+.qs-br-search-btn {
+	vertical-align:middle;
+}
+.rev_sens_title {
+	font-size: 10px;
+    height: 24px;
+    max-width: 112px;
+    overflow: hidden;
+}
+.rev_sens_ta {
+	max-width: 100px;
+}
+.res_item {
+   border: 1px solid #3279b2;
+    height: 124px;
+    margin: 10px;
+    padding: 40px;
+    width: 150px;
+    vertical-align: top;
+}
+.res_img_sz {
+	max-height :75px;
+	max-width  :100px;
+}
+.rev_sens_ta textarea {
+	resize:none;
+	max-width:160px;
+}
+.res_item .img_area {
+	min-height:75px;
+	min-height: 75px;
+}
+.res_page_content {
+	width:90%;
+}

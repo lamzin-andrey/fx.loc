@@ -2,7 +2,7 @@
 require_once APP_ROOT . '/classes/CBaseHandler.php';
 require_once APP_ROOT . '/classes/CommentTree.php';
 class AcceptCommentHandler extends CBaseHandler{
-	private $_app;
+	protected $_app;
 	private $_comment_tree;
 	public  $comments_data;
 	public function __construct($app) {

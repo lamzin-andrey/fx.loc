@@ -55,6 +55,45 @@ class CAbstractDbTree{
 	 * @var Типы полей таблицы
 	*/
 	protected $_field_types = array();
+	/*
+	 * @var Количество записей на странице при использовании getRawList
+	*/
+	protected $_per_page = false;
+	/*
+	 * @var Использовать в WHERE обычное условие фильтрации is_deleted = 0 (переменная учитывается только в useDefaultCondition)
+	*/
+	protected $_use_default_condition = true;
+	
+	
+	//Переменные связанные с пагинацией @see getList
+	/*
+	 * @var Номер страницы
+	*/
+	protected $page;
+	/*
+	 * @var Максимальная страница
+	*/
+	protected $maxpage;
+	/*
+	 * @var Общее количество записей
+	*/
+	protected $total;
+	/*
+	 * @var Количество элементов в строке навигации
+	*/
+	protected $itemInLine = 10;
+	/*
+	 * @var Надпись на кнопке "Предыдущая"
+	*/
+	protected $prevLabel = '<<';
+	/*
+	 * @var Надпись на кнопке "Следующая"
+	*/
+	protected $nextLabel = '>>';
+	/*
+	 * @var Объект с данными о навигации
+	*/
+	public $paging = array();
 	
 	public function __construct($app) {
 		$this->_app = $app;
@@ -327,30 +366,53 @@ class CAbstractDbTree{
 		return $result;
 	}
 	/**
-	 * @desc строит дерево (структуру данных) с неограниченным уровнем вложенности,
+	 * @desc Псевдоним getRawList
+	**/
+	public function getList($condition, $fields = '*', $join = '', $page = 1, $group_by = '', $order_by = '') {
+		return $this->getRawList($condition, $fields, $join, $page, $group_by, $order_by);
+	}
+	/**
+	 * @desc Возвращает _per_page записей на странице page
 	 * @param string $condition - фрагмент sql запроса, условие выборки (без WHERE)
 	 * @param string $fields    - фрагмент sql запроса, выбираемые поля, нге обязательно указывать id parent_id они включаются из соотв. аргументов
 	 * @param string $join - фрагмент sql запроса, присоединение других таблиц
+	 * @param string $page - номер страницы
 	 * @param string $group_by  - фрагмент sql запроса
 	 * @param string $order_by  - фрагмент sql запроса
 	 * @return tree
 	**/
-	public function getRawList($condition, $fields = '*', $join = '', $group_by = '', $order_by = '', $id_field_name = 'id') {
+	public function getRawList($condition, $fields = '*', $join = '', $page = 1, $group_by = '', $order_by = '') {
 		//$cache_key = APP_ROOT . '/files/cache/' . md5($condition);
 		/*if (file_exists($cache_key) && (strtotime(now()) -  filemtime($cache_key) <= APP_CACHE_LIFE) ) {
 			return json_decode( file_get_contents($cache_key), true );
 		}*/
+		$limit_str = '';
+		if ($this->_per_page) {
+			$offset = $this->_per_page * ($page - 1);
+			$limit_str = 'LIMIT ' . $offset . ', ' . $this->_per_page;
+		}
 		$id = $this->_id_field_name;
 		
 		if ($fields != '*') {
 			$fields = "{$this->_table}.{$id}, {$fields}";
 		}
 		
-		$sql = "SELECT {$fields} FROM {$this->_table} {$join} WHERE {$condition} {$group_by} {$order_by}";
+		if ($this->_use_default_condition) {
+			$condition .= ' AND is_deleted = 0 ';
+		}
+		
+		$sql = "SELECT {$fields} FROM {$this->_table} {$join} WHERE {$condition} {$group_by} {$order_by} {$limit_str}";
 		$raw_data = query($sql);
 		if ( !count($raw_data) ) {
 			return $raw_data;
 		}
+		
+		//получить данные длля строки навигации
+		$sql = "SELECT COUNT({$id}) FROM {$this->_table} {$join} WHERE {$condition} {$group_by}";
+		$this->total = dbvalue($sql);
+		$this->preparePaging($page);
+		
+		//подготовить данные
 		$data = array();
 		foreach ($raw_data as $key => $item) {
 			$data[ $item['id'] ] = $item;
@@ -375,6 +437,56 @@ class CAbstractDbTree{
 			return false;
 		}
 		return $row;
+	}
+	/**
+	 * @desc -- is_deleted = 0
+	*/
+	public function offDefaultCondition() {
+		$this->_use_default_condition = false;
+	}
+	private function preparePaging($page) {
+		$p = $page;
+		$this->maxpage = $maxnum = ceil($this->total / $this->_per_page);
+		if ($maxnum <= 1) {
+			return;
+		}
+		$start = $p - floor($this->itemInLine / 2);
+		$start = $start < 1 ? 1: $start;
+		$end = $p + floor($this->itemInLine / 2);
+		$end = $end > $maxnum ? $maxnum : $end;
+		
+		$data = array();
+		if ($start >  2) {
+			$o = new StdClass();
+			$o->n = 1;
+			$data[] = $o;
+		}
+		if ($start > 1) {
+			$o = new StdClass();
+			$o->n = $start - 1;
+			$o->text = $this->prevLabel;
+			$data[] = $o;
+		}
+		for ($i = $start; $i <= $end; $i++) {
+			$o = new StdClass();
+			$o->n = $i;
+			if ($i == $p) {
+				$o->active = 1;
+			}
+			$data[] = $o;
+		}
+		if ($end + 1 < $maxnum) {
+			$o = new StdClass();
+			$o->n = $end + 1;
+			$o->text = $this->nextLabel;
+			$data[] = $o;
+		}
+		if (/*$end != $maxnum - 1 &&*/ $end != $maxnum) {
+			$o = new StdClass();
+			$o->n = $maxnum;
+			$data[] = $o;
+		}
+		$this->paging = $data;
 	}
 	/*
 	 * function fullscreen3(element) {

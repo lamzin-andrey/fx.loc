@@ -21,6 +21,7 @@ $lang['not_found'] = 'не найдена';
 $lang['try_upload_yuor_file_again'] = 'Попробуйте перезалить ваш файл повторно';
 $lang['fail_remove_script_msg'] = 'Не удалось удалить скрипт, попробуйте обновить страницу и повторить попытку';
 $lang['confirm_removal_script'] = 'Вы уверены, что хотите удалить скрипт?';
+$lang['confirm_removal_resource'] = 'Вы уверены, что хотите удалить файл ресурса?';
 $lang['need_select_file'] = 'Необходимо выбрать файл';
 $lang['want_clone_file'] = 'Среди ваших файлов уже есть файл с таким именем. Вы уверены, то хотите продолжить?';
 $lang['QuickStart'] = 'Быстрый старт';
@@ -103,11 +104,13 @@ $lang['Accept'] = 'Одобрить';
 $lang['resources'] = 'Ресурсы';
 $lang['no_res_files_message'] = 'У вас пока нет ни одного загруженного файла';
 $lang['Append_file'] = 'Добавить файл';
-
+$lang['update_resource_title'] = 'Обновление ресурса';
 $lang['upload_resource_title'] = 'Загрузка ресурса';
 $lang['Load_image_or_sound'] = 'Загрузите файл изображения или звука (png, jpg, svg, ogg, mp3) Макс. 5 Мб.';
+$lang['invalid_file_resource'] = 'Загрузите файл изображения или звука (png, jpg, svg, ogg, mp3) Макс. 5 Мб.';
 $lang['Select_file'] = 'Выберите файл';
 $lang['Sens_name'] = 'Узнаваемое имя';
+$lang['success_delete_file'] = 'Файл удален';
 
 //quick_start
 $lang['intro'] = 'Что это';

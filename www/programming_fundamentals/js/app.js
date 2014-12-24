@@ -1579,6 +1579,37 @@
 					appWindow('addResourceFormWrapper', lang['upload_resource_title']);
 				}
 			);
+			
+			$('#btnSearchRes').click(
+				function() {
+					$('#resFormFilter')[0].submit();
+				}
+			);
+			$('.j-upres').click(
+				function() {
+					var id = $(this).data('id'),
+						name = $(this).data('name');
+					$('#res_edit_id').val(id);
+					$('#resDisplayName').val(name);
+					appWindow('addResourceFormWrapper', lang['update_resource_title']);
+				}
+			);
+			function _onSuccesDelete() {
+				window.location.reload();
+			}
+			$('.j-remres').click(
+				function() {
+					var id = $(this).data('id');
+					if (confirm(lang['confirm_removal_resource'])) {
+						req({id:id}, _onSuccesDelete, defaultAjaxFail, 'delete');
+					}
+				}
+			);
+			$('.j-taselall').click(
+				function() {
+					$(this).select();
+				}
+			);
 		}
 	}
 	//====================/Ресурсы======================================

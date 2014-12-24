@@ -16,7 +16,7 @@
 			</p>
 			<p class="text-right">
 				<input type="submit" id="resFileSubmit" name="resFileSubmit"/>
-				<input type="hidden" id="edit_id" name="edit_id"/>
+				<?=FV::hid('res_edit_id')?>
 			</p>
 		</div>
 	</form>

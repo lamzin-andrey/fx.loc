@@ -651,3 +651,25 @@ function utils_getFilePath($app_root, $tmp_file, $src_file_name, &$is_image, $de
 	}
 	return false;
 }
+/**
+* @desc Изменить значение переменной var в request_uri
+* @param string $var
+* @param string $val
+* @return string
+**/
+function utils_setUrlVar($var, $val) {
+	$a = explode("?", $_SERVER["REQUEST_URI"]);
+	$base = $a[0];
+	$data = array();
+	$_GET[$var] = $val;
+	if ($val == 1) {
+		unset($_GET[$var]);
+	}
+	foreach ($_GET as $k => $i) {
+		$data[] = "$k=$i";
+	}
+	if (count ($_GET)) {
+		$base .= "?" . join('&', $data);
+	}
+	return $base;
+}

@@ -127,8 +127,9 @@ class CApplication {
 		if (!sess('uid')) {
 			utils_302(WEB_ROOT);
 		}
+		$this->layout = 'tpl/resources.master.tpl.php';
 		$this->handler = $h = $this->_load('ResourceHandler');
-		if (count($_FILES)) {
+		if (count($_FILES) && $_FILES['resFile']['size'] != 0) {
 			$h->processUploadFile();
 			$messages = sess('messages', null, array());
 			$messages[] = array(__FUNCTION__ . '_messages' => $h->messages);
@@ -136,7 +137,13 @@ class CApplication {
 			sess('messages', $messages);
 			utils_302($_SERVER['REQUEST_URI']);
 		} else {
-			$h->loadUsersScripts();
+			if (count($_POST)) {
+				$h->updateFileInfo();
+				if (req('action') == 'delete') {
+					json_ok('msg', $h->delete_action_msg);
+				}
+			}
+			$h->loadUserResources();
 		}
 	}
 	/**

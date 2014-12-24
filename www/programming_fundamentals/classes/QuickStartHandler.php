@@ -8,7 +8,6 @@ class QuickStartHandler extends CBaseHandler{
 	public $test_buttons = array();	   //array button_id => button_text
 	public $tests = array();		   //button_template
 	public $comments_data = array();   //комментарии
-	private $_app;
 	private $_comment_tree;
 	public function __construct($app) {
 		$this->_app = $app;

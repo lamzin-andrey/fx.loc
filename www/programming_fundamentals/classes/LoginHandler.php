@@ -1,7 +1,6 @@
 <?php
 require_once APP_ROOT . '/classes/CBaseHandler.php';
 class LoginHandler extends CBaseHandler {
-	private $_app;
 	public function __construct($app) {
 		$this->_app = $app;
 		switch (@$_REQUEST["action"]) {

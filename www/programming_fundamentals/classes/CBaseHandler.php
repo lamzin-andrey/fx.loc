@@ -12,8 +12,13 @@ class CBaseHandler {
 	public $css;
 	/** array специфичные файлы javascript, указывать путь от папки приложения js, например $this->js[] = 'folder/script.js'*/
 	public $js;
+	/** Объект приложения*/
+	protected $_app;
 	
-	public function __construct() {
+	public function __construct($app = null) {
 		$this->lang = utils_getCurrentLang();
+		if ($app) {
+			$this->_app = $app;
+		}
 	}
 }

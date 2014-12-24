@@ -1,12 +1,17 @@
 <?php
 require_once APP_ROOT . '/classes/CBaseHandler.php';
-class ResourceHandler extends CBaseHandler{
+require_once APP_ROOT . '/classes/ResourceList.php';
+
+class ResourceHandler extends CBaseHandler {
 	public $file_list;
-	public function __construct() {
+	public $paging;
+	public $delete_action_msg;
+	
+	public function __construct($app) {
 		$this->left_inner = 'resource_tasklist.tpl.php';
 		$this->right_inner = 'resource_inner.tpl.php';
 		$this->css[] = 'res';
-		parent::__construct();
+		parent::__construct($app);
 	}
 	/**
 	 * @desc Обработка возможных действий на странице
@@ -26,6 +31,34 @@ class ResourceHandler extends CBaseHandler{
 		}
 	}
 	/**
+	 * @desc ОБновление информации о файле
+	 * @param  $filename   - имя файла
+	**/
+	public function updateFileInfo() {
+		$display_file_name = req('resDisplayName');
+		db_escape($display_file_name);
+		if ((int)req('res_edit_id')) {
+			$id = (int)req('res_edit_id');
+			$query = "UPDATE resources SET display_file_name  = '{$display_file_name}'
+					WHERE id = {$id}
+			";
+			query($query, $numRows, $affectedRows);
+			if ($affectedRows) {
+				$this->messages[] = $this->lang['success_update_file'];
+			}
+		} elseif ((int)req('id') && req('action') == 'delete') {
+			$id = (int)req('id');
+			$query = "UPDATE resources SET is_deleted  = 1	WHERE id = {$id}";
+			
+			query($query, $numRows, $affectedRows);
+			if ($affectedRows) {
+				$this->messages[] = $this->delete_action_msg = $this->lang['success_delete_file'];
+			} else {
+				$this->messages[] = $this->delete_action_msg = $this->lang['default_error'];
+			}
+		}
+	}
+	/**
 	 * @desc Загрузка скриптов пользователя, если такие есть
 	 * @param  $filename   - имя файла
 	**/
@@ -40,9 +73,9 @@ class ResourceHandler extends CBaseHandler{
 		$query = "INSERT INTO resources (src_file_name, display_file_name, file_path, user_id, 
 											date_create, date_update, is_image) 
 							VALUES ('{$src_file_name}', '{$display_file_name}', '{$dest_file}', '{$uid}', '{$datetime}', '{$datetime}', '{$is_image}')";
-		if ((int)req('edit_id')) {
-			$id = (int)req('edit_id');
-			$query = "UPDATE jresources SET src_file_name = '{$src_file_name}', 
+		if ((int)req('res_edit_id')) {
+			$id = (int)req('res_edit_id');
+			$query = "UPDATE resources SET src_file_name = '{$src_file_name}', 
 						display_file_name  = '{$display_file_name}',
 						file_path  = '{$dest_file}',
 						is_image  = '{$is_image}',
@@ -83,7 +116,7 @@ class ResourceHandler extends CBaseHandler{
 		}
 		$target = utils_getFilePath(APP_ROOT . '/files', $tmp_file, $filename, $is_image);
 		if (!$target) {
-			$error_str = 'invalid_file_format';
+			$error_str = 'invalid_file_resource';
 			return false;
 		}
 		if (!move_uploaded_file($tmp_file, $target)) {
@@ -95,9 +128,23 @@ class ResourceHandler extends CBaseHandler{
 	/**
 	 * @desc Загрузка скриптов пользователя, если такие есть
 	**/
-	public function loadUsersScripts() {
+	public function loadUserResources() {
+		$resList = new ResourceList($this->_app);
 		$uid = CApplication::getUid();
-		//die('uid = ' . $uid);
+		$page = (int)req('page', 'GET');
+		$page = ($page ? $page : 1);
+		
+		$filter = '';
+		if ($name = req('searchFileName', 'GET')) {
+			$filter = "AND ( display_file_name LIKE ('%{$name}%') OR src_file_name LIKE ('%{$name}%') )";
+		}
+		
+		$this->file_list = $resList->getRawList("user_id = {$uid} {$filter}", '*', '', $page);
+		$this->paging = $resList->paging;
+		return;
+		
+		//old code 
+		$uid = CApplication::getUid();
 		$lang = $this->lang;
 		$query = "SELECT id, src_file_name, display_file_name, file_path, is_image FROM resources WHERE user_id = {$uid} AND is_deleted != 1 ORDER BY delta";
 		//die($query);
