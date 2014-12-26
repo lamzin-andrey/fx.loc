@@ -18,8 +18,22 @@ class EditorHandler extends CBaseHandler{
 					$dval = $val = req('val', 'POST');
 					db_escape($dval);
 					$dval = str_replace('cookie', 'сооkie', $dval);
-					query("UPDATE js_scripts SET file_content = '{$dval}' WHERE id = {$id} AND is_deleted != 1", $nr, $ar);
+					query("UPDATE js_scripts SET file_content = '{$dval}', file_ctrl_sum = '{$file_sum}' WHERE id = {$id} AND is_deleted != 1", $nr, $ar);
 					if ($ar) {
+						//проверяю, есть ли проекты, включающие этот файл
+						$heads = query("SELECT p.head FROM projects WHERE file_id = {$id}", $num);
+						//если есть - пересчитываю для них сумму
+						if ($num) {
+							foreach ($heads as $rec) {
+								$files = query("SELECT s.file_ctrl_sum FROM projects AS p JOIN js_scripts AS s ON s.id = p.file_id WHERE head = {$rec['head']}");
+								$a_sum = array();
+								foreach ($files as $file) {
+									$a_sum[] = $file['file_ctrl_sum'];
+								}
+								$project_sum = md5(join('', $a_sum));
+								query("UPDATE js_scripts SET project_ctrl_sum = '{$project_sum}' WHERE id = {$rec['head']}");
+							}
+						}
 						json_ok('text', $val);
 					} else {
 						json_error('msg', $lang['fail_save_file_enter_it_name'], 'requiredFilename', 1);
@@ -46,13 +60,15 @@ class EditorHandler extends CBaseHandler{
 				$hash = md5("{$src_file_name}{$ip}{$tstamp}");
 				$target = APP_ROOT . "/files/{$hash}.tmp";
 				file_put_contents($target, $file_content);
+				$filemd5 = md5($d_file_content);
 				//@unlink($target);
 				include_once dirname(__FILE__) . '/ConsoleHandler.php';
 				$ch = new ConsoleHandler();
 				if ($ch->validFile($src_file_name, 0, $target, $err_str, $output, $dbg_info)) {
 					$query = "INSERT INTO js_scripts (src_file_name, display_file_name, file_content, user_id, 
-											date_create, date_update) 
-							VALUES ('{$d_src_file_name}', '{$d_display_file_name}', '{$d_file_content}', '{$uid}', '{$tstamp}', '{$tstamp}')";
+											date_create, date_update, file_ctrl_sum) 
+							VALUES ('{$d_src_file_name}', '{$d_display_file_name}', '{$d_file_content}', '{$uid}',
+									'{$tstamp}', '{$tstamp}', '{$filemd5}')";
 					$id = query($query, $numRows, $affectedRows);
 					$message = '';
 					$warning = '';
@@ -132,6 +148,39 @@ class EditorHandler extends CBaseHandler{
 					json_ok('all', $all, 'sets', $data, 'id', $id);
 				}
 				json_error('msg', $lang['load_file_fail']);
+				break;
+			case 'fromAll2sets':
+				$uid = CApplication::getUid();
+				$head = (int)req('head', 'POST');
+				$id = (int)req('ex', 'POST');
+				if ($head && $id) {
+					$ctrl_query = "SELECT COUNT(id) FROM js_scripts WHERE user_id = {$uid} AND id IN ({$id}, {$head}) AND is_deleted = 0";
+					$num = dbvalue($ctrl_query);
+					if ($num) {
+						$sql_query = "INSERT INTO projects (head, file_id) VALUES ({$head}, {$id}) ON DUPLICATE KEY UPDATE head = {$head}";
+						query($sql_query, $num, $updated);
+						if (!$num && !$updated) {
+							json_error('msg', $lang['default_error']);
+						}
+						json_ok('act', $a);
+					}
+				}
+				json_error('msg', $lang['default_error']);
+				break;
+			case 'fromSets2all':
+				$uid = CApplication::getUid();
+				$head = (int)req('head', 'POST');
+				$id = (int)req('ex', 'POST');
+				if ($head && $id) {
+					$ctrl_query = "SELECT COUNT(id) FROM js_scripts WHERE user_id = {$uid} AND id IN ({$id}, {$head}) AND is_deleted = 0";
+					$num = dbvalue($ctrl_query);
+					if ($num) {
+						$sql_query = "DELETE FROM projects WHERE head = {$head} AND file_id = {$id}";
+						query($sql_query, $num, $updated);
+						json_ok('act', $a);
+					}
+				}
+				json_error('msg', $lang['default_error']);
 				break;
 		}
 	}

@@ -680,8 +680,8 @@
 				var exclude = [data.id], sExclude, k = 0;
 				$(data.sets).each(
 					function (i, obj) {
-						$('#qsrdSets')[0].options[k] = new Option(obj.display_file_name, obj.id);
-						exclude.push(obj.id);
+						$('#qsrdSets')[0].options[k] = new Option(obj.display_file_name, obj.file_id);
+						exclude.push(obj.file_id);
 						k++;
 					}
 				);
@@ -711,7 +711,7 @@
 		*/
 		function buildFunctionList() {
 			var s = $(mid).val(),
-				re = /function\s+[A-z0-9]+\s*\([A-z0-9,'" ]*\)/gi,
+				re = /function\s+[A-z0-9_]+\s*\([A-z0-9,'" ]*\)/gi,
 				data = s.match(re), cName, fName;
 			//console.log(data);
 			
@@ -744,7 +744,7 @@
 						$(arr).each(
 							function(i, q) {
 								q = $.trim(q);
-								if (q) {
+								if(q){
 									o.args.push(q);
 								}
 							}
@@ -868,6 +868,92 @@
 		$('#qsEditorOpenFile').click(showOpenFileDlg);
 		$('#qsEditTitleSaveBtn').click(sendRenameFile);
 		$('#qsEditorSetPro').click(showProjectSettingDlg);
+		//Настройка редактора связей
+		function seInitProjectDlg() {
+			//Существующий файл в выбранный
+			function _unlock() {
+				$('#qsSetRelDlg select').prop('disabled', null);
+				$('#qsSetRelDlg button').prop('disabled', null);
+			}
+			function _move(src, dest) {
+				var id = $(src).val(), 
+					opt = $(src + ' option[value=' + id + ']'),
+					text = opt.text();
+				opt.remove();
+				$( dest + ' option[value=' + id + ']').remove();
+				$( dest ).append( $('<option value="' + id + '">' + text + '</option>') );
+			}
+			//Обработка успешного ответа на попытку перемещения
+			function _onMove(data) {
+				_unlock();
+				if (data.status == 'ok') {
+					if (data.act == 'fromAll2sets') {
+						_move('#qsrdAll', '#qsrdSets');
+					}
+					if (data.act == 'fromSets2all') {
+						_move('#qsrdSets', '#qsrdAll');
+					}
+				} else {
+					showError(data.msg);
+				}
+			}
+			//запрос на перемещение
+			function _reqMove(src, cmd) {
+				var data = {
+					head:fileId,
+					ex:$(src)[0].value
+				}
+				if (!data.ex) {
+					return;
+				}
+				$('#qsSetRelDlg select').prop('disabled', 'disabled');
+				$('#qsSetRelDlg button').prop('disabled', 'disabled');
+				req(data, _onMove, defaultAjaxFail, cmd);
+			}
+			$('#qsrdLTR').click(
+				function() {
+					_reqMove('#qsrdAll', 'fromAll2sets');
+				}
+			);
+			$('#qsrdRTL').click(
+				function() {
+					_reqMove('#qsrdSets', 'fromSets2all');
+				}
+			);
+		}
+		//Загрузка функций из связанных файлов
+		function seInitProjectFunctions() {
+			var csum = localStorage.getItem('pro' + fileId);
+			/**
+			 * @desc Сохранение подсказок к функциям связанных файлов в локальное хранилище
+			*/
+			function _onFileContentsData(data) {
+				alert('Now parse and save in LS');
+				_loadFunctionsFromLocalStorage();
+			}
+			/**
+			 * @desc Сравнение локального кеша с удаленным
+			*/
+			function _onCSumData(data) {
+				if (data.csum != csum) {
+					//содержимое файлов изменилось - перезагружаем
+					req({id:fileId}, _onFileContentsData, defaultAjaxFail, 'getCsumAndFlieContents');
+				}
+			}
+			/**
+			 * @desc Загрузка функций в DefaultContentFunctions из локального хранилища
+			*/
+			function _loadFunctionsFromLocalStorage() {
+				alert('reload from local storage');
+			}
+			if (csum) {
+				req({id:fileId}, _onCSumData, defaultAjaxFail, 'getCsum');
+				_loadFunctionsFromLocalStorage();
+			} else {
+				req({id:fileId}, _onFileContentsData, defaultAjaxFail, 'getCsumAndFlieContents');
+			}
+		}
+		
 		if (localStorage.getItem('qsLastText')) {
 			$(mid).val( localStorage.getItem('qsLastText') );
 			setMenuIconState();
@@ -891,11 +977,6 @@
 			}
 		}
 		$(mid).bind('mousewheel', showTextCursorCoord);
-		/*setInterval(
-		 function() {
-			 showTextCursorCoord();
-		 },10
-		);*/
 		//высота редактора на странице text_editor
 		if (window.location.href.indexOf('/text_editor') != -1) {
 			enableFunctions = true;
@@ -908,6 +989,8 @@
 				$('#textEditorArea').width(w)  + 'px'; 
 			}
 		}
+		seInitProjectDlg();
+		seInitProjectFunctions();
 	}
 //============ / Простой редактор кода==================================
 

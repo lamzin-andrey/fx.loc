@@ -97,7 +97,7 @@
 				</div>
 				<div class="left qsrelbuttons">
 					<button id="qsrdLTR">&gt;&gt;</button><br>
-					<button id="qsrdLTR">&lt;&lt;</button>
+					<button id="qsrdRTL">&lt;&lt;</button>
 				</div>
 				<div class="left">
 					<select multiple id="qsrdSets"></select>
