@@ -18,10 +18,11 @@ class EditorHandler extends CBaseHandler{
 					$dval = $val = req('val', 'POST');
 					db_escape($dval);
 					$dval = str_replace('cookie', 'сооkie', $dval);
+					$file_sum = md5($dval);
 					query("UPDATE js_scripts SET file_content = '{$dval}', file_ctrl_sum = '{$file_sum}' WHERE id = {$id} AND is_deleted != 1", $nr, $ar);
 					if ($ar) {
 						//проверяю, есть ли проекты, включающие этот файл
-						$heads = query("SELECT p.head FROM projects WHERE file_id = {$id}", $num);
+						$heads = query("SELECT p.head FROM projects AS p WHERE file_id = {$id}", $num);
 						//если есть - пересчитываю для них сумму
 						if ($num) {
 							foreach ($heads as $rec) {
@@ -162,6 +163,7 @@ class EditorHandler extends CBaseHandler{
 						if (!$num && !$updated) {
 							json_error('msg', $lang['default_error']);
 						}
+						$this->_recalculateProjectCSum($head);
 						json_ok('act', $a);
 					}
 				}
@@ -177,11 +179,75 @@ class EditorHandler extends CBaseHandler{
 					if ($num) {
 						$sql_query = "DELETE FROM projects WHERE head = {$head} AND file_id = {$id}";
 						query($sql_query, $num, $updated);
+						$this->_recalculateProjectCSum($head);
 						json_ok('act', $a);
 					}
 				}
 				json_error('msg', $lang['default_error']);
 				break;
+			case 'getCsumAndFlieContents':
+				$head = req('id');
+				if ($head == -1) {
+					json_ok('nothing', 1);
+				}
+				if ($head) {
+					$this->_access($head);
+					$sql_query = "SELECT project_ctrl_sum FROM js_scripts WHERE id = {$head}";
+					$sum = dbvalue($sql_query);
+					
+					$sql_query = "
+					SELECT s.id, s.file_content FROM projects AS p
+					JOIN js_scripts AS s ON s.id = p.file_id 
+					WHERE head = {$head}";
+					$data = query($sql_query);
+					json_ok('sum', $sum, 'rows', $data);
+				}
+				json_error('msg', $lang['default_error'], 'nothing', 1);
+				break;
+			case 'getCsum':
+				$head = req('id');
+				if ($head == -1) {
+					json_ok('nothing', 1);
+				}
+				if ($head) {
+					$this->_access($head);
+					$sql_query = "SELECT project_ctrl_sum FROM js_scripts WHERE id = {$head}";
+					$sum = dbvalue($sql_query);
+					json_ok('sum', $sum);
+				}
+				json_error('msg', $lang['default_error'], 'nothing', 1);
+				break;
+		}
+	}
+	/**
+	 * @desc Подсчитывает и обновляет в таблице контрольную сумму проекта
+	 * @param  номер файла, определяющего проект
+	*/
+	private function _recalculateProjectCSum($head) {
+		$sql_query = "
+		SELECT s.file_ctrl_sum FROM projects AS p 
+		JOIN js_scripts AS s ON s.id = p.file_id
+		WHERE head = {$head} ORDER BY s.id";
+		$data = query($sql_query, $num);
+		if ($num) {
+			$ar = array();
+			foreach ($data as $row) {
+				$ar[] = $row['file_ctrl_sum'];
+			}
+			$sum = md5( join('', $ar) );
+			query("UPDATE js_scripts SET project_ctrl_sum = '{$sum}' WHERE id = '{$head}'");
+		}
+	}
+	/**
+	 * @desc Прерывает выполнение если файл чужой
+	 * @param $file_id 
+	*/
+	private function _access($file_id) {
+		$file_id = (int)$file_id;
+		$uid = CApplication::getUid();
+		$id = dbvalue("SELECT id FROM js_scripts WHERE id = {$file_id} AND user_id = {$uid}");
+		if (!$id) {
+			json_error('msg', $lang['default_error']);
 		}
 	}
 }

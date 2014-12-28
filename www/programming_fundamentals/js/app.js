@@ -722,6 +722,7 @@
 					ContentFunctions[cName][fName] = {
 						name:DefaultContentFunctions[cName][fName].name,
 						src:DefaultContentFunctions[cName][fName].src,
+						args:[]
 					};
 					for (var k = 0; k < DefaultContentFunctions[cName][fName].args.length; k++) {
 						ContentFunctions[cName][fName].args.push( DefaultContentFunctions[cName][fName].args[k] );
@@ -923,13 +924,74 @@
 		}
 		//Загрузка функций из связанных файлов
 		function seInitProjectFunctions() {
-			var csum = localStorage.getItem('pro' + fileId);
+			var csum = localStorage.getItem('prohash' + fileId);
 			/**
 			 * @desc Сохранение подсказок к функциям связанных файлов в локальное хранилище
 			*/
-			function _onFileContentsData(data) {
-				alert('Now parse and save in LS');
+			function _onFileContentsData(response) {
+				if (response.nothing == 1) {
+					return;
+				}
+				//alert('Now parse and save in LS');
+				var list = response.rows, i, libName, obj;
+				var storage = {};
+				for (i in list) {
+					obj = list[i];
+					libName = _getLibName(obj.file_content);
+					
+					var re = /[A-z0-9_]+\s*\:\s*function\s*\([A-z0-9,'" ]*\)/gi,
+						s = obj.file_content,
+						data = s.match(re), cName, fName;
+					//console.log(data);
+					$(data).each(
+						function (i, s) {
+							var src = s,
+								o = {args:[]},
+								j, _name = '', open = 0, ch, nameStart = 0, readArg = 0;
+							s = s.replace('function', '');
+							var args = s.replace(/.*\(([^)]*)\).*/, '$1');
+							var arr = s.split('(');
+							o.name = $.trim((arr[0]));
+							arr = s.split(':');
+							o.name = $.trim((arr[0]));
+							o.src = src;
+							//console.log(args);
+							if (args.length) {
+								arr = args.split(',');
+								$(arr).each(
+									function(i, q) {
+										q = $.trim(q);
+										if(q){
+											o.args.push(q);
+										}
+									}
+								);
+							}
+							if (!storage[libName]) {
+								storage[libName] = {}
+							}
+							storage[libName][o.name] = o;
+						}
+					);
+				}
+				localStorage.setItem('proj' + fileId, JSON.stringify(storage));
+				localStorage.setItem('prohash' + fileId, response.sum);
 				_loadFunctionsFromLocalStorage();
+			}
+			/**
+			 * @desc Получить имя библиотеки из javaScript кода
+			 * Предполагается, в коде определена только одна переменная window.LibName
+			*/
+			function _getLibName(s) {
+				var re = /window\.([A-z0-9_]+)/mi,
+					names = s.match(re), name = false;
+				if (names && names.length >= 2) {
+					name = names[1];
+				}
+				if (name) {
+					return name;
+				}
+				return 'globals';
 			}
 			/**
 			 * @desc Сравнение локального кеша с удаленным
@@ -944,7 +1006,23 @@
 			 * @desc Загрузка функций в DefaultContentFunctions из локального хранилища
 			*/
 			function _loadFunctionsFromLocalStorage() {
-				alert('reload from local storage');
+				var data = JSON.parse( localStorage.getItem('proj' + fileId) ), cName, fName;
+				for (cName in data) {
+					DefaultContentFunctions[cName] = {};
+					for (fName in data[cName]) {
+						DefaultContentFunctions[cName][fName] = {
+							name:data[cName][fName].name,
+							src:data[cName][fName].src,
+							args:[]
+						};
+						for (var k = 0; k < data[cName][fName].args.length; k++) {
+							DefaultContentFunctions[cName][fName].args.push( data[cName][fName].args[k] );
+						}
+					}
+				}
+				try {
+					buildFunctionList();
+				} catch(e) {;}
 			}
 			if (csum) {
 				req({id:fileId}, _onCSumData, defaultAjaxFail, 'getCsum');
@@ -977,8 +1055,9 @@
 			}
 		}
 		$(mid).bind('mousewheel', showTextCursorCoord);
-		//высота редактора на странице text_editor
+		//на странице text_editor
 		if (window.location.href.indexOf('/text_editor') != -1) {
+			//высота редактора
 			enableFunctions = true;
 			maxEditorHeight = getViewport().h - 130;
 			$('#qs_editor_s').height(  maxEditorHeight + 'px' );
@@ -988,9 +1067,10 @@
 			if (w = localStorage.getItem('editorWidth')) {
 				$('#textEditorArea').width(w)  + 'px'; 
 			}
+			//загрузка связанных функций
+			seInitProjectDlg();
+			seInitProjectFunctions();
 		}
-		seInitProjectDlg();
-		seInitProjectFunctions();
 	}
 //============ / Простой редактор кода==================================
 
