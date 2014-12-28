@@ -558,7 +558,12 @@
 					$('#currentFileName').text(fileDisplayName);
 					localStorage.setItem('fileDisplayName', fileDisplayName);
 					onKeyUp();
-					buildFunctionList();
+					if (window.location.href.indexOf('/text_editor') != -1) {
+						DefaultContentFunctions = {globals:{}};
+						seInitProjectFunctions();
+					} else {
+						buildFunctionList();
+					}
 					hideLoader();
 				}
 				var id = parseInt($(this).data('id'));
@@ -707,6 +712,21 @@
 		}
 		//плюшки для редактора
 		/**
+		 * @desc Получить имя библиотеки из javaScript кода
+		 * Предполагается, в коде определена только одна переменная window.LibName
+		*/
+		function _getLibName(s) {
+			var re = /window\.([A-z0-9_]+)/mi,
+				names = s.match(re), name = false;
+			if (names && names.length >= 2) {
+				name = names[1];
+			}
+			if (name) {
+				return name;
+			}
+			return 'globals';
+		}
+		/**
 		 * @desc строит список функций, встречающихся в открытом файле
 		*/
 		function buildFunctionList() {
@@ -754,6 +774,39 @@
 					ContentFunctions.globals[o.name] = o;
 				}
 			);
+			re = /[A-z0-9_]+\s*\:\s*function\s*\([A-z0-9,'" ]*\)/gi;
+			data = s.match(re);
+			var libName = _getLibName(s);
+			$(data).each(
+				function (i, s) {
+					var src = s,
+						o = {args:[]},
+						j, _name = '', open = 0, ch, nameStart = 0, readArg = 0;
+					s = s.replace('function', '');
+					var args = s.replace(/.*\(([^)]*)\).*/, '$1');
+					var arr = s.split('(');
+					o.name = $.trim((arr[0]));
+					arr = s.split(':');
+					o.name = $.trim((arr[0]));
+					o.src = src;
+					//console.log(args);
+					if (args.length) {
+						arr = args.split(',');
+						$(arr).each(
+							function(i, q) {
+								q = $.trim(q);
+								if(q){
+									o.args.push(q);
+								}
+							}
+						);
+					}
+					if (!ContentFunctions[libName]) {
+						ContentFunctions[libName] = {}
+					}
+					ContentFunctions[libName][o.name] = o;
+				}
+			);
 			//console.log(ContentFunctions);
 			showContentFunctionsInList();
 		}
@@ -769,7 +822,7 @@
 					container = addContentClassInList(cName);
 				}
 				for (fName in ContentFunctions[cName]) {
-					container.append( $('<li><a href="#" onclick="SiEd.gotoFunctionOnEditor(\'' + fName + '\'); return false;">' + fName + '</a></li>') );
+					container.append( $('<li><a href="#" onclick="SiEd.gotoFunctionOnEditor(\'' + fName + '\', \'' + cName + '\'); return false;">' + fName + '</a></li>') );
 				}
 			}
 		}
@@ -777,7 +830,27 @@
 		 * Возвращает ссылку на элемент списка, для построения дерева
 		 * */
 		function addContentClassInList(cName) {
-			return $('#functionlist'); //TODO заглушку убрать
+			var root = $('#functionlist'),
+				tpl = '<li>\
+						<a href="#" class="code_object" onclick="return SiEd.swapVisible(\'' + cName + '\')" id="' + cName + '">' + cName + '</a>\
+						<ul id="' + cName + 'M" class="hide code_subc">\
+						</ul>\
+					  </li>';
+			root.append( $(tpl) );
+			root = $('#' + cName + 'M');
+			return root; //TODO заглушку убрать
+		}
+		/**
+		 * Скрыть или показать список методов в классе
+		*/
+		window.SiEd.swapVisible = function (cName) {
+			var obj = $('#' + cName + 'M');
+			if (obj.hasClass('hide')) {
+				obj.removeClass('hide')
+			} else {
+				obj.addClass('hide')
+			}
+			return false;
 		}
 		/**
 		 * Переход к выбранной в списке справа функции
@@ -977,21 +1050,6 @@
 				localStorage.setItem('proj' + fileId, JSON.stringify(storage));
 				localStorage.setItem('prohash' + fileId, response.sum);
 				_loadFunctionsFromLocalStorage();
-			}
-			/**
-			 * @desc Получить имя библиотеки из javaScript кода
-			 * Предполагается, в коде определена только одна переменная window.LibName
-			*/
-			function _getLibName(s) {
-				var re = /window\.([A-z0-9_]+)/mi,
-					names = s.match(re), name = false;
-				if (names && names.length >= 2) {
-					name = names[1];
-				}
-				if (name) {
-					return name;
-				}
-				return 'globals';
 			}
 			/**
 			 * @desc Сравнение локального кеша с удаленным

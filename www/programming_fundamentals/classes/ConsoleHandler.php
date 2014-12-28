@@ -38,15 +38,18 @@ class ConsoleHandler extends CBaseHandler{
 		db_escape($src_file_name);
 		db_escape($display_file_name);
 		db_escape($s);
+		$s = str_replace('cookie', 'сооkie', $s);
+		$filemd5 = md5($s);
 		$query = "INSERT INTO js_scripts (src_file_name, display_file_name, file_content, user_id, 
-											date_create, date_update) 
-							VALUES ('{$src_file_name}', '{$display_file_name}', '{$s}', '{$uid}', '{$datetime}', '{$datetime}')";
+											date_create, date_update, file_ctrl_sum) 
+							VALUES ('{$src_file_name}', '{$display_file_name}', '{$s}', '{$uid}', '{$datetime}', '{$datetime}', '{$filemd5}')";
 		if ((int)req('edit_id')) {
 			$id = (int)req('edit_id');
 			$query = "UPDATE js_scripts SET src_file_name = '{$src_file_name}', 
 						display_file_name  = '{$display_file_name}',
 						file_content  = '{$s}',
-						date_update = '{$datetime}'
+						date_update = '{$datetime}',
+						file_ctrl_sum = '{$filemd5}'
 					WHERE id = {$id}
 			";
 		}

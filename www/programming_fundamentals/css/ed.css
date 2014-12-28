@@ -143,9 +143,11 @@ u{text-decoration:none; color:#2A8109; font-style:italic;}
 .simple_code_editor {
 	display:block;
 }
-#functionlist {
+#functionlist, .code_subc {
 	margin-top:0px;
+	padding-left:10px;
 }
+
 #functionlist li{
 	margin-bottom:none !important;
 }
@@ -159,6 +161,10 @@ u{text-decoration:none; color:#2A8109; font-style:italic;}
 	top:200px;
 	left:42px;
 	font-size:11pt;
+}
+.code_object {
+	color:#0095FF !important;
+	font-weight:bold;
 }
 #qseLineWrapper {
 	resize:none;
