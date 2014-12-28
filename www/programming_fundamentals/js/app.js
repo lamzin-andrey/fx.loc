@@ -82,7 +82,7 @@
 			maxEditorHeight = false,
 			enableFunctions = false,
 			ContentFunctions = {globals:{}},
-			DefaultContentFunctions = {globals:{}};
+			DefaultContentFunctions = _getStdMethods();
 		window.SiEd = {};
 		if (!$(mid)[0]) {
 			return;
@@ -559,7 +559,6 @@
 					localStorage.setItem('fileDisplayName', fileDisplayName);
 					onKeyUp();
 					if (window.location.href.indexOf('/text_editor') != -1) {
-						DefaultContentFunctions = {globals:{}};
 						seInitProjectFunctions();
 					} else {
 						buildFunctionList();
@@ -711,6 +710,14 @@
 			req(data, onRename, onFailRename, 'renameFile', WEB_ROOT + '/editor/');*/
 		}
 		//плюшки для редактора
+		function _getStdMethods() {
+			var object = JSON.parse( String(localStorage.getItem('projstd')) );
+			//console.log(object);
+			object.globals = {};
+			//console.log(object);
+			//return {globals:{}};//TODO сделать получение так же как с определенными в проекте
+			return object;
+		}
 		/**
 		 * @desc Получить имя библиотеки из javaScript кода
 		 * Предполагается, в коде определена только одна переменная window.LibName
@@ -739,16 +746,25 @@
 			for (cName in DefaultContentFunctions) {
 				ContentFunctions[cName] = {}
 				for (fName in DefaultContentFunctions[cName]) {
+					if (fName == 'std') {
+						ContentFunctions[cName].std = true;
+						continue;
+					}
 					ContentFunctions[cName][fName] = {
 						name:DefaultContentFunctions[cName][fName].name,
 						src:DefaultContentFunctions[cName][fName].src,
-						args:[]
+						args:[],
+						std:DefaultContentFunctions[cName][fName].std,
+						showStd:DefaultContentFunctions[cName][fName].showStd
 					};
-					for (var k = 0; k < DefaultContentFunctions[cName][fName].args.length; k++) {
-						ContentFunctions[cName][fName].args.push( DefaultContentFunctions[cName][fName].args[k] );
+					if (DefaultContentFunctions[cName][fName].args) {
+						for (var k = 0; k < DefaultContentFunctions[cName][fName].args.length; k++) {
+							ContentFunctions[cName][fName].args.push( DefaultContentFunctions[cName][fName].args[k] );
+						}
 					}
 				}
 			}
+			//globals
 			$(data).each(
 				function (i, s) {
 					var src = s,
@@ -774,6 +790,7 @@
 					ContentFunctions.globals[o.name] = o;
 				}
 			);
+			//window.Lib functions
 			re = /[A-z0-9_]+\s*\:\s*function\s*\([A-z0-9,'" ]*\)/gi;
 			data = s.match(re);
 			var libName = _getLibName(s);
@@ -807,6 +824,43 @@
 					ContentFunctions[libName][o.name] = o;
 				}
 			);
+			//prototype functions
+			re = /[A-z0-9_]+\s*\.\s*prototype\s*\.[A-z0-9_]+\s*=\s*function\s*\([A-z0-9,'" ]*\)/gi;
+			data = s.match(re);
+			$(data).each(
+				function (i, s) {
+					var src = s,
+						o = {args:[]},
+						j, _name = '', open = 0, ch, nameStart = 0, readArg = 0;
+					s = s.replace('function', '');
+					var args = s.replace(/.*\(([^)]*)\).*/, '$1');
+					var arr = s.split('(');
+					var q = $.trim((arr[0]));
+					arr = q.split('prototype');
+					var cName = $.trim((arr[0]));
+					cName = $.trim( cName.replace('.', '') );
+					o.name = $.trim((arr[1]));
+					o.name = $.trim( o.name.replace(/[.=]/gim, '') );
+					o.src = src;
+					//console.log(args);
+					if (args.length) {
+						arr = args.split(',');
+						$(arr).each(
+							function(i, q) {
+								q = $.trim(q);
+								if(q){
+									o.args.push(q);
+								}
+							}
+						);
+					}
+					if (!ContentFunctions[cName]) {
+						ContentFunctions[cName] = {}
+					}
+					ContentFunctions[cName][o.name] = o;
+				}
+			);
+			
 			//console.log(ContentFunctions);
 			showContentFunctionsInList();
 		}
@@ -818,11 +872,18 @@
 				cName, fName;
 			container.html('');
 			for (cName in ContentFunctions) {
-				if (cName != 'globals') {
+				if (cName != 'globals' && !ContentFunctions[cName].std) {
 					container = addContentClassInList(cName);
+				} else {
+					container = $('#functionlist');
 				}
 				for (fName in ContentFunctions[cName]) {
-					container.append( $('<li><a href="#" onclick="SiEd.gotoFunctionOnEditor(\'' + fName + '\', \'' + cName + '\'); return false;">' + fName + '</a></li>') );
+					if (fName == 'std') {
+						continue;
+					}
+					if ( (ContentFunctions[cName][fName].std && ContentFunctions[cName][fName].showStd) || !ContentFunctions[cName][fName].std ) {
+						container.append( $('<li><a href="#" onclick="SiEd.gotoFunctionOnEditor(\'' + fName + '\', \'' + cName + '\'); return false;">' + fName + '</a></li>') );
+					}
 				}
 			}
 		}
@@ -996,8 +1057,11 @@
 			);
 		}
 		//Загрузка функций из связанных файлов
-		function seInitProjectFunctions() {
+		function seInitProjectFunctions(std) {
 			var csum = localStorage.getItem('prohash' + fileId);
+			if (std) {
+				csum = localStorage.getItem('prohashstd');
+			}
 			/**
 			 * @desc Сохранение подсказок к функциям связанных файлов в локальное хранилище
 			*/
@@ -1005,6 +1069,9 @@
 				if (response.nothing == 1) {
 					return;
 				}
+				//получить настройку, показывать ли стандартные функции в списке слева
+				var showStd = localStorage.getItem('showStd');
+				showStd = showStd ? true : false;
 				//alert('Now parse and save in LS');
 				var list = response.rows, i, libName, obj;
 				var storage = {};
@@ -1028,6 +1095,10 @@
 							arr = s.split(':');
 							o.name = $.trim((arr[0]));
 							o.src = src;
+							if (std) {
+								o.std = std;
+								o.showStd = showStd;
+							}
 							//console.log(args);
 							if (args.length) {
 								arr = args.split(',');
@@ -1046,18 +1117,74 @@
 							storage[libName][o.name] = o;
 						}
 					);
+					
+					// begin
+					//prototype functions
+					re = /[A-z0-9_]+\s*\.\s*prototype\s*\.[A-z0-9_]+\s*=\s*function\s*\([A-z0-9,'" ]*\)/gi;
+					data = s.match(re);
+					$(data).each(
+						function (i, s) {
+							var src = s,
+								o = {args:[]},
+								j, _name = '', open = 0, ch, nameStart = 0, readArg = 0;
+							s = s.replace('function', '');
+							var args = s.replace(/.*\(([^)]*)\).*/, '$1');
+							var arr = s.split('(');
+							var q = $.trim((arr[0]));
+							arr = q.split('prototype');
+							var cName = $.trim((arr[0]));
+							cName = $.trim( cName.replace('.', '') );
+							o.name = $.trim((arr[1]));
+							o.name = $.trim( o.name.replace(/[.=]/gim, '') );
+							o.src = src;
+							if (std) {
+								o.std = std;
+								o.showStd = showStd;
+							}
+							//console.log(args);
+							if (args.length) {
+								arr = args.split(',');
+								$(arr).each(
+									function(i, q) {
+										q = $.trim(q);
+										if(q){
+											o.args.push(q);
+										}
+									}
+								);
+							}
+							if (!storage[cName]) {
+								storage[cName] = {}
+							}
+							storage[cName][o.name] = o;
+							
+							if (response.std) {
+								storage[cName].std = true;
+							}
+						}
+					);
+					// /end
+					
 				}
-				localStorage.setItem('proj' + fileId, JSON.stringify(storage));
-				localStorage.setItem('prohash' + fileId, response.sum);
+				var fid = fileId;
+				if (response.std) {
+					fid = 'std';
+				}
+				localStorage.setItem('proj' + fid, JSON.stringify(storage));
+				localStorage.setItem('prohash' + fid, response.sum);
 				_loadFunctionsFromLocalStorage();
 			}
 			/**
 			 * @desc Сравнение локального кеша с удаленным
 			*/
 			function _onCSumData(data) {
-				if (data.csum != csum) {
+				if (data.sum != csum) {
 					//содержимое файлов изменилось - перезагружаем
-					req({id:fileId}, _onFileContentsData, defaultAjaxFail, 'getCsumAndFlieContents');
+					if (!std) {
+						req({id:fileId}, _onFileContentsData, defaultAjaxFail, 'getCsumAndFlieContents');
+					} else {
+						req({id:'std'}, _onFileContentsData, defaultAjaxFail, 'getCsumAndFlieContents');
+					}
 				}
 			}
 			/**
@@ -1065,13 +1192,19 @@
 			*/
 			function _loadFunctionsFromLocalStorage() {
 				var data = JSON.parse( localStorage.getItem('proj' + fileId) ), cName, fName;
+				DefaultContentFunctions = _getStdMethods();
 				for (cName in data) {
 					DefaultContentFunctions[cName] = {};
 					for (fName in data[cName]) {
+						if (fName == 'std') {
+							continue;
+						}
 						DefaultContentFunctions[cName][fName] = {
 							name:data[cName][fName].name,
 							src:data[cName][fName].src,
-							args:[]
+							args:[],
+							std:data[cName][fName].std,
+							showStd:data[cName][fName].showStd
 						};
 						for (var k = 0; k < data[cName][fName].args.length; k++) {
 							DefaultContentFunctions[cName][fName].args.push( data[cName][fName].args[k] );
@@ -1082,11 +1215,20 @@
 					buildFunctionList();
 				} catch(e) {;}
 			}
-			if (csum) {
-				req({id:fileId}, _onCSumData, defaultAjaxFail, 'getCsum');
-				_loadFunctionsFromLocalStorage();
+			if (!std) {	
+				if (csum) {
+					req({id:fileId}, _onCSumData, defaultAjaxFail, 'getCsum');
+					_loadFunctionsFromLocalStorage();
+				} else {
+					req({id:fileId}, _onFileContentsData, defaultAjaxFail, 'getCsumAndFlieContents');
+				}
 			} else {
-				req({id:fileId}, _onFileContentsData, defaultAjaxFail, 'getCsumAndFlieContents');
+				if (csum) {
+					req({id:'std'}, _onCSumData, defaultAjaxFail, 'getCsum');
+					_loadFunctionsFromLocalStorage();
+				} else {
+					req({id:'std'}, _onFileContentsData, defaultAjaxFail, 'getCsumAndFlieContents');
+				}
 			}
 		}
 		
@@ -1127,6 +1269,7 @@
 			}
 			//загрузка связанных функций
 			seInitProjectDlg();
+			seInitProjectFunctions(true);
 			seInitProjectFunctions();
 		}
 	}

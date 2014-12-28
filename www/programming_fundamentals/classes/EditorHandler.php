@@ -10,6 +10,7 @@ class EditorHandler extends CBaseHandler{
 	public function ajaxAction() {
 		$lang = utils_getCurrentLang();
 		$a = req('action', 'POST');
+		$stdId = 12; //TODO  вынести в константу
 		switch ($a) {
 			case 'saveFile':
 				$id = (int)req('id', 'POST');
@@ -191,6 +192,12 @@ class EditorHandler extends CBaseHandler{
 					json_ok('nothing', 1);
 				}
 				if ($head) {
+					$load_std = false;
+					if ($head == 'std') {
+						$head = $stdId; //TODO вынести куда-то, идентификатор файла содержащий стандартные функции
+						$load_std = true;
+					}
+					$head = (int)$head;
 					$this->_access($head);
 					$sql_query = "SELECT project_ctrl_sum FROM js_scripts WHERE id = {$head}";
 					$sum = dbvalue($sql_query);
@@ -199,7 +206,15 @@ class EditorHandler extends CBaseHandler{
 					SELECT s.id, s.file_content FROM projects AS p
 					JOIN js_scripts AS s ON s.id = p.file_id 
 					WHERE head = {$head}";
+					if ($load_std) {
+						$sql_query = "
+							SELECT s.id, s.file_content FROM js_scripts AS s
+							WHERE id = {$head}";
+					}
 					$data = query($sql_query);
+					if ($load_std) {
+						json_ok('sum', $sum, 'rows', $data, 'std', 1);
+					}
 					json_ok('sum', $sum, 'rows', $data);
 				}
 				json_error('msg', $lang['default_error'], 'nothing', 1);
@@ -209,6 +224,10 @@ class EditorHandler extends CBaseHandler{
 				if ($head == -1) {
 					json_ok('nothing', 1);
 				}
+				if ($head == 'std') {
+					$head = $stdId;
+				}
+				$head = (int)$head;
 				if ($head) {
 					$this->_access($head);
 					$sql_query = "SELECT project_ctrl_sum FROM js_scripts WHERE id = {$head}";
