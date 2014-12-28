@@ -198,7 +198,9 @@ class EditorHandler extends CBaseHandler{
 						$load_std = true;
 					}
 					$head = (int)$head;
-					$this->_access($head);
+					if(!$load_std) {
+						$this->_access($head);
+					}
 					$sql_query = "SELECT project_ctrl_sum FROM js_scripts WHERE id = {$head}";
 					$sum = dbvalue($sql_query);
 					
@@ -221,15 +223,19 @@ class EditorHandler extends CBaseHandler{
 				break;
 			case 'getCsum':
 				$head = req('id');
+				$load_std = false;
 				if ($head == -1) {
 					json_ok('nothing', 1);
 				}
 				if ($head == 'std') {
 					$head = $stdId;
+					$load_std = true;
 				}
 				$head = (int)$head;
 				if ($head) {
-					$this->_access($head);
+					if(!$load_std) {
+						$this->_access($head);
+					}
 					$sql_query = "SELECT project_ctrl_sum FROM js_scripts WHERE id = {$head}";
 					$sum = dbvalue($sql_query);
 					json_ok('sum', $sum);
@@ -262,6 +268,7 @@ class EditorHandler extends CBaseHandler{
 	 * @param $file_id 
 	*/
 	private function _access($file_id) {
+		$lang = utils_getCurrentLang();
 		$file_id = (int)$file_id;
 		$uid = CApplication::getUid();
 		$id = dbvalue("SELECT id FROM js_scripts WHERE id = {$file_id} AND user_id = {$uid}");

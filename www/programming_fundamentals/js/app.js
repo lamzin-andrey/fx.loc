@@ -712,7 +712,9 @@
 		//плюшки для редактора
 		function _getStdMethods() {
 			var object = JSON.parse( String(localStorage.getItem('projstd')) );
-			//console.log(object);
+			if (!object) {
+				object = {};
+			}
 			object.globals = {};
 			//console.log(object);
 			//return {globals:{}};//TODO сделать получение так же как с определенными в проекте
