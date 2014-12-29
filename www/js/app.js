@@ -15,6 +15,8 @@
 			initComments();
 			initScrollSaver();
 			initResourcesPage();
+			initTaskvariantsPage();
+			initMainPage();
 		}
 	);
 //============Простой редактор кода=====================================
@@ -1478,6 +1480,7 @@
 		
 	}
 //====== /Словарь кейвордов и стандартных функций
+//====== Тултипы
 	/**
 	 * @desc Уведомления в стиле ubuntu
 	 * */
@@ -1590,6 +1593,7 @@
 		data[key] = [s];
 		window.infoMessages[parseInt(new Date().getTime()) + Math.random()] = data;
 	}
+//====== /Тултипы
 	/**
 	 * @desc Если пользователь неавторизован и у него нет guid надо его указать
 	 * */
@@ -1690,6 +1694,25 @@
 				req({id:$(this).data('id')}, onTaskRemove, onTaskFailRemove, 'removeTask');*/
 			}
 		);
+	}
+	/***/
+	function initTaskvariantsPage() {
+		if (window.location.href.indexOf('/tasklist') != -1) {
+			var h = getViewport().h - 20;
+			$('.textcontent').first().height(h + 'px');
+			$('.tasklist ul').first().height(h + 'px');
+		}
+	}
+	/**
+	 * 
+	*/
+	function initMainPage() {
+		var _host = Tool.host(),
+			s = $.trim(window.location.href.replace(/^\//, '').replace(/\/$/, ''));
+		if (s == _host) {
+			var h = getViewport().h - 39;
+			$('.tasklist ul').first().height(h + 'px');
+		}
 	}
 	/**
 	 * @desc  Инициализация консоли
