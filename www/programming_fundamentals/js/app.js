@@ -372,6 +372,7 @@
 				}
 				appWindow('saveScriptFormWrapper', lang['information']);
 			} else if(localStorage.getItem('qsLastSavedText') != $(mid).val()){
+				//alert( 'store = |' + localStorage.getItem('qsLastSavedText') + '|, mval=|' +  $(mid).val()  + '|');
 				try {
 					var F = eval('(' + $(mid).val() + ')');
 					if (!F.name) {
@@ -414,6 +415,8 @@
 				localStorage.setItem('fileId', fileId);
 				fileDisplayName = d.display;
 				localStorage.setItem('fileDisplayName', fileDisplayName);
+				localStorage.setItem('qsLastSavedText', $(mid).val());
+				
 				$('#currentFileName').text(fileDisplayName);
 				appWindowClose();
 				$("#qsEditorSave").css('cursor', 'default').attr("src", WEB_ROOT + "/img/save_d.png")[0].onclick = null;
