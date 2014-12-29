@@ -10,10 +10,15 @@ class TasklistHandler extends CBaseHandler{
 		$aUrl = explode('?', $_SERVER['REQUEST_URI']);
 		$url = $aUrl[0];
 		$a = explode('programming_fundamentals/tasklist', $url);
+		
 		if (count($a) > 1) {
 			$s = str_replace('/', '', $a[1]);
 			if (file_exists(APP_ROOT . '/files/tasklist/' . $s . '.php')) {
 				$this->book_tpl = $s;
+			} else if ($a[1] == '/' || !$a[1]) {
+				$this->book_tpl = '1';
+			} else {
+				$this->action404();
 			}
 		}
 		parent::__construct();

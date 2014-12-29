@@ -52,10 +52,13 @@ class CApplication {
 			default:
 				if (strpos($url, 'programming_fundamentals/quick_start/') !== false) {
 					$this->_quickStartActions();
+					return;
 				}
 				if (strpos($url, 'programming_fundamentals/tasklist/') !== false) {
 					$this->_tasklistActions();
+					return;
 				}
+				$this->_404();
 		}
 	}
 	/**
@@ -73,6 +76,12 @@ class CApplication {
 	**/
 	private function _loginActions() {
 		$this->handler = $h = $this->_load('LoginHandler');
+	}
+	/**
+	 * @desc Обработка 404
+	**/
+	private function _404() {
+		$this->handler = $h = $this->_load('Page404');
 	}
 	/**
 	 * @desc Обработка возможных действий на странице списка задач

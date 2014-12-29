@@ -28,6 +28,10 @@ class QuickStartHandler extends CBaseHandler{
 				$this->_addExtendsTest($s);
 				$this->js[] = 'usertest/newwords/testNewWord.js';      		   //Окошко для теста на новые слова
 				$this->show_test_new_words_button = true;
+			} else if ($a[1] == '/' || !$a[1]) {
+				$this->book_tpl = 'intro';
+			} else {
+				$this->action404();
 			}
 		}
 		$this->_comment_tree = new CommentTree($app);

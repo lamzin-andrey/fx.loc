@@ -21,4 +21,13 @@ class CBaseHandler {
 			$this->_app = $app;
 		}
 	}
+	
+	public function action404() {
+		utils_404();
+		$this->left_inner = 'main_tasklist.tpl.php';
+		$this->right_inner = '404_promo.tpl.php';
+		$this->css[] = 'promo';
+	}
+	
+	
 }

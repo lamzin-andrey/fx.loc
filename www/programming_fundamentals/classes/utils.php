@@ -295,8 +295,6 @@ function utils_404($template = null, $masterTemplate = null) {
 			include_once $masterTemplate;
 		}
 	}
-	
-	exit;
 }
 
 function utils_302($location = "/") {
