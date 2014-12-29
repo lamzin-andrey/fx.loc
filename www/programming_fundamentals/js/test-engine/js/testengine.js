@@ -344,11 +344,6 @@ TestEngine.prototype.reset = function(showBeginScreen) {
  * @desc Проверка правильности введенного текстового ответа
 */
 TestEngine.prototype.isAnswersEqual = function() {
-}
-/**
- * @desc Проверка правильности введенного текстового ответа
-*/
-TestEngine.prototype.isAnswersEqual = function() {
 	var i, a, b;
 	function _lc(s) { return s.toLowerCase();}
 	function _split(s) {
@@ -362,6 +357,9 @@ TestEngine.prototype.isAnswersEqual = function() {
 		return b;
 	}
 	a = String(this.view.getAnswer()), b = String(this.quests[this.iterator].a);
+	if (!a) {
+		return false;
+	}
 	if (!this.caseSensitive) {
 		a = _lc(a);
 		b = _lc(b);
