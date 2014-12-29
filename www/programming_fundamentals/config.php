@@ -7,3 +7,4 @@ define ("WEB_ROOT", $web_root);
 define ("WORK_FOLDER", "programming_fundamentals");
 define ("APP_CACHE_LIFE", 15 * 60);
 define ("SUMMER_TIME", -3600);
+define ("DEV_MODE", true);

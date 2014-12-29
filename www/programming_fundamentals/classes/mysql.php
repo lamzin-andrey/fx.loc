@@ -13,7 +13,10 @@ function query($cmd, &$numRows = 0, &$affectedRows = 0) {
 	$data = array();
 	$dberror = mysql_error();
 	if ($dberror) {
-		var_dump($dberror); echo "\n<hr>\n$cmd<hr>\n";
+		if (defined('DEV_MODE')) {
+			var_dump($dberror);
+			echo "\n<hr>\n$cmd<hr>\n";
+		}
 		mysql_close($link);
 		return $data;
 	}
