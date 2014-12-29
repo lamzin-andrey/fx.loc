@@ -482,11 +482,13 @@
 					}
 					function onRemove(d) {
 						$('#qsBrDlgBg').removeClass('hide').addClass('hide');
+						$('#qsBrLoader').removeClass('hide').addClass('hide');
 						if (d.status == 'ok') {
 							var obj = $('#titlefile-' + d.id)[0];
 							if (obj) {
 								$(obj).parents('.file_view').first().remove();
 							}
+							appWindowClose();
 						} else {
 							showError(msg);
 						}
@@ -496,6 +498,7 @@
 						if (confirm(lang["confirm_removal_script"])) {
 							$('#qsBrDlgBg').removeClass('hide');
 							$('#qsBrLoader').removeClass('hide');
+							$('#qsBrLoader').css('left', ( $('#qsBrDlgBg').width() - $('#qsBrLoader').width() ) / 2 );
 							req({id:id}, onRemove, onFailRemove, 'removeFile', WEB_ROOT + '/editor/');
 						}
 					}
@@ -1234,6 +1237,7 @@
 			}
 		}
 		
+		//Загрузка последнего содержимого
 		if (localStorage.getItem('qsLastText')) {
 			$(mid).val( localStorage.getItem('qsLastText') );
 			setMenuIconState();
