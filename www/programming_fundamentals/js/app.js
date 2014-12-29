@@ -437,8 +437,11 @@
 			appWindow('saveScriptFormWrapper', lang['information']);
 		}
 		//Сохранить как, отправка формы
-		function sendSaveAs() {
-			if(!guid && !uid) {
+		function sendSaveAs(evt) {
+			if (evt.target.id == 'scriptDisplayNameQs' && evt.keyCode != 13) {
+				return true;
+			}
+			if (!guid && !uid) {
 				showError(lang['fail_save_user_script_try_update']);
 				return false;
 			}
@@ -1004,6 +1007,7 @@
 		$(mid).click(setMenuIconState);
 		$(mid).click(showTextCursorCoord);
 		$('#scriptFileQsButton').click(sendSaveAs);
+		$('#scriptDisplayNameQs').keydown(sendSaveAs);
 		$('#qsEditorSaveAs').click(showSaveAs);
 		$('#qsEditorOpenFile').click(showOpenFileDlg);
 		$('#qsEditTitleSaveBtn').click(sendRenameFile);
