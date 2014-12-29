@@ -5,10 +5,10 @@ error.log
 .buildpath
 .settings
 tz
-www/programming_fundamentals/codetag.html
-www/programming_fundamentals/js/test-engine/.git
-www/programming_fundamentals/js/test-engine/*.html
-www/programming_fundamentals/js/test-engine/js/lib.js
-www/programming_fundamentals/js/test-engine/js/app.js
-www/programming_fundamentals/img/wordtest/*.jpg
-www/programming_fundamentals/text.txt
+www/codetag.html
+www/js/test-engine/.git
+www/js/test-engine/*.html
+www/js/test-engine/js/lib.js
+www/js/test-engine/js/app.js
+www/img/wordtest/*.jpg
+www/text.txt

@@ -39,10 +39,10 @@ class CApplication {
 			case $work_folder . '/text_editor':
 				$this->_editorActions();
 				break;
-			case ($work_folder || '/'):
+			case '/':
 				$this->_promoPageActions();
 				break;
-			case $work_folder . '/login':
+			case '/login':
 				$this->_loginActions();
 				break;
 			case $work_folder . '/newcomments':
