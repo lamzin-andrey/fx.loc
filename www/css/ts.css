@@ -45,3 +45,7 @@ u{text-decoration:none; color:#2A8109; font-style:italic;}
     padding: 4px 8px;
     text-decoration: none;
 }
+.tsf_info {
+   color: #7a888e;
+   margin: 4px 0 0 24px;
+}

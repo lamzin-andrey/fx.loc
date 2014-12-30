@@ -4,6 +4,7 @@
 			<input type="text" id="searchFileFilter" class="qs-file-browser-search-text" /> <img class="btn qs-br-search-btn" src="<?=WEB_ROOT?>/img/search32.png" />
 			<hr style="color:gray"/>
 		</div>
+		<div class="tsf_info"><?=$lang['Select_your_files_for_task']?></div>
 		<div class="space32"></div>
 		<ul class="inline-block js-br-files">
 			<li data-id="{id}" class="file_view template hide">
