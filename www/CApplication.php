@@ -60,6 +60,10 @@ class CApplication {
 					$this->_tasklistActions();
 					return;
 				}
+				if (strpos($url, '/viewdecisions/') !== false) {
+					$this->_viewdecisionsActions();
+					return;
+				}
 				$this->_404();
 		}
 	}
@@ -84,6 +88,15 @@ class CApplication {
 	**/
 	private function _404() {
 		$this->handler = $h = $this->_load('Page404');
+	}
+	/**
+	 * @desc Обработка возможных действий на странице просмотра решения задачи
+	**/
+	private function _viewdecisionsActions() {
+		$this->handler = $h = $this->_load('ViewDecisionHandler');
+		if (is_ajax()) {
+			$h->ajaxAction();
+		}
 	}
 	/**
 	 * @desc Обработка возможных действий на странице списка задач
