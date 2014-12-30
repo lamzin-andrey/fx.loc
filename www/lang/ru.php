@@ -69,6 +69,7 @@ $lang['and_password_required'] = ' и пароль';
 $lang['password_different'] = 'Пароли не совпадают';
 $lang['reg_complete'] = 'Регистрация завершена, вы можете войти в кабинет используя email и пароль заданные при входе';
 $lang['CurrentTask'] = 'Моя задача';
+$lang['Task'] = 'Задача';
 $lang['Password_recovery'] = 'Восстановление пароля';
 $lang['Sign_in_button_label'] = 'Вход';
 $lang['easy_password'] = 'Простой пароль';
@@ -113,6 +114,14 @@ $lang['Sens_name'] = 'Узнаваемое имя';
 $lang['success_delete_file'] = 'Файл удален';
 $lang['Project'] = 'Проект. Добавьте файлы, подсказку к функциям из которых вы хотели бы видеть.';
 $lang['Relations_for_file'] = 'Связи для файла ';
+$lang['Variant'] = 'Вариант';
+$lang['Set_as_current'] = 'Отметить как решаемую';
+$lang['Set_as_done'] = 'Отметить как решенную';
+$lang['State_done'] = 'Вы уже решили';
+$lang['State_current'] = 'Вы сейчас решаете';
+$lang['Select_your_files_for_task'] = 'Выберите файлы с решением задачи';
+$lang['Select_files'] = 'Выбор файлов';
+$lang['You_need_select_files'] = 'Вы должны выбрать один или несколько файлов';
 
 //quick_start
 $lang['intro'] = 'Что это';

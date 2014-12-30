@@ -671,3 +671,17 @@ function utils_setUrlVar($var, $val) {
 	}
 	return $base;
 }
+function ireq($key, $scope = 'REQUEST'){
+	return (int)req($key, $scope);
+}
+function ilistFromString($key, $separator = ',', $scope = 'REQUEST'){
+	$arr = explode($separator, req($key));
+	$buf = array();
+	foreach ($arr as $item) {
+		$n = (int)$item;
+		if ($n) {
+			$buf[] = $n;
+		}
+	}
+	return $buf;
+}

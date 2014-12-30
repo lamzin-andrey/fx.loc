@@ -90,6 +90,9 @@ class CApplication {
 	**/
 	private function _tasklistActions() {
 		$this->handler = $h = $this->_load('TasklistHandler');
+		if (is_ajax()) {
+			$h->ajaxAction();
+		}
 	}
 	/**
 	 * @desc Обработка возможных действий на странице быстрый чтарт

@@ -60,5 +60,15 @@ var Tool = {
 				}
 			}
 		);
+	},
+	/**
+	 * @desc Возвращает строку адреса в виде массива. Не содержит протокол и GET часть
+	 */
+	aUrl:function(){
+		var a = window.location.href.split('/'), b = [], i;
+		for (i = 2; i < a.length; i++) {
+			b.push( a[i] );
+		}
+		return b;
 	}
 }

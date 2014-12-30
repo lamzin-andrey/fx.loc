@@ -32,7 +32,7 @@ html {height:100%;}
 body {height:100%; padding:0px 4px; margin:0px;
 	  font-family:Geneva,Verdana, arial;
 	  background-color:#242C57;
-	  background-image: url(/programming_fundamentals/img/back_text.png);
+	  background-image: url(/img/back_text.png);
 }
 .main {min-height:100%; max-width:2000px; box-shadow:0 0 16px 10px #35369b;}
 .tasklist {
@@ -43,14 +43,14 @@ body {height:100%; padding:0px 4px; margin:0px;
 	border-right:2px solid #9DC1F9;
 	overflow:auto;
 	resize:horizontal;
-	background:url('/programming_fundamentals/img/resize-right.png')  right bottom no-repeat;
+	background:url('/img/resize-right.png')  right bottom no-repeat;
 }
 .page_content{
 	position:relative;
 	min-width:80%;
 	overflow:auto;
 	resize:horizontal;
-	background:url('/programming_fundamentals/img/resize-right.png')  right bottom no-repeat;
+	background:url('/img/resize-right.png')  right bottom no-repeat;
 }
 .console {width:100%;  min-height:520px; background-color:black; color:white;}
 #console {height:520px; scrollbar-base-color:#000000;padding:0 6px;min-width:800px;}

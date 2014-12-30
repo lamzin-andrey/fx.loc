@@ -14,6 +14,7 @@
 	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/jquery.cookie.js"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/popupwin.js"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/local.js.php"></script>
+	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/lib.js"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/app.js"></script>
 	<script type="text/javascript" >
 		var WEB_ROOT = '<?=WEB_ROOT?>';

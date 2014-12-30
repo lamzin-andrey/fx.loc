@@ -1,6 +1,6 @@
 /*=====================popup==========================*/
 .popupbg {
-	background: url("/programming_fundamentals/img/popup-bg.png") repeat;
+	background: url("/img/popup-bg.png") repeat;
 	position:fixed;
 	width:100%;
 	left:0px;

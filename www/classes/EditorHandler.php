@@ -92,7 +92,11 @@ class EditorHandler extends CBaseHandler{
 				if (!$uid) {
 					json_error('msg', $lang['unable_load_file_list_try_later']);
 				} else {
-					$data = query("SELECT * FROM js_scripts WHERE user_id = {$uid} AND is_deleted != 1 ORDER BY date_create DESC", $nR);
+					$and_is_no_complete_task = '';
+					if (ireq('forCompleteTask')) {
+						$and_is_no_complete_task = ' AND is_no_complete_task = 0';
+					}
+					$data = query("SELECT * FROM js_scripts WHERE user_id = {$uid} {$and_is_no_complete_task} AND is_deleted != 1 ORDER BY date_create DESC", $nR);
 					if ($nR) {
 						json_ok('list', $data);
 					} else {

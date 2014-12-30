@@ -18,3 +18,30 @@ u{text-decoration:none; color:#2A8109; font-style:italic;}
 .tblack {color:black !important; cursor:default !important;}
 .pfont11 p {line-height: 12pt; font-size:11pt;}
 
+/* Кнопки для задачек */
+.ts_h4 {
+	margin-top: 5px;
+}
+.ts_gr_buttons {
+	margin-left: 120px;
+}
+.ts_qbtn {
+	border:solid #C3D1D7 1px;
+	padding:4px 8px;
+	text-decoration:none;
+	background:linear-gradient(to bottom, #ffffff, #ffffff,  #C3D1D7);
+	cursor:pointer;
+	font-size:10pt;
+	line-height:16px;
+}
+.ts_qbtn_lock_push {
+	background: #93B1C0;
+    border: 2px solid #c3d1d7;
+    border-bottom-width: 3px;
+    border-right-width: 3px;
+    color: #6a0000;
+    font-size: 10pt;
+    line-height: 14px;
+    padding: 4px 8px;
+    text-decoration: none;
+}

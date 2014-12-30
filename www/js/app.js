@@ -546,6 +546,7 @@
 						);
 						appWindowClose();
 						appWindow('qs-br-wrap', lang['Openfile']);
+						$('.file-names-filter').css('width', $('.file-names-filter').width() + 'px');
 					} else {
 						$('.no_file').removeClass('hide');
 					}
@@ -587,9 +588,9 @@
 					req({id:id}, onLoadContent, onFailLoadContent, 'loadFileContent', WEB_ROOT + '/editor/');
 				}
 			}
-			$('.file-names-filter').attr('style', null);
+			//$('.file-names-filter').attr('style', null);
 			appWindow('qs-br-wrap', lang['Openfile']);
-			setTimeout(
+			/*setTimeout(
 				function() {
 					var obj = document.getElementById('appWindowPopup');
 					if (obj) {
@@ -597,50 +598,9 @@
 						$('.file-names-filter').css('width', (obj.offsetWidth - 1) + 'px');
 					}
 				}, 10
-			);
+			);*/
 			//init serach field
-			$('#searchFileName')[0].onkeydown = function () {
-				function isFileItem(li) {
-					if (li.hasClass('file_view template') || li.hasClass('no_file')) {
-						return false;
-					}
-					return true;
-				}
-				
-				var inp = this;
-				setTimeout(
-					function() {
-						var s = inp.value;
-						if (s.length) {
-							$('.js-br-files li').each(
-								function (i, item) {
-									item = $(item);
-									if (!isFileItem(item)) {
-										return;
-									}
-									var name = item.find('.js-file-title').text();
-									if (name.indexOf(s) == -1) {
-										item.addClass('hide');
-									} else {
-										item.removeClass('hide');
-									}
-								}
-							);
-						} else {
-							$('.js-br-files li').each(
-								function (i, item) {
-									item = $(item);
-									if (!isFileItem(item)) {
-										return;
-									}
-									item.removeClass('hide');
-								}
-							);
-						}
-					}
-					,10
-				);
-			}
+			$('#searchFileName')[0].onkeydown = filesFilter;
 			// end init serach field
 			req({}, onLoadUserFiles, onFailLoadUserFiles, 'loadUserFiles', WEB_ROOT + '/editor/');
 		}
@@ -1289,7 +1249,59 @@
 		}
 	}
 //============ / Простой редактор кода==================================
-
+	/**
+	 * @desc Фильтр файлов в диалоге открытия файла редактора и диалоге выбора файлов решений
+	*/
+	function filesFilter() {
+		function isFileItem(li) {
+			if (li.hasClass('file_view template') || li.hasClass('no_file')) {
+				return false;
+			}
+			return true;
+		}
+		
+		var inp = this, prefix;
+		
+		switch (inp.id) {
+			case 'searchFileFilter':
+				prefix = '#ts-br';
+				break;
+			default:
+				prefix = '#qs-br';
+		}
+		setTimeout(
+			function() {
+				var s = inp.value;
+				if (s.length) {
+					$(prefix + ' .js-br-files li').each(
+						function (i, item) {
+							item = $(item);
+							if (!isFileItem(item)) {
+								return;
+							}
+							var name = item.find('.js-file-title').text();
+							if (name.indexOf(s) == -1) {
+								item.addClass('hide');
+							} else {
+								item.removeClass('hide');
+							}
+						}
+					);
+				} else {
+					$(prefix + ' .js-br-files li').each(
+						function (i, item) {
+							item = $(item);
+							if (!isFileItem(item)) {
+								return;
+							}
+							item.removeClass('hide');
+						}
+					);
+				}
+			}
+			,10
+		);
+	}
 //===========Словари и подсветка для подсказок на страницах статей======
 //====== Словарь кейвордов  и стандартных функций
 	function initKeywordsHelp() {
@@ -1701,6 +1713,176 @@
 			var h = getViewport().h - 20;
 			$('.textcontent').first().height(h + 'px');
 			$('.tasklist ul').first().height(h + 'px');
+			//Загружает список файлов пользователя и инициализует диалог выбора файлов 
+			var variant = Tool.aUrl()[2];
+			variant = variant ? variant : 1;
+				//Шаблоны
+			var tplWrap = '<h4 class="left ts_h4" data-n="{N}">' + lang['Task'] + ' {N}</h4><div class="left ts_gr_buttons">{CONTENT}\
+	</div>\
+<div class="clearfix"></div>',
+				tplLinkNew = '<a class="left ts_qbtn j-tsb-current" data-n="{N}" href="#">' + lang['Set_as_current'] + '</a>',
+				tplLinkDone = '<a class="left ts_qbtn j-tsb-done" data-n="{N}" href="#">' + lang['Set_as_done'] + '</a>',
+				tplSpanCurr = '<span class="left ts_qbtn_lock_push j-ts-curr" data-n="{N}">' + lang['State_current'] + '</span>',
+				tplSpanDone = '<span class="left ts_qbtn_lock_push" >' + lang['State_done'] + '</span>';
+			
+			function _loadFileList() {
+				/**
+				 * @desc
+				*/
+				function _setAsSelected() {
+					var _id =  $(this).parent().parent().data('id'),
+						arr = $('#tsfSelected').val().split(','), exists = 0;
+					$(arr).each(
+						function(i, id) {
+							if (_id == id) {
+								exists = 1;
+							}
+						}
+					);
+					if (!exists) {
+						arr.push(_id);
+						$('#tsfSelected').val( arr.join(',') );
+					}
+				}
+				function _onLoadFileList(d) {
+					$('.no_file').removeClass('hide').addClass('hide');
+					if (d.status == 'ok') {
+						$('#ts-br ul.js-br-files .file_view').each(
+							function (i, item) {
+								if (!$(item).hasClass('template')) {
+									$(item).remove();
+								}
+							}
+						);
+						if (d.list) {
+							var jTpl = $('#ts-br ul.js-br-files .template').first(), oTpl = jTpl[0], tpl = jTpl.html(), item, s = '';
+							$(d.list).each(
+								function (i, data) {
+									s = tpl.replace(/\{id\}/g, data.id);
+									s = s.replace('{name}', data.display_file_name);
+									item = $('<li class="' + oTpl.className + '" data-id="' + data.id + '">' + s +  '</li>');
+									item.removeClass('hide');
+									item.removeClass('template');
+									//item.find('.file-remove').click(showRemoveFileInput);
+									//item.find('.file-rename').click(showRenameFileInput);
+									item.find('input').change(_setAsSelected);
+									$('#ts-br ul.js-br-files').first().append(item);
+								}
+							);
+							appWindowClose();
+							appWindow('qs-br-wrap', lang['Select_files']);
+						} else {
+							$('.no_file').removeClass('hide');
+						}
+						$('#tsBrDlgBg').addClass('hide');
+						$('#tsBrLoader').addClass('hide');
+					} else {
+						showError(d.msg);
+					}
+				}
+				req({forCompleteTask:1}, _onLoadFileList, defaultAjaxFail, 'loadUserFiles', WEB_ROOT + '/editor');
+			}
+			
+			_loadFileList();
+			$('#searchFileFilter')[0].onkeydown = filesFilter;
+			/**
+			 * @desc Скрыть файлы помеченнные как решенные и скрыть кнопку "Решено" для соотв. задачи
+			*/
+			function _onSaveSelectedFiles(data){
+				$('#ts-br .file_view').each(
+					function(i, li) {
+						if ( $(li).find('input').first().prop('checked') ) {
+							$(li).remove();
+						}
+					}
+				);
+				var taskId = $('#tsfTask').val();
+				$('.j-tsb-done').each(
+					function(i, a) {
+						if ($(a).data('n') == taskId) {
+							$(a).after( $(tplSpanDone) );
+							$(a).remove();
+						}
+					}
+				);
+				appWindowClose();
+				$('.j-selected-files-filter-area').css('width', null);
+			}
+			$('#tsfSave').click(
+				function() {
+					var s = $.trim($('#tsfSelected').val()), task = $('#tsfTask').val();
+					if (!s) {
+						showError(lang['You_need_select_files']);
+						return;
+					}
+					req({data:s, task:task, variant:variant}, _onSaveSelectedFiles, defaultAjaxFail, 'saveSelectedFiles');
+				}
+			);
+			//append buttons
+			/**
+			 * @desc Добавляет кнопки действий рядом с заданиями
+			*/
+			function _onTaskStateData(data) {
+				$('h4').each(
+					function(i, h4) {
+						var n = i + 1, s = tplWrap.replace(/\{N\}/g, n), inner = '', sSearch = '', aSearch = [];
+						//получить строку с решенными пользователем задачами
+						$(data.done_list).each(
+							function(i, row) {
+								aSearch.push(row.task);
+							}
+						);
+						sSearch = ',' + aSearch.join(',') + ',';
+						//Сформировать нужные кнопки
+						if (n == data.current) {
+							inner += tplSpanCurr.replace(/\{N\}/, n);
+						} else {
+							inner += tplLinkNew.replace(/\{N\}/, n);
+						}
+						if (sSearch.indexOf(',' + n + ',') == -1) {
+							inner += tplLinkDone.replace(/\{N\}/, n);
+						} else {
+							inner += tplSpanDone;
+						}
+						s = s.replace('{CONTENT}', inner);
+						$(h4).after( $(s) );
+						$(h4).remove();
+					}
+				);
+				$('.j-tsb-done').click(
+					function() {
+						$('#tsfTask').val( $(this).data('n') );
+						appWindow('ts-br-wrap', lang['Select_files']);
+						$('.j-selected-files-filter-area').css('width', $('.file-names-filter').width() + 'px');
+						return false;
+					}
+				);
+				function _onClickCurrentLink() {
+					function _onSetAsCurrent(data) {
+						var span = $('.j-ts-curr');
+						if (span[0]) {
+							var a = $(tplLinkNew.replace(/\{N\}/g, span.data('n')) );
+							a.click( _onClickCurrentLink );
+							span.after( a );
+							span.remove();
+						}
+						$('.j-tsb-current').each(
+							function(i, a) {
+								a = $(a);
+								if (a.data('n') == data.id) {
+									a.after( $(tplSpanCurr.replace(/\{N\}/g, data.id) ) );
+									a.remove();
+								}
+							}
+						);
+					}
+					req({variant:variant, task:$(this).data('n')}, _onSetAsCurrent, defaultAjaxFail, 'setAsCurrent');
+					return false;
+				}
+				$('.j-tsb-current').click( _onClickCurrentLink );
+			}
+			req({variant:variant}, _onTaskStateData, defaultAjaxFail, 'getUserTasks');
+			
 		}
 	}
 	/**

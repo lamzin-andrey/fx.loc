@@ -17,7 +17,7 @@
 	font-size :12pt;
 	padding:0px;
 	border-right:1px;
-	background:url('/programming_fundamentals/img/resize-bottom.png')  right bottom no-repeat;
+	background:url('/img/resize-bottom.png')  right bottom no-repeat;
 }
 .abs {
 	position:absolute;
@@ -84,7 +84,7 @@
 	position:absolute;
 	width:100%;
 	height:100%;
-	background: url("/programming_fundamentals/img/popup-bg.png") repeat;
+	background: url("/img/popup-bg.png") repeat;
 	z-index:5;
 	left:0px;
 	top:0px;
@@ -102,8 +102,6 @@
 	padding-top: 10%;
 }
 .file-names-filter {
-	/*width:100%;*/
-	position:absolute;
 	background-color:white;
 }
 .qs-br-search-btn {vertical-align:middle}
