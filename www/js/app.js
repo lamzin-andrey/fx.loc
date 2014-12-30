@@ -1723,7 +1723,8 @@
 				tplLinkNew = '<a class="left ts_qbtn j-tsb-current" data-n="{N}" href="#">' + lang['Set_as_current'] + '</a>',
 				tplLinkDone = '<a class="left ts_qbtn j-tsb-done" data-n="{N}" href="#">' + lang['Set_as_done'] + '</a>',
 				tplSpanCurr = '<span class="left ts_qbtn_lock_push j-ts-curr" data-n="{N}">' + lang['State_current'] + '</span>',
-				tplSpanDone = '<span class="left ts_qbtn_lock_push" >' + lang['State_done'] + '</span>';
+				tplSpanDone = '<span class="left ts_qbtn_lock_push" >' + lang['State_done'] + '</span>' + 
+								'<a class="left ts_qbtn" href="{LINK}">' + lang['View_decision'] + '</a>';
 			
 			function _loadFileList() {
 				/**
@@ -1800,7 +1801,7 @@
 				$('.j-tsb-done').each(
 					function(i, a) {
 						if ($(a).data('n') == taskId) {
-							$(a).after( $(tplSpanDone) );
+							$(a).after( $(tplSpanDone.replace(/\{LINK\}/, WEB_ROOT + '/viewdecisions/' + variant + '/' + taskId)) );
 							$(a).remove();
 						}
 					}
@@ -1842,7 +1843,7 @@
 						if (sSearch.indexOf(',' + n + ',') == -1) {
 							inner += tplLinkDone.replace(/\{N\}/, n);
 						} else {
-							inner += tplSpanDone;
+							inner += tplSpanDone.replace(/\{LINK\}/, WEB_ROOT + '/viewdecisions/' + variant + '/' + n);
 						}
 						s = s.replace('{CONTENT}', inner);
 						$(h4).after( $(s) );

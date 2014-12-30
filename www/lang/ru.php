@@ -122,6 +122,7 @@ $lang['State_current'] = 'Вы сейчас решаете';
 $lang['Select_your_files_for_task'] = 'Выберите файлы с решением задачи';
 $lang['Select_files'] = 'Выбор файлов';
 $lang['You_need_select_files'] = 'Вы должны выбрать один или несколько файлов';
+$lang['View_decision'] = 'Смотреть другие решения этой задачи';
 
 //quick_start
 $lang['intro'] = 'Что это';
