@@ -1,5 +1,6 @@
 <?php
 require_once APP_ROOT . '/classes/CBaseHandler.php';
+require_once APP_ROOT . '/classes/TasklistHandler.php';
 class ViewDecisionHandler extends CBaseHandler{
 	public $comments_data = false;
 	public $data = array();
@@ -20,8 +21,42 @@ class ViewDecisionHandler extends CBaseHandler{
 			case 'vdrating':
 				$this->_changeRating();
 				break;
+			case 'getTask':
+				$this->_loadTask();
+				break;
 		}
 		
+	}
+	private function _loadTask() {
+		$lang = $this->_app->lang;
+		$var = ireq('variant');
+		$task = ireq('task');
+		$popup = 0;
+		if (ireq('byUid')) {
+			$uid = CApplication::getUid();
+			$sql_query = "SELECT current_task FROM users WHERE id = {$uid}";
+			$data = explode(':', dbvalue($sql_query) );
+			if (count($data) == 2) {
+				$var = $data[0];
+				$task = $data[1];
+				$popup = 1;
+			} else {
+				json_error('has_no', 1, 'popup', 1);
+			}
+		}
+		$path = APP_ROOT . '/files/tasklist/' . $var . '.php';
+		if ($var && $task && file_exists($path)) {
+			ob_start();
+				include $path;
+			$s = ob_get_contents();
+			ob_clean();
+			if (!$popup) {
+				json_ok('html', $s, 'task' , $task, 'var', $var);
+			} else {
+				json_ok('html', $s, 'task' , $task, 'var', $var, 'popup', 1);
+			}
+		}
+		json_error('msg', $lang['default_error']);
 	}
 	private function _changeRating() {
 		$lang = $this->_app->lang;

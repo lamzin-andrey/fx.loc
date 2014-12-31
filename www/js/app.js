@@ -18,6 +18,7 @@
 			initTaskvariantsPage();
 			initMainPage();
 			initVewDecisionPage();
+			initGetMyTask();
 		}
 	);
 //============Простой редактор кода=====================================
@@ -1939,9 +1940,43 @@
 		alert(s);
 	}
 	/**
+	 * @desc Обработка полученного текста задачи
+	*/
+	function _onTaskData(data) {
+		var tmpDiv = '.tmp_task_text_div';
+		if (data.msg) {
+			showError(data.msg);
+			return;
+		}
+		var div = $('<div class="hide ' + tmpDiv + '"></div>');
+		$(document.body).append(div);
+		div.html( data.html );
+		$('#taskPlacePopUpContent').html('<div class="bg-rose no_has_task">' + lang['you_has_no_tasks'] + '</div>');
+		div.find('h4').each(
+			function(i, h4) {
+				if (data.task == (i + 1)) {
+					if (!data.popup) {
+						$('#taskPlace').html( $(h4).parent().html() );
+					} else {
+						$('#taskPlacePopUpContent').html( $(h4).parent().html() );
+					}
+				}
+			}
+		);
+		if (data.popup) {
+			appWindow('taskPlacePopUpWrapper', lang['Your_task']);
+		}
+	}
+	/**
 	 * @desc Страница просмотра решений
 	*/
 	function initVewDecisionPage() {
+		if (window.location.href.indexOf('viewdecisions/') == -1) {
+			return;
+		}
+		/**
+		 * @desc голосование
+		*/
 		function _onData(data) {
 			if (data.status == 'ok') {
 				$('.vdRating').each(
@@ -1964,6 +1999,29 @@
 		}
 		$('.decMinus').click(_sendChangeRating);
 		$('.incPlus').click(_sendChangeRating);
+		function _loadTaskText() {
+			var tmpDiv = '.tmp_task_text_div', aUrl = Tool.aUrl(), variant = aUrl[2], task = aUrl[3];
+			variant = parseInt(variant);
+			task = parseInt(task);
+			if (variant && task) {
+				$(tmpDiv).remove();
+				req({variant:variant, task:task}, _onTaskData, defaultAjaxFail, 'getTask');
+			}
+		}
+		_loadTaskText();
+	}
+	/**
+	 * @desc Подгрузка задания пользователя при нажатии на пункт меню
+	*/
+	function initGetMyTask() {
+		$('#getCurrentTask').click(
+			function(){
+				var tmpDiv = '.tmp_task_text_div';
+				$(tmpDiv).remove();
+				req({byUid:1}, _onTaskData, defaultAjaxFail, 'getTask', WEB_ROOT + '/viewdecisions/1/2');
+				return false;
+			}
+		);
 	}
 	//================Авторизация=======================================
 	/**

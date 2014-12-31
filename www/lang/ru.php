@@ -131,6 +131,8 @@ $lang['vt_positive'] = 'положительный';
 $lang['vt_negative'] = 'отрицательный';
 $lang['You_already_left_'] = 'Вы уже оставили ваш ';
 $lang['vote'] = 'голос';
+$lang['Your_task'] = 'Ваша задача';
+$lang['you_has_no_tasks'] = 'Вы пока не выбрали задачу';
 
 //quick_start
 $lang['intro'] = 'Что это';

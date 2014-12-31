@@ -1,5 +1,5 @@
 <div class="vd_content">
-	<div id="taskPlace">There is task</div>
+	<div id="taskPlace"></div>
 	<? foreach ($handler->data as $user_decision):?>
 		<div class="vd_item">
 			<div class="user_data"><?=$user_decision['name']?> <?=$user_decision['surname']?> <span class="iblock tright vd_rating_group"><img class="btn incPlus" data-id="<?="{$user_decision['uid']}:{$user_decision['var']}:{$user_decision['task']}"?>" src="<?=WEB_ROOT?>/img/cmplus.png"> <span class="vdRating" data-id="<?="{$user_decision['uid']}:{$user_decision['var']}:{$user_decision['task']}"?>"><?=$user_decision['rating']?></span> <img data-id="<?="{$user_decision['uid']}:{$user_decision['var']}:{$user_decision['task']}"?>" class="btn decMinus" src="<?=WEB_ROOT?>/img/minus.png"> </span></div>

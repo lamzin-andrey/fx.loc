@@ -172,3 +172,9 @@ u{text-decoration:none; color:#2A8109; font-style:italic;}
 #qsSetRelDlg select{
 	min-width:188px;
 }
+.no_has_task {
+	width:300px;
+	text-align:center;
+	color:#aa0000;
+	padding:50px 0px;
+}

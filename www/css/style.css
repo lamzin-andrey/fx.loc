@@ -292,3 +292,10 @@ body {height:100%; padding:0px 4px; margin:0px;
 .dlg_gr_button input {
 	margin:4px;
 }
+.no_has_task {
+	width:300px;
+	text-align:center;
+	color:#aa0000;
+	padding:50px 0px;
+	
+}

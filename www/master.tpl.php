@@ -127,7 +127,7 @@
 				<p>
 					Например:<pre>
 function myFirstProgram() {
-	//Тут все остальное, включая вспомогательные функции
+	//Тут все остальное, включая вспомогtaskPlacePopUpWrapperательные функции
 }
 					</pre>
 				</p>
@@ -144,6 +144,7 @@ function myFirstProgram() {
 			</div>
 		</form>
 	</div>
+	<? include APP_ROOT . '/tpl/show_your_task.tpl.php'?>
 	<? include APP_ROOT . '/tpl/form_reg.tpl.php' ?>
 </body>
 </html> 

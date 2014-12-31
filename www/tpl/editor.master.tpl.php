@@ -145,5 +145,6 @@ function myFirstProgram() {
 		</form>
 	</div>
 	<? include APP_ROOT . '/tpl/form_reg.tpl.php' ?>
+	<? include APP_ROOT . '/tpl/show_your_task.tpl.php'?>
 </body>
 </html> 

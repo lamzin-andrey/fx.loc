@@ -3,7 +3,7 @@
 	$links = array(
 		'/'  => 'Main_page',
 		WEB_ROOT . '/console' => 'your_programs',
-		'#' => 'CurrentTask',
+		'current_task' => 'CurrentTask',
 		WEB_ROOT . '/tasklist' => 'TaskList',
 		WEB_ROOT . '/quick_start' => 'QuickStart',
 		WEB_ROOT . '/text_editor' => 'text_editor',
@@ -11,7 +11,11 @@
 	);
 ?><? foreach ($links as $link => $langkey): ?>
 <? if ('/' . $app->base_url != $link):?>
-	<li><a href="<?=$link?>" <?if ($link == '#'):?>onclick="alert('In process...'); return false;"<? endif?>><?=$lang[$langkey]?></a></li>
+	<? if ($link != 'current_task'):?>
+		<li><a href="<?=$link?>" <?if ($link == '#'):?>onclick="alert('In process...'); return false;"<? endif?>><?=$lang[$langkey]?></a></li>
+	<?else:?>
+		<li><a href="#" id="getCurrentTask"><?=$lang[$langkey]?></a></li>
+	<?endif?>
 <? endif?>
 <? endforeach?>
 </ul>
@@ -27,14 +31,18 @@
 	$links = array(
 		'/'  => 'Main_page',
 		WEB_ROOT . '/console' => 'your_programs',
-		'#' => 'CurrentTask',
+		'current_task' => 'CurrentTask',
 		WEB_ROOT . '/tasklist' => 'TaskList',
 		WEB_ROOT . '/quick_start' => 'QuickStart',
 		WEB_ROOT . '/text_editor' => 'text_editor'
 	);
 ?><? foreach ($links as $link => $langkey): ?>
 <? if ('/' . $app->base_url != $link):?>
-	<li><a href="<?=$link?>" <?if ($link == '#'):?>onclick="alert('In process...'); return false;"<? endif?>><?=$lang[$langkey]?></a></li>
+	<? if ($link != 'current_task'):?>
+		<li><a href="<?=$link?>" <?if ($link == '#'):?>onclick="alert('In process...'); return false;"<? endif?>><?=$lang[$langkey]?></a></li>
+	<?else:?>
+		<li><a href="#" id="getCurrentTask"><?=$lang[$langkey]?></a></li>
+	<?endif?>
 <? endif?>
 <? endforeach?>
 </ul>
