@@ -32,6 +32,7 @@ class CommentTree extends CAbstractDbTree{
 		$auth_user_uid = sess('uid');
 		$field_owner_id = 'uid';
 		$this->setUpdateOwnerCondition($auth_user_uid, $field_owner_id);
+		$this->is_deleted_table_alias = 'comments.';
 		parent::__construct($app);
 	}
 	protected function validate() {

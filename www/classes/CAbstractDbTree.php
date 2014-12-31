@@ -58,7 +58,7 @@ class CAbstractDbTree{
 	/*
 	 * @var Количество записей на странице при использовании getRawList
 	*/
-	protected $_per_page = false;
+	protected $_per_page = 10;
 	/*
 	 * @var Использовать в WHERE обычное условие фильтрации is_deleted = 0 (переменная учитывается только в useDefaultCondition)
 	*/
@@ -94,6 +94,12 @@ class CAbstractDbTree{
 	 * @var Объект с данными о навигации
 	*/
 	public $paging = array();
+	/*
+	 * @var Псевдоним таблицы по которой будет проходитиь фильтрция по is_deleted
+	 *      Надо задавать с точкой, например 'table_name.'
+	 * 		Используется только если _use_default_condition = true
+	*/
+	protected $is_deleted_table_alias = '';
 	
 	public function __construct($app) {
 		$this->_app = $app;
@@ -398,7 +404,7 @@ class CAbstractDbTree{
 		}
 		
 		if ($this->_use_default_condition) {
-			$condition .= ' AND is_deleted = 0 ';
+			$condition .= ' AND '. $this->is_deleted_table_alias .'is_deleted = 0 ';
 		}
 		
 		$sql = "SELECT {$fields} FROM {$this->_table} {$join} WHERE {$condition} {$group_by} {$order_by} {$limit_str}";

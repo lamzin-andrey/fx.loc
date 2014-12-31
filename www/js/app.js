@@ -17,6 +17,7 @@
 			initResourcesPage();
 			initTaskvariantsPage();
 			initMainPage();
+			initVewDecisionPage();
 		}
 	);
 //============Простой редактор кода=====================================
@@ -1349,7 +1350,7 @@
 			}
 			content = content.replace(/SLASHED_D_QUOTES/mig, '\\/');
 			content = content.replace(/\s?'([^']*)'/mig, '<span class="strcolor"> \'$1\'</span>');
-			content = content.replace(/\s?\/\/([^\n]+)\n?$/mig, '<span class="strcolor">//$1</span>\n');
+			content = content.replace(/(\s?\/\/[^\n]+)\n?$/mig, '<span class="strcolor">$1</span>');
 			content = content.replace(/\/\*([^*]*)\*\//mig, '<span class="strcolor">/*$1*/</span>');
 
 			if (wrapAsExample) {
@@ -1432,6 +1433,16 @@
 		}
 		//Подсветка синтаксиса в примерах кода в комментариях пользователя
 		$('.textcontent .vcomments pre').each(
+			function (i, pre) {
+				var s = $(pre).html().replace(/<br>/g, '\n');
+				s = _highlightJsCode(s, sKeys, sKeysSF);
+				//s = s.replace(/<br>/g, '\n');
+				$(pre).html(s);
+			}
+		);
+		
+		//Подсветка синтаксиса в примерах кода в 
+		$('.textcontent .vd_content pre').each(
 			function (i, pre) {
 				var s = $(pre).html().replace(/<br>/g, '\n');
 				s = _highlightJsCode(s, sKeys, sKeysSF);
@@ -1707,7 +1718,9 @@
 			}
 		);
 	}
-	/***/
+	/**
+	 * @desc Страница просмотра вариатов
+	*/
 	function initTaskvariantsPage() {
 		if (window.location.href.indexOf('/tasklist') != -1) {
 			var h = getViewport().h - 20;
@@ -1924,6 +1937,33 @@
 	*/
 	function showError(s) {
 		alert(s);
+	}
+	/**
+	 * @desc Страница просмотра решений
+	*/
+	function initVewDecisionPage() {
+		function _onData(data) {
+			if (data.status == 'ok') {
+				$('.vdRating').each(
+					function(i, span){
+						if ($(span).data('id') == data.id) {
+							$(span).text(data.v);
+						}
+					}
+				);
+			} else {
+				showError(data.msg);
+			}
+		}
+		function _sendChangeRating(){
+			var obj = $(this), recId = obj.data('id'), sign = 1;
+			if (obj.hasClass('decMinus')) {
+				sign = -1;
+			}
+			req({id:recId, sign:sign}, _onData, defaultAjaxFail, 'vdrating');
+		}
+		$('.decMinus').click(_sendChangeRating);
+		$('.incPlus').click(_sendChangeRating);
 	}
 	//================Авторизация=======================================
 	/**

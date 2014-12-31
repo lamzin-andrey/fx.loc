@@ -123,6 +123,14 @@ $lang['Select_your_files_for_task'] = 'Выберите файлы с решен
 $lang['Select_files'] = 'Выбор файлов';
 $lang['You_need_select_files'] = 'Вы должны выбрать один или несколько файлов';
 $lang['View_decision'] = 'Смотреть другие решения этой задачи';
+$lang['You_must_public_your_decision'] = 'Вы должны опубликовать ваше решение задачи для просмотра решений других пользователей';
+$lang['Goto'] = 'Пройдите по';
+$lang['_on_page_tasklist_and_set_task_as_decised'] = 'на страницу списка задач и отметьте задачу как решенную вами';
+$lang['error_self_vote'] = 'Вы не можете голосовать сами за себя';
+$lang['vt_positive'] = 'положительный';
+$lang['vt_negative'] = 'отрицательный';
+$lang['You_already_left_'] = 'Вы уже оставили ваш ';
+$lang['vote'] = 'голос';
 
 //quick_start
 $lang['intro'] = 'Что это';
