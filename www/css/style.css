@@ -39,7 +39,7 @@ html {height:100%;}
 body {height:100%; padding:0px 4px; margin:0px;
 	  font-family:Geneva,Verdana, arial;
 	  background-color:#242C57;
-	  background-image: url(/programming_fundamentals/img/back_text.png);
+	  background-image: url(/img/back_text.png);
 }
 .main {min-height:100%; max-width:1200px;box-shadow:0 0 16px 10px #35369b;}
 .tasklist {

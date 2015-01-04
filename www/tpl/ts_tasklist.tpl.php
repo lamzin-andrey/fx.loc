@@ -6,5 +6,8 @@
 	<?=TasklistHandler::v('5')?>
 	<?=TasklistHandler::v('6')?>
 	<?=TasklistHandler::v('7')?>
+	<?=TasklistHandler::v('8')?>
+	<?=TasklistHandler::v('9')?>
+	<?=TasklistHandler::v('10')?>
 </ul>
 
