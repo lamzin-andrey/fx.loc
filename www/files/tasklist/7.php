@@ -4,12 +4,12 @@
 <ol>
 	<li>
 	<p> Вычислить</p>
-		<img src="<?=WEB_ROOT?>/files/tasks/1/1.1.png" />
+		<img src="<?=WEB_ROOT?>/files/tasks/7/1.1.png" />
 	</li><li>
 	<p> Вычислить</p>
-		<?=TasklistHandler::tim(1, 1, 2)?>
+		<?=TasklistHandler::tim(7, 1, 2)?>
 	</li><li>
-	<p>Заданы координаты трех вершин треугольника (x<sub>1</sub>,y<sub>1</sub>), (x<sub>2</sub>,y<sub>2</sub>), (x<sub>3</sub> ,y<sub>3</sub>). Найти его периметр и площадь</p>
+	<p></p>
 	</li>
 </ol>
 </div>

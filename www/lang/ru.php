@@ -133,6 +133,7 @@ $lang['You_already_left_'] = 'Вы уже оставили ваш ';
 $lang['vote'] = 'голос';
 $lang['Your_task'] = 'Ваша задача';
 $lang['you_has_no_tasks'] = 'Вы пока не выбрали задачу';
+$lang['Objects)'] = 'Объекты';
 
 //quick_start
 $lang['intro'] = 'Что это';

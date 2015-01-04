@@ -1724,7 +1724,7 @@
 	*/
 	function initTaskvariantsPage() {
 		if (window.location.href.indexOf('/tasklist') != -1) {
-			var h = getViewport().h - 20;
+			var h = getViewport().h - 76;
 			$('.textcontent').first().height(h + 'px');
 			$('.tasklist ul').first().height(h + 'px');
 			//Загружает список файлов пользователя и инициализует диалог выбора файлов 
