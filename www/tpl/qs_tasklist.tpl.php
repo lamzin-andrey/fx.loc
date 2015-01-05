@@ -20,6 +20,6 @@
 		<?=QuickStartHandler::part('graph2d', 'pseudofile')?>
 		<?=QuickStartHandler::part('graph2d', 'first_task_decision')?>
 	</ul>
-	<?=QuickStartHandler::part('observer')?>
+	<?//=QuickStartHandler::part('observer')?>
 </ul>
 

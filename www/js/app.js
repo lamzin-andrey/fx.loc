@@ -19,6 +19,8 @@
 			initMainPage();
 			initVewDecisionPage();
 			initGetMyTask();
+			$('#firstLoaderId').remove();
+			$('#firstImgId').remove();
 		}
 	);
 //============Простой редактор кода=====================================

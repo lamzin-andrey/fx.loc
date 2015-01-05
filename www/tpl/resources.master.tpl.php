@@ -4,7 +4,8 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
 	<title>Основы программирования - веб-консоль</title>
 	<link rel="stylesheet" type="text/css" href="<?=WEB_ROOT ?>/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="<?=WEB_ROOT ?>/css/popupwin.css" /><?
+	<link rel="stylesheet" type="text/css" href="<?=WEB_ROOT ?>/css/popupwin.css" />
+	<? include APP_ROOT . '/tpl/first_loader.tpl.php' ?><?
 	if (isset($handler->css) && is_array($handler->css) && count($handler->css)) {
 		foreach ($handler->css as $css){
 		?><link rel="stylesheet" type="text/css" href="<?=WEB_ROOT ?>/css/<?=$css?>.css" /><?
