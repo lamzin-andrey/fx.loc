@@ -2070,12 +2070,13 @@
 				showError(data.sError);
 			}
 		}
-		$("#regLink").click(
-			function () {
-				$('#authForm').addClass('hide');
-				appWindow('regFormWrapper', lang['SignUp']);
-			}
-		);
+		function showRegForm() {
+			$('#authForm').addClass('hide');
+			appWindow('regFormWrapper', lang['SignUp']);
+			return false;
+		}
+		$("#regLink").click(showRegForm);
+		$("#regLink2").click(showRegForm);
 		$("#breg").click(
 			function () {
 				var pwd = $('#rpassword').val(), pwdC = $('#password_confirm').val(), email = $('#rlogin').val(),
