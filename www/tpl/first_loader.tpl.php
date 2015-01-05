@@ -1,4 +1,5 @@
 <script type="text/javascript">
+	//return;
 	window.helloLoaderInterval = setInterval(
 		setHelloLoader
 		,10

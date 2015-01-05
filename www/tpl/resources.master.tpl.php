@@ -45,7 +45,7 @@
 	</script>
 <? endif ?>
 </head>
-<body><img src="/programming_fundamentals/img/back_text.png" class="hide" />
+<body><img src="/img/back_text.png" class="hide" />
 	<div class="main center relative">
 		<div class="toolbar">
 			<? include APP_ROOT . '/tpl/toolbar.php'?>

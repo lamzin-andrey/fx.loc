@@ -1,7 +1,7 @@
 <div class="file-names-filter tcenter">
 	<form id="resFormFilter">
 	<input type="text" class="qs-file-browser-search-text" name="searchFileName" value="<?=req('searchFileName', 'GET')?>">
-	 <img src="/programming_fundamentals/img/search32.png" class="btn qs-br-search-btn" id="btnSearchRes">
+	 <img src="/img/search32.png" class="btn qs-br-search-btn" id="btnSearchRes">
 	</form>
 	<hr style="color:gray">
 </div>

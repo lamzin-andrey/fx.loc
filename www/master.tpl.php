@@ -5,7 +5,7 @@
 	<title>Основы программирования - веб-консоль</title>
 	<link rel="stylesheet" type="text/css" href="<?=WEB_ROOT ?>/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="<?=WEB_ROOT ?>/css/popupwin.css" />
-	<? include APP_ROOT . '/tpl/first_loader.tpl.php' ?><?
+	<? //include APP_ROOT . '/tpl/first_loader.tpl.php' ?><?
 	if (isset($handler->css) && is_array($handler->css) && count($handler->css)) {
 		foreach ($handler->css as $css){
 		?><link rel="stylesheet" type="text/css" href="<?=WEB_ROOT ?>/css/<?=$css?>.css" /><?
@@ -16,7 +16,7 @@
 	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/popupwin.js"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/local.js.php"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/lib.js"></script>
-	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/app.js"></script>
+	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/app.js?e=6"></script>
 	<script type="text/javascript" >
 		var WEB_ROOT = '<?=WEB_ROOT?>';
 	</script>
@@ -45,7 +45,7 @@
 	</script>
 <? endif ?>
 </head>
-<body><img src="/programming_fundamentals/img/back_text.png" class="hide" />
+<body><img src="/img/back_text.png" class="hide" />
 	<div class="main center relative">
 		<div class="toolbar">
 			<? include APP_ROOT . '/tpl/toolbar.php'?>
