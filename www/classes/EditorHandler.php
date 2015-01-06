@@ -1,11 +1,14 @@
 <?php
 require_once APP_ROOT . '/classes/CBaseHandler.php';
+require_once APP_ROOT . '/classes/ConsoleHandler.php';
 class EditorHandler extends CBaseHandler{
-	public function __construct() {
+	public function __construct($app) {
 		$this->left_inner = 'ed_tasklist.tpl.php';
 		$this->right_inner = 'ed_inner.tpl.php';
 		$this->css[] = 'ed';
-		parent::__construct();
+		parent::__construct($app);
+		$console = new ConsoleHandler($app);
+		$this->file_list = $console->loadUsersScripts();
 	}
 	public function ajaxAction() {
 		$lang = utils_getCurrentLang();

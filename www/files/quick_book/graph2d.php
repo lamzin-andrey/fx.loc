@@ -330,7 +330,7 @@ canvas (canvas буквально  - холст). В нашем случае н�
 		parentElement.<i>appendChild</i>(canvas); <span class="strcolor">//добавляем на страницу наш холст, можно начинать рисовать
 </span>		<span class="strcolor">//делаем холст "ближе к нам", чтобы он перекрыл все остальное на странице
 </span>		canvas.style.zIndex = zIndex;
-		canvas.style.position = <span class="strcolor">'absolute'</span>;
+		canvas.style.position = <span class="strcolor">'fixed'</span>;
 		canvas.style.top = <span class="strcolor">'0px'</span>;
 		canvas.style.left = <span class="strcolor">'0px'</span>;
 	

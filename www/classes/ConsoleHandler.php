@@ -202,14 +202,9 @@ class ConsoleHandler extends CBaseHandler{
 	**/
 	public function loadUsersScripts() {
 		$uid = CApplication::getUid();
-		//die('uid = ' . $uid);
 		$lang = $this->lang;
 		$query = "SELECT id, src_file_name, display_file_name FROM js_scripts WHERE user_id = {$uid} AND is_deleted != 1 ORDER BY delta";
-		//die($query);
-		
-		$this->file_list = query($query);
-		/*echo '<pre>';
-		print_r($this->file_list);
-		echo '</pre>';die;/**/
+		$fl = $this->file_list = query($query);
+		return $fl; 
 	}
 }

@@ -1,9 +1,11 @@
 <?php
 require_once APP_ROOT . '/classes/CBaseHandler.php';
 require_once APP_ROOT . '/classes/CommentTree.php';
+require_once APP_ROOT . '/classes/ConsoleHandler.php';
 class QuickStartHandler extends CBaseHandler{
 	public $book_tpl = 'intro';
 	public $show_test_new_words_button = false;
+	public $file_list;
 	
 	public $test_buttons = array();	   //array button_id => button_text
 	public $tests = array();		   //button_template
@@ -40,7 +42,9 @@ class QuickStartHandler extends CBaseHandler{
 			$join = 'JOIN users ON users.id = comments.uid';
 			$this->comments_data = $this->_comment_tree->buildTree("part = 'quick_start/{$this->book_tpl}' AND is_accept = 1 AND comments.is_deleted = 0", $fields, $join);
 		}
-		parent::__construct();
+		$console = new ConsoleHandler($app);
+		$this->file_list = $console->loadUsersScripts();
+		parent::__construct($app);
 	}
 	/**
 	 * @desc Подключить файлы с вопросами для теста на новые слова

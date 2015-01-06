@@ -672,7 +672,7 @@
 				$('#qsBrDlgBg').addClass('hide');
 				$('#qsRenameForm').addClass('hide');
 			}
-			function onSaveRelation(data) {//TODO
+			function onSaveRelation(data) {
 				$('#qsBrDlgBg').addClass('hide');
 				$('#qsRenameForm').addClass('hide');
 				if (data.status == 'ok') {
@@ -708,12 +708,6 @@
 				appWindow('qsSetRelDlgWrap', lang['Relations_for_file'] + $('#currentFileName').text());
 			}
 			req({id:fileId}, _onRelationData, defaultAjaxFail, 'loadAssignedFiles', WEB_ROOT + '/editor/');
-			/*var data = {displayText:$('#qsEditTitle').val(), id:$('#qsEditTitleCurrentId').val()}
-			if (!data.displayText.length) {
-				showError(lang['file_name_require']);
-				return;
-			}
-			req(data, onRename, onFailRename, 'renameFile', WEB_ROOT + '/editor/');*/
 		}
 		//плюшки для редактора
 		function _getStdMethods() {
