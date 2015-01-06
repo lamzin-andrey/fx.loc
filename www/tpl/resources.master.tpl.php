@@ -3,26 +3,26 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
 	<title>Основы программирования - веб-консоль</title>
-	<link rel="stylesheet" type="text/css" href="<?=WEB_ROOT ?>/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="<?=WEB_ROOT ?>/css/popupwin.css" /><?
+	<link rel="stylesheet" type="text/css" href="<?=WEB_ROOT ?>/css/style.css?v=<?=STATIC_VERSION?>" />
+	<link rel="stylesheet" type="text/css" href="<?=WEB_ROOT ?>/css/popupwin.css?v=<?=STATIC_VERSION?>" /><?
 	if (isset($handler->css) && is_array($handler->css) && count($handler->css)) {
 		foreach ($handler->css as $css){
-		?><link rel="stylesheet" type="text/css" href="<?=WEB_ROOT ?>/css/<?=$css?>.css" /><?
+		?><link rel="stylesheet" type="text/css" href="<?=WEB_ROOT ?>/css/<?=$css?>.css?v=<?=STATIC_VERSION?>" /><?
 		}
 	}
 	?><script type="text/javascript" src="<?=WEB_ROOT ?>/js/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/jquery.cookie.js"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/popupwin.js"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/local.js.php"></script>
-	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/lib.js"></script>
-	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/app.js?e=1"></script>
+	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/lib.js?v=<?=STATIC_VERSION?>"></script>
+	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/app.js?v=<?=STATIC_VERSION?>"></script>
 	<script type="text/javascript" >
 		var WEB_ROOT = '<?=WEB_ROOT?>';
 	</script>
 	<?
 	if (isset($handler->js) && is_array($handler->js) && count($handler->js)) {
 		foreach ($handler->js as $js){
-		?><script type="text/javascript" charset="UTF-8" src="<?=WEB_ROOT ?>/js/<?=$js?>"></script>
+		?><script type="text/javascript" charset="UTF-8" src="<?=WEB_ROOT ?>/js/<?=$js?>?v=<?=STATIC_VERSION?>"></script>
 	<?
 		}
 	}
