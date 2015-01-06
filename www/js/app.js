@@ -2377,7 +2377,7 @@
 				}
 			);
 			$('#addResourceForm')[0].onsubmit = function() {
-				if ($('#resFile')[0].files[0].size > 5 * 1024) {
+				if ($('#resFile')[0].files[0].size > 5 * 1024*1024) {
 					showError(lang['file_too_big']);
 					return false;
 				}

@@ -120,7 +120,7 @@ class ResourceHandler extends CBaseHandler {
 			}
 			return false;
 		}
-		if (filesize($tmp_file) > 5 * 1024) {
+		if (filesize($tmp_file) > 5 * 1024 * 1024) {
 			$error_str = 'file_too_big';
 			return false;
 		}
