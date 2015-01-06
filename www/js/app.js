@@ -1558,7 +1558,9 @@
 									var css = 'bg-rose';
 									if (data[i][k].length) {
 										var msg = '<p>' + data[i][k].pop().replace(/\n/g, '<p>');
+										
 										$('#tooltip').css('opacity', 0.9).
+											//css('top', window.scrollY + 'px').
 											removeClass(back_done).
 											removeClass(back_fail).
 											addClass(back_fail)[0].innerHTML = msg;
@@ -1570,6 +1572,7 @@
 									if (data[i][k].length) {
 										var msg = '<p>' + data[i][k].pop().replace(/\n/g, '<p>');
 										$('#tooltip').css('opacity', 0.9).
+											//css('top', window.scrollY + 'px').
 											removeClass(back_done).
 											removeClass(back_fail).
 											addClass(back_done)[0].innerHTML = msg;
