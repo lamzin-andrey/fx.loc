@@ -8,4 +8,4 @@ define ("WORK_FOLDER", "");
 define ("APP_CACHE_LIFE", 15 * 60);
 define ("SUMMER_TIME", -3600);
 define ("DEV_MODE", true);
-define ("STATIC_VERSION", '1');
+define ("STATIC_VERSION", '2');
