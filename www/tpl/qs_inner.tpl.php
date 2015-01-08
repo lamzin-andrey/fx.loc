@@ -80,6 +80,7 @@
 			<div class="simple_code_editor">
 				<div id="qseLineWrapper" class="oh left"><div id="qseLines"></div></div>
 				<textarea id="qs_editor_s" rows="15" spellcheck="false" class="left" wrap="off"></textarea>
+				<div class id="qs_editor_hl" spellcheck="false" class="left" ></div>
 				<div class="clearfix"></div>
 			</div>
 			<div class="status_bar right"><?=$lang['Line']?>: <span id="qsline">0</span>, <?=$lang['Column']?>: <span id="qscol">0</span></div>

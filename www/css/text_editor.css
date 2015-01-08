@@ -48,9 +48,9 @@ body {height:100%; padding:0px 4px; margin:0px;
 .page_content{
 	position:relative;
 	min-width:80%;
-	overflow:auto;
+	/*overflow:auto;
 	resize:horizontal;
-	background:url('/img/resize-right.png')  right bottom no-repeat;
+	background:url('/img/resize-right.png')  right bottom no-repeat;*/
 }
 .console {width:100%;  min-height:520px; background-color:black; color:white;}
 #console {height:520px; scrollbar-base-color:#000000;padding:0 6px;min-width:800px;}

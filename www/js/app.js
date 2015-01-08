@@ -111,15 +111,109 @@
 		}
 		return pos;
 	}
+	/**
+	 * @desc (Вынесено из initKeywordsHelp) Загрузить слова из специального раздела на странице
+	 * @see initKeywordsHelp, initStdFuncsHelp
+	 * @param divId
+	 * @param tagName
+	 * @param Object keyMap
+	*/
+	function _getKeyMap(divId, tagName, keyMap) {
+		var keys = [], sKeys = '', i, j, list, q, key, content, saveContent, aKey;
+		// инициализация keyMap
+		$('#' + divId + ' pre ' + tagName).each(
+			function(i, item) {
+				key = $(item).text(), content = $(item).attr('title');
+				aKey = key.split('(');
+				key = $.trim(aKey[0]);
+				keys.push(key);
+				keyMap[key] = content;
+			}
+		);
+		sKeys = '|' +  keys.join('|') + '|';
+		return sKeys;
+	}
+	/**
+	 * @desc (Вынесено из initKeywordsHelp) Подсветка JS кода
+	 * @see _highlightWordsInHelp
+	 * @param keyMap - карта слов требующих подсветки в виде массива, получена во время работы  _getKeyMap
+	 * @param sKeys  - специальная строка с ключевыми словами, требующими подсветки, результат _getKeyMap
+	 * @param sKeysSF - специальная строка с именами стандартных функций, результат _getKeyMap
+	 * @param String wrapAsExample - префикс имени функции, в которую будет "завернут" код
+	 * 								 если не задано, то код в функцию не заворачивается
+	*/
+	function _highlightJsCode(content, sKeys, sKeysSF, wrapAsExample) {
+		var list, j, copy;
+		content = content.replace(/\\"/mig, 'SLASHED_D_QUOTES');
+		content = content.replace(/\s?"([^"]*)"/mig, '<span class="strcolor">"$1"</span>');
+		content = content.replace(/SLASHED_D_QUOTES/mig, '\\"');
+		content = content.replace(/\\\//mig, 'SLASHED_D_QUOTES');
+		copy = content;
+		content = content.replace(/(\/[^\/]+\/[mig]{1,3})/mig, '<span class="recolor">$1</span>');
+		if (copy == content) {
+			content = content.replace(/(\/[^\/]+\/)[^\/]]*$/mig, '<span class="recolor">$1</span>');
+		}
+		content = content.replace(/SLASHED_D_QUOTES/mig, '\\/');
+		content = content.replace(/\s?'([^']*)'/mig, '<span class="strcolor">\'$1\'</span>');
+		content = content.replace(/(\s?\/\/[^\n]+)\n?$/mig, '<span class="strcolor">$1</span>');
+		content = content.replace(/\/\*([^*]*)\*\//mig, '<span class="strcolor">/*$1*/</span>');
+
+		if (wrapAsExample) {
+			list = content.split('\n');
+			buf = [];
+			for (j = 0; j < list.length; j++) {
+				if (list[j].length) {
+					//if (wrapAsExample) {
+					buf.push(' QSTAB ' + list[j]);
+					/*} else {
+						buf.push(list[j]);
+					}*/
+				}
+			}
+			content = 'function ' + wrapAsExample + 'Example() { QSNEW_LINE ' + buf.join(' QSNEW_LINE ') + ' QSNEW_LINE }';
+		} else {
+			content = content.replace(/\n/g, ' QSNEW_LINE '); //buf.join(' QSNEW_LINE ');
+		}
+	
+		content = content.replace(/\t/gim, ' QSTAB ');
+		content = content.replace(/,/gim, ' QSZP ');
+		content = content.replace(/:/gim, ' QSDP ');
+		content = content.replace(/\./gim, ' QSDOT ');
+		content = content.replace(/\(/gim, ' QSBRCK ');
+		content = content.replace(/;/gim, ' QSENDOP ');
+		list = content.split(/\s/);
+		for (j = 0; j < list.length; j++) {
+			if (sKeys.indexOf('|' + list[j] + '|') != -1) {
+				list[j] = '<b>' + list[j] + '</b>';
+			}
+			if (sKeysSF.indexOf('|' + list[j] + '|') != -1) {
+				list[j] = '<i>' + list[j] + '</i>';
+			}
+		}
+		content = list.join(' ');
+		content = content.replace(/ QSTAB /gim, '\t');
+		content = content.replace(/ QSNEW_LINE /gim, '\n');
+		content = content.replace(/ QSZP /gim, ',');
+		content = content.replace(/ QSDP/gim, ':');
+		content = content.replace(/ QSDOT /gim, '.');
+		content = content.replace(/ QSBRCK /gim, '(');
+		content = content.replace(/ QSENDOP /gim, ';');
+		return content;
+	}
+	
+	
 	function initSampleTextEditor()  {
 		var mid = '#qs_editor_s',
+			hid = '#qs_editor_hl',
 			fileId = -1,
 			fileDisplayName = '',
 			lastTimeLoadFileClick = 0,
 			maxEditorHeight = false,
 			enableFunctions = false,
 			ContentFunctions = {globals:{}},
-			DefaultContentFunctions = _getStdMethods();
+			DefaultContentFunctions = _getStdMethods(),
+			textCursor = {}.
+			lastPos = 0;
 		window.SiEd = {};
 		if (!$(mid)[0]) {
 			return;
@@ -138,6 +232,8 @@
 			}
 			$('#qsline').text(res.y);
 			$('#qscol').text(res.x);
+			textCursor = {x:res.x, y:res.y};
+			lastPos = p;
 			lines(s, res.y);
 			return {p:p, s:s};
 		}
@@ -180,14 +276,85 @@
 				}
 			}*/
 			//console.log();
-			h = ($('#qs_editor_s').height() + 5) + 'px';
+			h = ($('#qs_editor_hl').height() + 5) + 'px';
 			$('#qseLineWrapper').css('max-height', h);
-			$('#qseLines')[0].style.top = (-1 * $('#qs_editor_s')[0].scrollTop) + 'px';
+			$('#qseLines')[0].style.top = (-1 * $('#qs_editor_hl')[0].scrollTop) + 'px';
 			if ($('#tabhook')[0]) {
 				$('#tabhook')[0].style.height = h;
 				$('#tabhook')[0].style.top = $('#qseLines')[0].offsetHeight;
 			}
 		}
+		/**
+		* @desc Отображение текста в редакторе с подсветкой ситаксиса
+		*/
+		function viewHighightEditor() {
+			var src = $(mid).val(), s = src, aSrcLines = src.split('\n');
+			var pos = getCaretPosition($(mid)[0]);
+			var keyMap = {}, keyMapSF = {};
+			sKeys = _getKeyMap('keywords', 'b', keyMap);
+			sKeysSF = _getKeyMap('stdfunctions', 'i', keyMapSF);
+			s = _highlightJsCode(s, sKeys, sKeysSF, false);
+			//TODO установить курсор
+			console.log( textCursor );
+			var line = textCursor.y - 1,
+				offset = textCursor.x - 1, i, j = 0, inTag = 0, ch,
+				aLines = s.split('\n'), buf = '', L, found = 0;
+			if (aLines[line]){
+				L = aLines[line].length;
+			} else {
+				L = 0;
+			}
+			for (i = 0; i < L; i++) {
+				if (offset == 0 && line == 0) {
+					break;
+				}
+				if (offset == aSrcLines[line].length) {
+					console.log('Line = ' + line);
+					found = 1;
+					buf = aLines[ line ] + '<span id="qsEditorHl">|</span>';
+					console.log(buf);
+					break;
+				}
+				ch = aLines[line][i];
+				if (ch == '<' || ch == '&') {
+					inTag = 1;
+				}
+				if (ch == '>' || (ch == ';' && inTag) ) {
+					inTag = 0;
+					buf += ch;
+					continue;
+				}
+				if (inTag == 0) {
+					if (offset == j) {
+						buf += '<span id="qsEditorHl">|</span>';
+						found = 1;
+					}
+					j++;
+				}
+				buf += ch;
+			}
+			if (!found && aLines.length > line ) {
+				aLines[ line ] = '<span id="qsEditorHl">|</span>' + aLines[ line ];
+			} else {
+				aLines[line] = buf;
+			}
+			s = aLines.join('<br>\n');
+			s = s.replace(/\t/g, '<span class="qsEditorHlTab"> </span>\t');
+			$(hid).html(s);
+			//$(hid)[0].scrollLeft =  $(mid)[0].scrollLeft + 10;
+			var tmpDiv = $('<div class="scroll_helper">Щ</div>');
+			$(document.body).append(tmpDiv);
+			//tmpDiv.html( aLines[line] );
+			var length = tmpDiv.width();
+			tmpDiv.remove();
+			var dW = (length * textCursor.x) - $(hid)[0].offsetWidth;
+			console.log('dW = ' + dW);
+			$(hid)[0].scrollLeft = dW;
+			
+			//$(hid)[0].scrollTop =  $(mid)[0].scrollTop ? $(mid)[0].scrollTop: 0;
+			$(hid)[0].scrollTop =  (textCursor.y + 1) * parseInt( $(hid).css('line-height'))  - $(hid).height();
+		}
+		
 		function onKeyDown(e) {
 			//Контроль Tab клавиши
 			if (e.keyCode == 9) {
@@ -209,6 +376,7 @@
 					function () {
 						if (pos) {
 							setCaretPosition(ta, pos + 1 + corr);
+							textCursor.x++;
 						} else {
 							ta.focus();
 						}
@@ -216,7 +384,11 @@
 					}
 					, 10
 				);
-				return true;
+				setTimeout(
+					viewHighightEditor
+					, 30
+				);
+				return false;
 			} else if (e.keyCode == 13) {//Enter
 				setTimeout(
 					function () {
@@ -250,6 +422,10 @@
 				}
 				ta.value = s;
 				setCaretPosition(ta, pos + 1 + spaces.length);
+				setTimeout(
+					viewHighightEditor
+					, 30
+				);
 				return false;
 			} else if (e.keyCode == 68 && e.ctrlKey == true) {//Ctrl + D
 				var ta = this, pos = getCaretPosition(ta),
@@ -275,9 +451,17 @@
 				}
 				ta.value = s;
 				setCaretPosition(ta, pos + 1 + spaces.length);
+				setTimeout(
+					viewHighightEditor
+					, 30
+				);
 				return false;
 			} else if (e.keyCode == 83 && e.ctrlKey == true) {//Ctrl + S
 				saveNow();
+				setTimeout(
+					viewHighightEditor
+					, 30
+				);
 				return false;
 			}
 			else {
@@ -289,6 +473,10 @@
 						showCodeHint(data);
 					}
 					, 10
+				);
+				setTimeout(
+					viewHighightEditor
+					, 30
 				);
 			}
 		}
@@ -1258,7 +1446,7 @@
 				}catch(E){;}
 			}
 		}
-		$(mid).bind('mousewheel', showTextCursorCoord);
+		$(hid).bind('mousewheel', showTextCursorCoord);
 		//на странице text_editor
 		if (window.location.href.indexOf('/text_editor') != -1) {
 			//высота редактора
@@ -1269,13 +1457,18 @@
 			showTextCursorCoord();
 			var w;
 			if (w = localStorage.getItem('editorWidth')) {
-				$('#textEditorArea').width(w)  + 'px'; 
+				//$('#textEditorArea').width(w); 
+				$('#qs_editor_hl').css('max-width', w + 'px');
 			}
 			//загрузка связанных функций
 			seInitProjectDlg();
 			seInitProjectFunctions(true);
 			seInitProjectFunctions();
 		}
+		//Копирование текста в отображение
+		$(hid)[0].onclick = function() { $(mid)[0].focus(); setCaretPosition($(mid)[0], lastPos) };
+		$(hid).css( 'height', $(mid).height() + 'px' );
+		viewHighightEditor();
 	}
 //============ / Простой редактор кода==================================
 	/**
@@ -1334,95 +1527,6 @@
 //===========Словари и подсветка для подсказок на страницах статей======
 //====== Словарь кейвордов  и стандартных функций
 	function initKeywordsHelp() {
-		/**
-		 * @desc Загрузить слова из специального раздела на странице
-		 * @see initKeywordsHelp, initStdFuncsHelp
-		 * @param divId
-		 * @param tagName
-		 * @param Object keyMap
-		*/
-		function _getKeyMap(divId, tagName, keyMap) {
-			var keys = [], sKeys = '', i, j, list, q, key, content, saveContent, aKey;
-			// инициализация keyMap
-			$('#' + divId + ' pre ' + tagName).each(
-				function(i, item) {
-					key = $(item).text(), content = $(item).attr('title');
-					aKey = key.split('(');
-					key = $.trim(aKey[0]);
-					keys.push(key);
-					keyMap[key] = content;
-				}
-			);
-			sKeys = '|' +  keys.join('|') + '|';
-			return sKeys;
-		}
-		/**
-		 * @desc Подсветка JS кода
-		 * @see _highlightWordsInHelp
-		 * @param keyMap - карта слов требующих подсветки в виде массива, получена во время работы  _getKeyMap
-		 * @param sKeys  - специальная строка с ключевыми словами, требующими подсветки, результат _getKeyMap
-		 * @param sKeysSF - специальная строка с именами стандартных функций, результат _getKeyMap
-		 * @param String wrapAsExample - префикс имени функции, в которую будет "завернут" код
-		 * 								 если не задано, то код в функцию не заворачивается
-		*/
-		function _highlightJsCode(content, sKeys, sKeysSF, wrapAsExample) {
-			var list, j, copy;
-			content = content.replace(/\\"/mig, 'SLASHED_D_QUOTES');
-			content = content.replace(/\s?"([^"]*)"/mig, '<span class="strcolor"> "$1"</span>');
-			content = content.replace(/SLASHED_D_QUOTES/mig, '\\"');
-			content = content.replace(/\\\//mig, 'SLASHED_D_QUOTES');
-			copy = content;
-			content = content.replace(/(\/[^\/]+\/[mig]{1,3})/mig, '<span class="recolor"> $1 </span>');
-			if (copy == content) {
-				content = content.replace(/(\/[^\/]+\/)[^\/]]*$/mig, '<span class="recolor"> $1 </span>');
-			}
-			content = content.replace(/SLASHED_D_QUOTES/mig, '\\/');
-			content = content.replace(/\s?'([^']*)'/mig, '<span class="strcolor"> \'$1\'</span>');
-			content = content.replace(/(\s?\/\/[^\n]+)\n?$/mig, '<span class="strcolor">$1</span>');
-			content = content.replace(/\/\*([^*]*)\*\//mig, '<span class="strcolor">/*$1*/</span>');
-
-			if (wrapAsExample) {
-				list = content.split('\n');
-				buf = [];
-				for (j = 0; j < list.length; j++) {
-					if (list[j].length) {
-						//if (wrapAsExample) {
-						buf.push(' QSTAB ' + list[j]);
-						/*} else {
-							buf.push(list[j]);
-						}*/
-					}
-				}
-				content = 'function ' + wrapAsExample + 'Example() { QSNEW_LINE ' + buf.join(' QSNEW_LINE ') + ' QSNEW_LINE }';
-			} else {
-				content = content.replace(/\n/g, ' QSNEW_LINE '); //buf.join(' QSNEW_LINE ');
-			}
-		
-			content = content.replace(/\t/gim, ' QSTAB ');
-			content = content.replace(/,/gim, ' QSZP ');
-			content = content.replace(/:/gim, ' QSDP ');
-			content = content.replace(/\./gim, ' QSDOT ');
-			content = content.replace(/\(/gim, ' QSBRCK ');
-			content = content.replace(/;/gim, ' QSENDOP ');
-			list = content.split(/\s/);
-			for (j = 0; j < list.length; j++) {
-				if (sKeys.indexOf('|' + list[j] + '|') != -1) {
-					list[j] = '<b>' + list[j] + '</b>';
-				}
-				if (sKeysSF.indexOf('|' + list[j] + '|') != -1) {
-					list[j] = '<i>' + list[j] + '</i>';
-				}
-			}
-			content = list.join(' ');
-			content = content.replace(/ QSTAB /gim, '\t');
-			content = content.replace(/ QSNEW_LINE /gim, '\n');
-			content = content.replace(/ QSZP /gim, ',');
-			content = content.replace(/ QSDP/gim, ':');
-			content = content.replace(/ QSDOT /gim, '.');
-			content = content.replace(/ QSBRCK /gim, '(');
-			content = content.replace(/ QSENDOP /gim, ';');
-			return content;
-		}
 		/**
 		 * @desc Подсветка синтаксиса для текста в всплывающем окне
 		 * @see initKeywordsHelp, initStdFuncsHelp

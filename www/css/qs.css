@@ -6,15 +6,37 @@
 	height:100%;
 }
 #qs_editor_s {
-	width:90%;
+	width:1px;
 	margin-top:0px;
-	resize:vertical;
+	/*resize:vertical;*/
 	-moz-tab-size:4;
 	tab-size:4;
 	-ms-tab-size:2;
 	-o-tab-size:2;
 	line-height:14pt;
 	font-size  :12pt;
+	opacity:0;
+	/*position:absolute;*/
+}
+#qs_editor_hl {
+	width:90%;
+	margin-top:0px;
+	-moz-tab-size:4;
+	tab-size:4;
+	-ms-tab-size:2;
+	-o-tab-size:2;
+	line-height:14pt;
+	font-size  :12pt;
+	border:1px solid black;
+	height:200px;
+	overflow:scroll;
+	font-family:monospace;
+	white-space:nowrap;
+}
+.scroll_helper {
+	line-height:14pt;
+	font-size  :12pt;
+	font-family:monospace;
 }
 .oh {overflow:hidden;}
 #qseLines {
@@ -177,4 +199,12 @@ u{text-decoration:none; color:#2A8109; font-style:italic;}
 }
 #runTest {
 	width:130px;	
+}
+#qsEditorHl {
+	color:red;
+	font-family:Arial;
+}
+.qsEditorHlTab {
+	width:20px;
+	display:inline-block;
 }

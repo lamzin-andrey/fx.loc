@@ -6,14 +6,14 @@
 	</div><?
 		$aUrl = explode('?', $_SERVER['REQUEST_URI']);
 		$url = $aUrl[0];
-		if ((strpos($url, '/quick_start') !== false || strpos($url, '/test_editor') !== false) && strpos($url, '/quick_start/keywords') === false) {?>
+		if ((strpos($url, '/quick_start') !== false || strpos($url, '/text_editor') !== false) && strpos($url, '/quick_start/keywords') === false) {?>
 			<div class="hide">
 			<?
 			include APP_ROOT . '/files/quick_book/keyworddiv.php';?>
 			</div>
 			<?
 		}
-	?>
+	?><div class="hide"><?	include APP_ROOT . '/files/quick_book/functionsdiv.php';?></div>
 		<div class="qs_editor_place">
 			<ul class="inline qs_editor_s_tbar">
 				<li>
@@ -39,6 +39,7 @@
 				<!--div class="oh left"><div id="qseLines"></div></div-->
 				<div id="qseLineWrapper" class="oh left"><div id="qseLines"></div></div>
 				<textarea id="qs_editor_s" rows="15" spellcheck="false" class="left" wrap="off"></textarea>
+				<pre class id="qs_editor_hl" spellcheck="false" class="left" ></pre>
 				<input type="button" class="left focus_hook abs" id='tabhook'>
 				<div class="clearfix"></div>
 			</div>
