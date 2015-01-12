@@ -581,7 +581,7 @@
 						);
 						appWindowClose();
 						appWindow('qs-br-wrap', lang['Openfile']);
-						$('.file-names-filter').css('width', $('.file-names-filter').width() + 'px');
+						//$('.file-names-filter').css('width', $('.file-names-filter').width() + 'px');
 					} else {
 						$('.no_file').removeClass('hide');
 					}
@@ -630,7 +630,7 @@
 					var obj = document.getElementById('qs-br');
 					if (obj) {
 						$('#qsBrLoader').css('top', Math.round((obj.offsetHeight - 66)/ 2) + 'px').css('left', Math.round((obj.offsetWidth -66)/ 2)  + 'px' );
-						$('.file-names-filter').css('width', (obj.offsetWidth - 1) + 'px');
+						//$('.file-names-filter').css('width', (obj.offsetWidth - 1) + 'px');
 					}
 				}, 10
 			);
