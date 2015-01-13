@@ -111,6 +111,36 @@
 		}
 		return pos;
 	}
+	
+	/**
+	 * 
+	 * Итак, запихать все строки в див или пэ, при получении позиции получаем первый див с определенным классом, 
+	 *  далее считаем, который он в нашем контейнере по счету. 
+	 * По горизонтали учитываем все html элементы вплоть до того, в котором начинается выделение и считаем количество символов
+	 *@desc Получение позиции курсора
+	*/
+	function getCaretPositionInDiv(div) {
+		var sel = window.getSelection();
+		var currentDiv = sel.anchorNode;
+		var offset = -1;
+		if (currentDiv) {
+			var pNode = currentDiv.parentNode;
+			var deep = 0;
+			while (pNode != div) {
+				pNode = pNode.parentNode;
+				if (!pNode) {
+					return offset;
+				}
+				deep++;
+			}
+			console.log(pNode);
+			var fc = div.firstChild;
+			offset = currentDiv.anchorOffset;
+		}
+		return sel;
+	}
+	
+	window.gcp = getCaretPositionInDiv;
 	/**
 	 * @desc (Вынесено из initKeywordsHelp) Загрузить слова из специального раздела на странице
 	 * @see initKeywordsHelp, initStdFuncsHelp
@@ -249,7 +279,6 @@
 				}
 				div.append( $('<div class="' + css + '">' + (i + 1) + '</div>') );
 			}
-			//console.log('total = ' + total + ', exists = ' + exists);
 			/*if (exists > total) {
 				div.html('');
 				for (i; i < total; i++) {
@@ -275,7 +304,6 @@
 					}
 				}
 			}*/
-			//console.log();
 			h = ($('#qs_editor_hl').height() + 5) + 'px';
 			$('#qseLineWrapper').css('max-height', h);
 			$('#qseLines')[0].style.top = (-1 * $('#qs_editor_hl')[0].scrollTop) + 'px';
@@ -295,7 +323,6 @@
 			sKeysSF = _getKeyMap('stdfunctions', 'i', keyMapSF);
 			s = _highlightJsCode(s, sKeys, sKeysSF, false);
 			//TODO установить курсор
-			console.log( textCursor );
 			var line = textCursor.y - 1,
 				offset = textCursor.x - 1, i, j = 0, inTag = 0, ch,
 				aLines = s.split('\n'), buf = '', L, found = 0;
@@ -309,10 +336,8 @@
 					break;
 				}
 				if (offset == aSrcLines[line].length) {
-					console.log('Line = ' + line);
 					found = 1;
 					buf = aLines[ line ] + '<span id="qsEditorHl">|</span>';
-					console.log(buf);
 					break;
 				}
 				ch = aLines[line][i];
@@ -348,7 +373,6 @@
 			var length = tmpDiv.width();
 			tmpDiv.remove();
 			var dW = (length * textCursor.x) - $(hid)[0].offsetWidth;
-			console.log('dW = ' + dW);
 			$(hid)[0].scrollLeft = dW;
 			
 			//$(hid)[0].scrollTop =  $(mid)[0].scrollTop ? $(mid)[0].scrollTop: 0;
@@ -405,7 +429,6 @@
 							break;
 						}
 					}
-					//console.log('j = ' + j + ', pos = ' + pos);
 					for (i = j; i < pos; i++) {
 						if (s.charAt(i) == '\t' || s.charAt(i) == ' ') {
 							spaces += s.charAt(i);
@@ -413,7 +436,6 @@
 							break;
 						}
 					}
-					//console.log('sp = "' + spaces + '"');
 					q = s.substring(0, pos);
 					tail = s.substring(pos, s.length);
 					s = q + "\n" + spaces + tail;
@@ -437,11 +459,9 @@
 							break;
 						}
 					}
-					//console.log('j = ' + j + ', pos = ' + pos);
 					for (i = j; i < pos; i++) {
 						spaces += s.charAt(i);
 					}
-					//console.log('sp = "' + spaces + '"');
 					q = s.substring(0, pos);
 					tail = s.substring(pos, s.length);
 					
@@ -465,7 +485,6 @@
 				return false;
 			}
 			else {
-				//console.log(e);
 				setTimeout(
 					function () {
 						setMenuIconState();
@@ -904,7 +923,6 @@
 				object = {};
 			}
 			object.globals = {};
-			//console.log(object);
 			//return {globals:{}};//TODO сделать получение так же как с определенными в проекте
 			return object;
 		}
@@ -930,7 +948,6 @@
 			var s = $(mid).val(),
 				re = /function\s+[A-z0-9_]+\s*\([A-z0-9,'" ]*\)/gi,
 				data = s.match(re), cName, fName;
-			//console.log(data);
 			
 			ContentFunctions = {};
 			for (cName in DefaultContentFunctions) {
@@ -965,7 +982,6 @@
 					var arr = s.split('(');
 					o.name = $.trim((arr[0]));
 					o.src = src;
-					//console.log(args);
 					if (args.length) {
 						arr = args.split(',');
 						$(arr).each(
@@ -996,7 +1012,6 @@
 					arr = s.split(':');
 					o.name = $.trim((arr[0]));
 					o.src = src;
-					//console.log(args);
 					if (args.length) {
 						arr = args.split(',');
 						$(arr).each(
@@ -1032,7 +1047,6 @@
 					o.name = $.trim((arr[1]));
 					o.name = $.trim( o.name.replace(/[.=]/gim, '') );
 					o.src = src;
-					//console.log(args);
 					if (args.length) {
 						arr = args.split(',');
 						$(arr).each(
@@ -1051,7 +1065,6 @@
 				}
 			);
 			
-			//console.log(ContentFunctions);
 			showContentFunctionsInList();
 		}
 		/**
@@ -1115,7 +1128,6 @@
 					s = $(mid).val(),
 					caretPos = s.indexOf(src),
 					L, T, value;
-					//console.log(caretPos);
 				if (caretPos != -1) {
 					//T = s.split('\n').length;
 					s = s.substring(0, caretPos);
@@ -1157,11 +1169,9 @@
 						}
 					}
 					fName = $.trim( aName.reverse().join('') );
-					//console.log(fName);
 					for (cName in ContentFunctions) {
 						for (name in ContentFunctions[cName]) {
 							if (name == fName && ContentFunctions[cName][name].args.length) {
-								//console.log('found');
 								$('#codeTooltip').text( ContentFunctions[cName][name].args.join(', ') ).removeClass('hide');
 								//TODO set coordinates
 								L = parseInt($(mid).css('line-height'), 10)  *  (s.split('\n').length + 1);
@@ -1273,7 +1283,6 @@
 					var re = /[A-z0-9_]+\s*\:\s*function\s*\([A-z0-9,'" ]*\)/gi,
 						s = obj.file_content,
 						data = s.match(re), cName, fName;
-					//console.log(data);
 					$(data).each(
 						function (i, s) {
 							var src = s,
@@ -1290,7 +1299,6 @@
 								o.std = std;
 								o.showStd = showStd;
 							}
-							//console.log(args);
 							if (args.length) {
 								arr = args.split(',');
 								$(arr).each(
@@ -1332,7 +1340,6 @@
 								o.std = std;
 								o.showStd = showStd;
 							}
-							//console.log(args);
 							if (args.length) {
 								arr = args.split(',');
 								$(arr).each(
@@ -1646,7 +1653,6 @@
 			if (data) {
 				setInterval(
 					function() {
-						//console.log(window.infoMessages);
 						if ($('#tooltip').css('opacity') > 0) {
 							return;
 						}
