@@ -2072,7 +2072,11 @@
 		);
 		function _onSuccess(data) {
 			if (data.success == 1) {
-				window.location.reload();
+				if (window.location.href.indexOf('/remind') == -1) {
+					window.location.reload();
+				} else {
+					window.location.href = '/';
+				}
 			} else {
 				showError(lang['user_not_found']);
 			}

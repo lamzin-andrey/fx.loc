@@ -134,6 +134,15 @@ $lang['vote'] = 'голос';
 $lang['Your_task'] = 'Ваша задача';
 $lang['you_has_no_tasks'] = 'Вы пока не выбрали задачу';
 $lang['Objects)'] = 'Объекты';
+$lang['user_with_email_not_found)'] = 'Пользователь с таким email не найден';
+$lang['fail_send_mail)'] = 'Не удалось отправить письмо';
+$lang['PasswordRecoveryLabel'] = 'Восстановить пароль';
+$lang['success_send_mail'] = 'Ссылка для восстановления пароля отправена на ваш email';
+$lang['bad_hash'] = 'Что-то пошло не так, возможно ссылка для восстановления пароля устарела';
+$lang['try_remind_again'] = 'Попробуйте получить ссылку на ваш email повторно';
+$lang['PasswordResetLabel'] = 'Сбросить пароль';
+$lang['success_updated_password'] = 'Пароль обновлен, вы можете войти в свой аккаунт используя его';
+$lang['enter_new_password'] = 'Введите новый пароль';
 
 //quick_start
 $lang['intro'] = 'Что это';

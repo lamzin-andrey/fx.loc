@@ -16,6 +16,7 @@ class CApplication {
 	
 	public function __construct() {
 		@session_start();
+		@date_default_timezone_set("Europe/Moscow");
 		$this->lang = utils_getCurrentLang();
 		$this->_loadAuthUserData();
 		$this->_ajaxHandler();
@@ -51,6 +52,9 @@ class CApplication {
 			case $work_folder . '/resources':
 				$this->_resourcesActions();
 				break;
+			case $work_folder . '/remind':
+				$this->_remindPasswordActions();
+				break;
 			default:
 				if (strpos($url, '/quick_start/') !== false) {
 					$this->_quickStartActions();
@@ -81,6 +85,12 @@ class CApplication {
 	 * @desc Обработка возможных действий при регистрации и авторизации
 	**/
 	private function _loginActions() {
+		$this->handler = $h = $this->_load('LoginHandler');
+	}
+	/**
+	 * @desc Обработка возможных действий при регистрации и авторизации
+	**/
+	private function _remindPasswordActions() {
 		$this->handler = $h = $this->_load('LoginHandler');
 	}
 	/**

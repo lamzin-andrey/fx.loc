@@ -10,7 +10,7 @@
 						<label class="slabel" for="password"><?=$lang['Password']?></label><br> 
 						<input type="password" value="" id="password" name="password">					</div>
 					<div class="left lpm1">
-						<a target="_blank" href="<?=WEB_ROOT?>/remind" class="smbr" onclick="alert('In process'); return false;"><?=$lang['Password_recovery']?></a>
+						<a target="_blank" href="<?=WEB_ROOT?>/remind?action=getpwd" class="smbr"><?=$lang['Password_recovery']?></a>
 					</div>
 					<div class="right prmf">
 						<input type="button" value="<?=$lang['Sign_in_button_label']?>" class="btn" id="aop" name="aop">					

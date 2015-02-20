@@ -26,6 +26,24 @@ ul.nomark li {list-style-type:none;}
 .w100 {width:100%}
 .bgnone {background: none !important;}
 
+
+.message_block {
+	font-size: 10pt;
+    margin: 0 auto;
+    padding: 10px 16px;
+    width: 100%;
+}
+
+.danger {
+	background-color: #ffb0b9;
+    color: #aa0000;
+    
+}
+.success {
+	background-color: #b0ffc2;
+    color: black;
+}
+
 /* постраничная навигация пример оформления*/
 #paglist {text-align:center}
 #paglist li{margin:2px 4px;}
