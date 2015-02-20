@@ -14,7 +14,7 @@
 				</div>
 			
 				<div class="remindcap">
-					<label class="slabel" for="str"><?=$lang['Captcha_reg_legend']?></label><br>
+					<label class="slabel" for="str"><?=$lang['Captcha_remind_legend']?></label><br>
 					<img id="refimg" src="<?=WEB_ROOT?>/img/random">
 				</div>
 				<div class="aphone">

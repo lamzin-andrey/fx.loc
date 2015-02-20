@@ -140,7 +140,8 @@ $lang['PasswordRecoveryLabel'] = 'Восстановить пароль';
 $lang['success_send_mail'] = 'Ссылка для восстановления пароля отправена на ваш email';
 $lang['bad_hash'] = 'Что-то пошло не так, возможно ссылка для восстановления пароля устарела';
 $lang['try_remind_again'] = 'Попробуйте получить ссылку на ваш email повторно';
-$lang['PasswordResetLabel'] = 'Сбросить пароль';
+$lang['PasswordResetLabel'] = 'Изменить пароль';
+$lang['Captcha_remind_legend'] = 'Введите символы с изображения';
 $lang['success_updated_password'] = 'Пароль обновлен, вы можете войти в свой аккаунт используя его';
 $lang['enter_new_password'] = 'Введите новый пароль';
 
