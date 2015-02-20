@@ -10,7 +10,7 @@
 		<form action="/remind?action=getpwd" method="POST">
 				<div class="aphone">
 					<label class="slabel" for="email">Email</label><br>
-					<input type="email" id="email" name="email" value="lamzin80@mail.ru">
+					<input type="email" id="email" name="email" >
 				</div>
 			
 				<div class="remindcap">

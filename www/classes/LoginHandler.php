@@ -164,7 +164,7 @@ class LoginHandler extends CBaseHandler {
 			$uid = (int)$row['id'];
 			$name = $row['name'] ? $row['name'] : '';
 			if ($row['surname']) {
-				$name .= $row['surname'];
+				$name .= ' ' . $row['surname'];
 			}
 			if (!$name) {
 				$name = $email;
