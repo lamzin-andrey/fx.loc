@@ -55,6 +55,9 @@ class CApplication {
 			case $work_folder . '/remind':
 				$this->_remindPasswordActions();
 				break;
+			case $work_folder . '/gate':
+				$this->_saveEDataActions();
+				break;
 			default:
 				if (strpos($url, '/quick_start/') !== false) {
 					$this->_quickStartActions();
@@ -92,6 +95,13 @@ class CApplication {
 	**/
 	private function _remindPasswordActions() {
 		$this->handler = $h = $this->_load('LoginHandler');
+	}
+	/**
+	 * @desc Небольшой сервис для личных нужд
+	**/
+	private function _saveEDataActions() {
+		$this->layout = 'tpl/edata.master.tpl.php';
+		$this->handler = $h = $this->_load('EDataHandler');
 	}
 	/**
 	 * @desc Обработка 404

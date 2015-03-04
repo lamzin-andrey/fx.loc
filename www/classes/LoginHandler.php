@@ -259,7 +259,7 @@ class LoginHandler extends CBaseHandler {
 		utils_302('/remind?action=success');
 	}
 	/**
-	 * @desc Показать страницу Успех
+	 * @desc Показать страницу Успех при восстановлении пароля
 	**/
 	private function _showSuccess() {
 		$lang = utils_getCurrentLang();

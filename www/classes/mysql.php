@@ -72,5 +72,6 @@ function setConnection() {
 }
 function db_escape(&$s) {
 	$s = mysql_escape_string($s);
+	return $s;
 }
 ?>
