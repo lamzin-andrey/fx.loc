@@ -58,6 +58,9 @@ class CApplication {
 			case $work_folder . '/gate':
 				$this->_saveEDataActions();
 				break;
+			case $work_folder . '/gateup':
+				$this->_getLastEDataActions();
+				break;
 			default:
 				if (strpos($url, '/quick_start/') !== false) {
 					$this->_quickStartActions();
@@ -102,6 +105,11 @@ class CApplication {
 	private function _saveEDataActions() {
 		$this->layout = 'tpl/edata.master.tpl.php';
 		$this->handler = $h = $this->_load('EDataHandler');
+	}
+	private function _getLastEDataActions() {
+		$this->layout = 'tpl/getdata.master.tpl.php';
+		$this->handler = $h = $this->_load('EDataHandler');
+		$this->handler->getLastSave();
 	}
 	/**
 	 * @desc Обработка 404
