@@ -25,6 +25,9 @@ ul.nomark li {list-style-type:none;}
 .tcenter {text-align:center;}
 .w100 {width:100%}
 .bgnone {background: none !important;}
+.tcell {display:table-cell}
+.trow {display:table-row}
+
 
 
 .message_block {

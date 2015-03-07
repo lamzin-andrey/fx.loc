@@ -14,7 +14,7 @@ class CViewHelper {
 		$date_modify = '';
 		$lang = utils_getCurrentLang();
 		if ($commentInfo['date_modify'] != $commentInfo['date_create']) {
-			$date_modify = '<div class="cmv_modify"><img title="'. $lang['edit_time'] .'" src="'. WEB_ROOT .'/img/edit16.png">'. utils_dateE2R($commentInfo['date_modify']) .'</div>';
+			$date_modify = '<div class="cmv_modify iblock"><img title="'. $lang['edit_time'] .'" src="'. WEB_ROOT .'/img/edit16.png">'. utils_dateE2R($commentInfo['date_modify']) .'</div>';
 		}
 		$s = '<div class="left userinfo">'. $commentInfo['name'] . ' ' . $commentInfo['surname'].'</div>
 		<div class="left cmv_title">'. $commentInfo['title'] .'</div>
@@ -27,13 +27,35 @@ class CViewHelper {
 		</div>
 		<div class="cmv_body">'. str_replace("\n", "<br>", $commentInfo['body']) .'</div>
 		<div class="clearfix"></div>';
+		
+		
+		$s = '
+		<div class="trow">
+			<div class="tcell pseavatar"><img src="'. WEB_ROOT . '/img/user_say.png" alt"'. $commentInfo['name'] . ' ' . $commentInfo['surname'] .'" title="'. $commentInfo['name'] . ' ' . $commentInfo['surname'] .'"></div>
+			<div class="tcell cmv_right_part">
+				<div class="left userinfo">'. $commentInfo['name'] . ' ' . $commentInfo['surname'] .'</div>
+				<div class="clearfix"></div>
+				<div class="left cmv_title">'. $commentInfo['title'] .'</div>
+				<div class="clearfix"></div>
+				<div class="cmv_body">'. str_replace("\n", "<br>", $commentInfo['body']) .'</div>
+			</div>
+		</div>
+		
+		<div class="iblock left">
+			<div class="cmv_created iblock"><img title="'. $lang['publish_time'] .'" src="'. WEB_ROOT .'/img/timer16.png">'. utils_dateE2R($commentInfo['date_create']) .'</div>
+			'. $date_modify . '
+		</div>
+		<div class="iblock right">';
+	
+		
 		if (sess('uid')) {
-			$s .= '<a href="#" class="right cmv_alink" data-id="'. $commentInfo['id'] .'"> '. $lang['Aswer_him'] .'</a>';
+			//$s .= '<a href="#" class="right cmv_alink" data-id="'. $commentInfo['id'] .'"> '. $lang['Aswer_him'] .'</a>';
+			$s .= '<div class="right cmv_created"><a href="#" class="right cmv_alink" data-id="'. $commentInfo['id'] .'">' . $lang['Aswer_him']  .'</div>';
 		}
 		if (sess('uid') == $commentInfo['uid']) {
-			$s .= '<a href="#" class="right cmv_elink" data-id="'. $commentInfo['id'] .'"><img class="e16c" src="'. WEB_ROOT .'/img/edit16c.png"> '. $lang['Edit'] .'</a><div class="clearfix"></div>';
+			$s .= '<div class="right cmv_created"><a href="#" class="right cmv_elink" data-id="'. $commentInfo['id'] .'"><img  src="'. WEB_ROOT .'/img/edit16c.png">' . $lang['Edit'] .'</a></div>';
 		}
-		$s .= '<div class="clearfix"></div>';
+		$s .= '</div><div class="clearfix cmv_bottom_view"></div>';
 		return $s;
 	}
 	/**
