@@ -1,4 +1,4 @@
-<div class="promo"><img src="<?=WEB_ROOT?>/img/wordtest/bg0.png" width="1px" height="1px;">
+<div class="promo"><img src="<?=WEB_ROOT?>/img/wordtest/bg0.png" style="width:1px; height:1px;z-index:5; position:absolute; opacity:0">
 	<div id="fixcon" class="hide">
 		<div class="console">
 			<div id="console" class="scroll-y"></div>

@@ -52,7 +52,7 @@
 			<? include APP_ROOT . '/tpl/form_auth.tpl.php' ?>
 		
 		<div id="tooltip" class="right bg-dark-blue"></div>
-		<div class="left tasklist">
+		<div class="left tasklist scroll-y">
 			<?
 				if (isset($handler->left_inner)) {
 					include APP_ROOT . '/tpl/' . $handler->left_inner;

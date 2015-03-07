@@ -8,6 +8,7 @@
 #qs_editor_s {
 	width:90%;
 	margin-top:0px;
+	margin-bottom:0px;
 	resize:vertical;
 	-moz-tab-size:4;
 	tab-size:4;
@@ -15,6 +16,7 @@
 	-o-tab-size:2;
 	line-height:14pt;
 	font-size  :12pt;
+	
 }
 .oh {overflow:hidden;}
 #qseLines {
@@ -170,11 +172,12 @@ u{text-decoration:none; color:#2A8109; font-style:italic;}
 	font-size: 10pt;
     line-height: 16px;
     width: 169px;
+    width:200px;
 }
 .add_comment_btn img {
 	margin-right: 4px;
     vertical-align: middle;
 }
 #runTest {
-	width:130px;	
+	width:150px;
 }

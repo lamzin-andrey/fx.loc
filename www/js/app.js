@@ -20,6 +20,7 @@
 			initMainPage();
 			initVewDecisionPage();
 			initGetMyTask();
+			initQuickStartPage();
 			$('#firstLoaderId').remove();
 			$('#firstImgId').remove();
 		}
@@ -1931,7 +1932,7 @@
 		}
 	}
 	/**
-	 * 
+	 * Страница Welcome
 	*/
 	function initMainPage() {
 		var _host = Tool.host(),
@@ -1941,6 +1942,19 @@
 			$('.tasklist ul').first().height(h + 'px');
 		}
 	}
+	/**
+	 * Страница quickstart
+	*/
+	function initQuickStartPage() {
+		var s = window.location.href;
+		if (s.indexOf('/quick_start') != -1) {
+			var h = getViewport().h, dH, hToolbar = $('.toolbar').first().height(),
+				dH =  $('.qs_editor_place').first().height() + hToolbar;
+			$('#article').height((h - dH - 7) + 'px');
+			$('.tasklist').first().height( (h - hToolbar - 7) + 'px');
+		}
+	}
+	window.iq = initQuickStartPage;
 	/**
 	 * @desc  Инициализация консоли
 	 * */
