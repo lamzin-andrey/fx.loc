@@ -19,7 +19,7 @@ class CommentTree extends CAbstractDbTree{
 		//устанавливаю имена полей таблицы БД которые надо обновить
 		//db fields
 		$this->update(
-			array('title', 'body', 'date_modify')
+			array('title', 'body', 'date_modify', 'is_accept')
 		);
 		//устанавливаю имена полей в которые надо записать текущее время
 		$this->timestamps(
@@ -50,6 +50,9 @@ class CommentTree extends CAbstractDbTree{
 	}
 	
 	protected function req($name) {
+		if ($name == 'is_accept') {
+			return '0';
+		}
 		$v = parent::req($name);
 		if ($name == 'skey') {
 			if (!$v) {
