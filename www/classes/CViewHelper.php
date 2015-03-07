@@ -70,6 +70,7 @@ class CViewHelper {
 		if ($commentInfo['is_accept'] == 0) {
 			$s .= '<a href="#" class="right cmv_acceptlink" data-id="'. $commentInfo['id'] .'">'. $lang['Accept'] .'</a>';
 		}
+		$s .= '<a href="#" class="right cmv_removelink" data-id="'. $commentInfo['id'] .'">'. $lang['Delete'] .'</a>';
 		$s .= '<div class="clearfix"></div>';
 		return $s;
 	}

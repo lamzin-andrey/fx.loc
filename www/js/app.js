@@ -2281,6 +2281,15 @@
 					return false;
 				}
 			);
+			$('.cmv_removelink').click(
+				function() {
+					var data = {id:$(this).data('id')};
+					if (confirm('Удалить?')) {
+						req(data, _onLoadCommentAccept, defaultAjaxFail, 'removeComment');
+					}
+					return false;
+				}
+			);
 		}
 		//кнопка показать скрыть комментарии
 		if (!$('#acceptMark')[0]) {

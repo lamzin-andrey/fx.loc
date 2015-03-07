@@ -144,6 +144,7 @@ $lang['PasswordResetLabel'] = 'Изменить пароль';
 $lang['Captcha_remind_legend'] = 'Введите символы с изображения';
 $lang['success_updated_password'] = 'Пароль обновлен, вы можете войти в свой аккаунт используя его';
 $lang['enter_new_password'] = 'Введите новый пароль';
+$lang['Delete'] = 'Удалить';
 
 //quick_start
 $lang['intro'] = 'Что это';

@@ -30,6 +30,9 @@ class AcceptCommentHandler extends CBaseHandler{
 			case 'acceptComment':
 				$this->_acceptComment();
 				break;
+			case 'removeComment':
+				$this->_removeComment();
+				break;
 		}
 	}
 	
@@ -42,6 +45,14 @@ class AcceptCommentHandler extends CBaseHandler{
 		$id = req('id');
 		if ($id) {
 			query('UPDATE comments SET is_accept = 1 WHERE id = ' . $id);
+		}
+		json_ok('id', $id);
+	}
+	
+	private function _removeComment() {
+		$id = req('id');
+		if ($id) {
+			query('UPDATE comments SET is_deleted = 1 WHERE id = ' . $id);
 		}
 		json_ok('id', $id);
 	}
