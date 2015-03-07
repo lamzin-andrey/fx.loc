@@ -37,7 +37,7 @@ class CViewHelper {
 		
 		if (sess('uid')) {
 			//$s .= '<a href="#" class="right cmv_alink" data-id="'. $commentInfo['id'] .'"> '. $lang['Aswer_him'] .'</a>';
-			$s .= '<div class="right cmv_created"><a href="#" class="right cmv_alink" data-id="'. $commentInfo['id'] .'">' . $lang['Aswer_him']  .'</div>';
+			$s .= '<div class="right cmv_created"><a href="#" class="right cmv_alink" data-id="'. $commentInfo['id'] .'">' . $lang['Aswer_him']  .'</a></div>';
 		}
 		if (sess('uid') == $commentInfo['uid']) {
 			$s .= '<div class="right cmv_created"><a href="#" class="right cmv_elink" data-id="'. $commentInfo['id'] .'"><img  src="'. WEB_ROOT .'/img/edit16c.png">' . $lang['Edit'] .'</a></div>';
