@@ -25,7 +25,7 @@
 		<p id="tptquest" class="tpt_box_shadow tpt_center">&nbsp;</p>
 		<p class="tpt_vspacer">&nbsp;</p>
 		<textarea id="tptanswer"  style="width:99%;" rows="5"></textarea>
-		<p class="tpt_vspacer">&nbsp;</p>
+		<!--p class="tpt_vspacer">&nbsp;</p-->
 		<p class="tright">
 			<input type="button" id="tptOK" value="OK">
 		</p>

@@ -51,7 +51,7 @@ TestEngine.prototype.initTestEngine = function() {
 		setGameScreen: 0,			 //Обновляет экран в начале игры
 		setLives: 0,				 //(v) выводит кол-во здоровья, жизней и т п 
 		setDoneOneAnswerScreen: 0,   //Показывает экран или сообщение об успешном ответе на вопрос. Должен вернуть количество секунд, которое будети показываться этот экран
-		setFailOneAnswerScreen: 0,   //Показывает экран или сообщение о неуспешном ответе на вопрос. Должен вернуть количество секунд, которое будети показываться этот экран
+		setFailOneAnswerScreen: 0,   //(sRightAnswer||iRightVariant)Показывает экран или сообщение о неуспешном ответе на вопрос. Должен вернуть количество секунд, которое будети показываться этот экран
 		setGameOverScreen: 0,		 //Показывает экран при провальном окончании игры
 		getAnswer: 0,                //Должен возвращать ответ веденный пользователем или номер выбранного пользователем варианта при ответе на вопрос
 		clearPrevStatus:0            //Вызывается перед показом нового вопроса. Можно использовать чтобы удалить сообщения об успешном или неуспешном ответе на вопрос
@@ -176,7 +176,6 @@ TestEngine.prototype.decrementFailResultTime = function() {
 		this.failAnswerDelay = 1;
 		if (this.iterator + 1 >= this.quests.length) {
 			this.state = this.C.WIN;
-			//this.view.setWinScreen();
 		} else {
 			this.state = this.C.GET_QUEST;
 		}
@@ -187,7 +186,11 @@ TestEngine.prototype.decrementFailResultTime = function() {
 */
 TestEngine.prototype.checkLives = function() {
 	if (this.lives--) {
-		var d = parseInt(this.view.setFailOneAnswerScreen(), 10);
+		var answer = this.quests[this.iterator].a;
+		if (answer.constructor == Array) {
+			answer = answer[this.quests[this.iterator].r];
+		}
+		var d = parseInt(this.view.setFailOneAnswerScreen(answer), 10);
 		this.failAnswerDelay = d ? d : this.failAnswerDelay;
 		this.view.setLives(this.lives);
 		this.state = this.C.FAIL_RESULT_SHOWING;
@@ -378,10 +381,10 @@ TestEngine.prototype.isAnswersEqual = function() {
 		b = b.sort();
 	}
 	i = a.length;
-	while (i--) {
+	do {
 		if (a[i] != b[i]) {
 			return false;
 		}
-	}
+	}while (i--) ;
 	return true;
 }
