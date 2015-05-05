@@ -10,8 +10,23 @@
 		TestSymphony2.configTime(60);	//Конфигурация
 		TestSymphony2.defaultScorePerAnswer = 10;
 		//Вопросы
-		TestSymphony2.quests.push({q:"Вы находитесь в консоли linux, текущая директория - корневая директории проекта симфони 2.3. Введите команду для генерации бандла HelloBundle", a:"php app/console generate:bundle --namespace=Acme/HelloBundle"});
+		TestSymphony2.quests.push({q:"Вы находитесь в консоли linux, текущая директория - корневая директория проекта симфони 2.3. Введите команду для генерации бандла HelloBundle", a:"php app/console generate:bundle --namespace=Acme/HelloBundle"});
 		TestSymphony2.quests.push({q:"Что такое Acme?", a:"Имя компании по умолчанию."});
+		TestSymphony2.quests.push({q:"Укажите путь к YML файлу конфигурации соединения с базой данных по умолчанию (от корня проекта symphony2, например app/config/... или src/Acme/YourBundle/Resources/config/...)", a:"app/config/parameters.yml"});
+		TestSymphony2.quests.push({q:"Вы находитесь в консоли linux, текущая директория - корневая директория проекта симфони 2.3. Введите команду для создания базы данных", a:"php app/console doctrine:database:create"});
+		TestSymphony2.quests.push({q:"Вы находитесь в консоли linux, текущая директория - корневая директория проекта симфони 2.3. Введите команду для создания класса модели c именем Product в пакете AcmeHelloBundle содержащей три поля: имя, описание и цена. Типы полей: строка в 255 символов, текст, дробное число.", a:"php app/console doctrine:generate:entity --entity=\"AcmeHelloBundle:Product\" --fields=\"name:string(255) description:text price:float\""});
+		TestSymphony2.quests.push({q:"Создалась ли таблица базы данных в результате предыдущей команды?", a:"Нет"});
+		TestSymphony2.quests.push({q:"Вы находитесь в консоли linux, текущая директория - корневая директория проекта симфони 2.3. Введите команду для генерации таблицы базы данных на основе файлов конфигурации, создавшихся в результате предыдущих действий", a:"php app/console doctrine:schema:update --force"});
+		TestSymphony2.quests.push({q:"Вы набираете код внутри метода контроллера, в котором вам доступен класс Product, созданный ранее в этом тесте. Вы хотите получить доступ к методам экземпляра класса EntityManager, присвоив его переменной $em. Введите соответствущую строку php кода.", a:"$em = $this->getDoctrine()->getEntityManager();"});
+		TestSymphony2.quests.push({q:"Вы набираете код внутри метода контроллера, в котором вам доступен класс Product, созданный ранее в этом тесте. Вы хотите передать объект $product класса Product экземпляру класса EntityManager (экземпляр у вас уже определен в переменной $em). Введите соответствущую строку php кода.", a:"$em->persist($product);"});
+		TestSymphony2.quests.push({q:"Вы набираете код внутри метода контроллера, в котором вам доступен класс Product, созданный ранее в этом тесте. Вы хотите записать последние изенения в базу данных. Введите соответствущую строку php кода.", a:"$em->flush();"});
+		TestSymphony2.quests.push({q:"Вы набираете код внутри метода контроллера src/Acme/HelloBundle/Controller/DefaultController.php, в котором вам доступен класс Product, созданный ранее в этом тесте. Вы хотите получить в переменную $repository объект, который предоставит вам методы поиска продуктов по значениям идентификатора и других полей модели. Введите соответствущую строку php кода.", a:"$repository = $this->getDoctrine()->getRepository(\"AcmeHelloBundle:Product\");"});
+		TestSymphony2.quests.push({q:"Вы набираете код внутри метода контроллера src/Acme/HelloBundle/Controller/DefaultController.php. Вы хотите получить в переменную $request объект, который предоставит вам методы доступа к переменным POST, GET и сессии (и еще много всего). Введите соответствующую строку php кода.", a:"$request = $this->getRequest();"});
+		TestSymphony2.quests.push({q:"Вы набираете код внутри метода контроллера src/Acme/HelloBundle/Controller/DefaultController.php. У вас есть объект $request из предыдущего вопроса. Вам нужен в переменной $session объект, предоставляющий доступ к сессии пользователя. Введите соответствующую строку php кода.", a:"$session = $request->getSession();"});
+		TestSymphony2.quests.push({q:"Вы хотите сделать в своем контроллере доступным SecurityContext. Напишите соответствующую инструкцию use (use Symfony\\ ... SecurityContex...; ) подключающую необходимый компонент.", a:"use Symfony\\Component\\Security\\Core\\SecurityContext;"});
+		TestSymphony2.quests.push({q:"Вы набираете код внутри метода контроллера src/Acme/HelloBundle/Controller/DefaultController.php, вам доступен SecurityContext и объект $request = $this->getRequest();. Напишите строку php кода, возвращающую true если произошла ошибка аутентификации", a:"$request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)"});
+		TestSymphony2.quests.push({q:"Вы набираете код внутри метода контроллера src/Acme/HelloBundle/Controller/DefaultController.php, вам доступен SecurityContext и объект $session = $this->getRequest()->getSession();. Напишите строку php кода, возвращающую из сессии ошибку аутентификации в переменную $error", a:"$session->get(SecurityContext::AUTHENTICATION_ERROR)"});
+		TestSymphony2.quests.push({q:"Вы набираете код внутри метода контроллера src/Acme/HelloBundle/Controller/DefaultController.php, вам доступен SecurityContext и объект $session = $this->getRequest()->getSession();. Напишите строку php кода, возвращающую из сессии последнее введенное  в форму логина имя пользователя,  $error = ...", a:"$session->get(SecurityContext::LAST_USERNAME)"});
 		
 		
 		//TestSymphony2.randomize = true; //вопросы будут выводится случайным образом
@@ -68,7 +83,7 @@
 				return 5;
 			},
 			setGameOverScreen: function(){
-				$('#tsym2Err').text('GAME OVER');
+				$('#tsym2Err').html( $('#tsym2Err').html().replace('Ошибка!', 'GAME OVER') );
 				if ( !this.beginScreenSets ) {
 					this.beginScreenSets = true;
 					var o = this;
@@ -76,7 +91,7 @@
 						function () {
 							o.setBeginScreen();
 						},
-						2000
+						5000
 					);
 				}
 			},
