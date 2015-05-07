@@ -32,6 +32,10 @@ TestEngine.prototype.initTestEngine = function() {
 	this.failAnswerDelay = 1;
 	this.successAnswerDelay = 1;
 	this.randomize = false;
+	//возможность пропускать вопросы
+	this.multcOnSkip = 1; //количество штрафных очков
+	this.useSkipThershold = false; //true когда пользователь может пропускать вопросы только если у него не менее skipThershold баллов
+	this.skipThershold = 0;
 	//при текстовых ответах
 	this.caseSensitive = false; 
 	this.fullCompliance = false; 
@@ -43,7 +47,8 @@ TestEngine.prototype.initTestEngine = function() {
 	/**
 	 * Каждому экземпляру надо передать объект - представление, реализующий такие функции:
 	 * */
-	this.viewIfc = { //view required functions
+	this.viewIfc = {
+		 //view required functions
 		setScore:0/*funciton(v){}*/, //Показывает количество очков v
 		setTime: 0,					 //(v) показывает оставшеся для ответа на вопрос время
 		setQuest: 0,				 //(String text[, Array answers, Number rule]) выводит текст вопроса, если переданы варианты answers, выводит варианты
@@ -54,7 +59,9 @@ TestEngine.prototype.initTestEngine = function() {
 		setFailOneAnswerScreen: 0,   //(sRightAnswer||iRightVariant)Показывает экран или сообщение о неуспешном ответе на вопрос. Должен вернуть количество секунд, которое будети показываться этот экран
 		setGameOverScreen: 0,		 //Показывает экран при провальном окончании игры
 		getAnswer: 0,                //Должен возвращать ответ веденный пользователем или номер выбранного пользователем варианта при ответе на вопрос
-		clearPrevStatus:0            //Вызывается перед показом нового вопроса. Можно использовать чтобы удалить сообщения об успешном или неуспешном ответе на вопрос
+		clearPrevStatus:0,           //Вызывается перед показом нового вопроса. Можно использовать чтобы удалить сообщения об успешном или неуспешном ответе на вопрос
+		//option function
+		setSkipButtonState:0          //(is_enable) Вызывается перед показом нового вопроса. Можно использовать, чтобы скрывать или показывать или делать недоступной кнопку "Пропустить вопрос"
 	};
 	
 	//constants
@@ -69,7 +76,8 @@ TestEngine.prototype.initTestEngine = function() {
 		FAIL_RESULT:15,
 		FAIL_RESULT_SHOWING:16,
 		GAME_OVER:20,
-		WIN:25
+		WIN:25,
+		SKIP_ONE_QUEST:26
 	};
 	//end constats
 	
@@ -152,6 +160,9 @@ TestEngine.prototype.tick = function () {
 		case o.C.GET_QUEST:	
 		case o.C.START_GAME:
 			o.onGetQuest();
+			break;
+		case o.C.SKIP_ONE_QUEST:
+			o.onSkipQuest();
 			break;
 	}
 }
@@ -320,11 +331,47 @@ TestEngine.prototype.onGetQuest = function () {
 	o.time = o.limit;
 	o.view.setTime(o.limit / 1000);
 	o.view.clearPrevStatus();
+	if (o.view.setSkipButtonState instanceof Function) {
+		o.view.setSkipButtonState(this.getSkipButtonState());
+	}
 	if (o.state == o.C.START_GAME) {
 		o.reset();
 		o.state == o.C.GET_QUEST;
 	}
 	o.nextQuest();
+}
+/**
+ * @desc событие пропуска вопроса
+*/
+TestEngine.prototype.onSkipQuest = function () {
+	var o = this;
+	if (o.multcOnSkip > 0) {
+		o.score -= o.multcOnSkip;
+		o.view.setScore(o.score);
+	}
+	if (o.view.setSkipButtonState instanceof Function) {
+		o.view.setSkipButtonState(this.getSkipButtonState());
+	}
+	//if (o.state == o.C.START_GAME) {
+		//o.reset();
+		o.state == o.C.GET_QUEST;
+	//}
+	o.nextQuest();
+}
+/**
+ * @desc возвращает статус кнопки Пропустить вопрос в зависимости от количества баллов у пользователя и конфигурации теста
+*/
+TestEngine.prototype.getSkipButtonState = function () {
+	var o = this;
+	if (this.useSkipThershold) {
+		if (this.score > this.skipThershold) {
+			return true;
+		} else {
+			return false;
+		}
+	} else {
+		return true;
+	}
 }
 /**
  * @desc Сбросить все в состояние не начатой игры

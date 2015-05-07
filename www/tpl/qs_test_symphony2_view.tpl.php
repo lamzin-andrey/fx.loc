@@ -1,7 +1,7 @@
 <div class="tnwframe">
 	<div id="qsSym2THelloScreen">
 		<div class="clearfix">&nbsp;</div>
-		<p class="tptlabel">Тест на знание Symphony 2</p>
+		<p class="tptlabel">Тест на знание Symfony 2</p>
 		<p class="tptStartButtonPlace">
 			<button id="tsym2startGame" >Пройти тест</button>
 		</p>
@@ -24,6 +24,7 @@
 		<p id="tsym2quest" class="tpt_box_shadow tpt_center">&nbsp;</p>
 		<p class="tright">
 			<input type="button" id="tsym2OK" value="OK">
+			<input type="button" id="tsym2Skip" value="Пропустить">
 		</p>
 		<p class="tpt_vspacer">&nbsp;</p>
 		<textarea id="tsym2answer"  style="width:99%;" rows="5"></textarea>
