@@ -41,7 +41,7 @@ TestEngine.prototype.initTestEngine = function() {
 	this.fullCompliance = false; 
 	this.orderWordsSensitive = false; 
 	this.dropSigns = true; 
-	this.dropSignsRe = /[.,:!-?+]/gm; 
+	this.dropSignsRe = /[.,:!-?+'"]/gm; 
 	//end config
 	
 	/**

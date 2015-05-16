@@ -63,7 +63,7 @@ class EditorHandler extends CBaseHandler{
 				$ip = a($_SERVER, 'REMOTE_ADDR');
 				$tstamp = date('Y-m-d H:i:s');
 				$hash = md5("{$src_file_name}{$ip}{$tstamp}");
-				$target = APP_ROOT . "/files/{$hash}.tmp";
+				$target = APP_ROOT . "/files/cache/{$hash}.tmp";
 				file_put_contents($target, $file_content);
 				$filemd5 = md5($d_file_content);
 				//@unlink($target);

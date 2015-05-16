@@ -87,7 +87,7 @@ class ConsoleHandler extends CBaseHandler{
 		$ip = a($_SERVER, 'REMOTE_ADDR');
 		$tstamp = date('YmdHis');
 		$hash = md5("{$filename}{$ip}{$tstamp}");
-		$target = APP_ROOT . "/files/{$hash}.tmp";
+		$target = APP_ROOT . "/files/cache/{$hash}.tmp";
 		//print "tf = {$tmp_file}\n";
 		//print "tf = {$target}\n";
 		if (!move_uploaded_file($tmp_file, $target)) {
