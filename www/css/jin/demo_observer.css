@@ -1,0 +1,15 @@
+.wrapper {
+	min-height:100px;
+	width:100%;
+}
+.tacodeview, .stackview {
+	min-width:33%;
+	border:  1px solid gray;
+	height:100%;
+}
+.stackview div.left {
+	width:25%;
+}
+.stackviewhead {
+	font-weight:bold;
+}

@@ -175,3 +175,7 @@ $lang['snake'] = 'Змейка';
 
 $lang['delete_errors_and_try_again'] = "\n-----------------\nудалите ошибки и попробуйте снова";
 $lang['on_execute_your_script_was_errors'] = "При попытке запустить вашу программу возникли проблемы:\n-----------------\n";
+
+
+//js interpretator
+$lang['Enter_js_code'] = "Введите код javascript";

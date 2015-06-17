@@ -14,6 +14,10 @@ class CApplication {
 	//public $reg_captcha = true;
 	//public $comm_captcha = true;
 	
+	protected $_title = '';
+	protected $_base_title = '';
+	protected $_title_separator = '|';
+	
 	public function __construct() {
 		@session_start();
 		@date_default_timezone_set("Europe/Moscow");
@@ -60,6 +64,10 @@ class CApplication {
 				break;
 			case $work_folder . '/gateup':
 				$this->_getLastEDataActions();
+				break;
+			case $work_folder . '/observer':
+				$this->layout = 'tpl/jin/simple_page.master.tpl.php';
+				$this->handler = $h = $this->_load('JIHandler');
 				break;
 			default:
 				if (strpos($url, '/quick_start/') !== false) {
@@ -311,5 +319,25 @@ class CApplication {
 				$this->role = $data['role'];
 			}
 		}
+	}
+	/**
+	 * @return title
+	*/
+	public function title($title = '', $base_title = '', $title_separator = '') {
+		$s = '';
+		if ($title) {
+			$this->_title = $title;
+		}
+		if ($base_title) {
+			$this->_base_title = $base_title;
+		}
+		if ($title_separator) {
+			$this->_title_separator = $title_separator;
+		}
+		$s = $this->_title;
+		if ($this->_base_title) {
+			$s = $this->_base_title . ' ' . $this->_title_separator . $this->_title;
+		}
+		return $s;
 	}
 }
