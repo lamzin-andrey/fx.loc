@@ -207,7 +207,7 @@ class CApplication {
 	 * @param $access_level = 0 - минимально необходимые права
 	**/
 	private function _load($class_name, $level = 0) {
-		if ($this->role < $level) {
+		if (intval($this->role) < $level) {
 			utils_302(WEB_ROOT);
 			return;
 		}
