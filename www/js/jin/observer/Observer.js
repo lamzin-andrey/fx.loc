@@ -15,10 +15,7 @@
 */
 /** @class Observer Базовый наблюдатель */
 function Observer(subject) {
-  this.initObserver(subject);
-}
-Observer.prototype.initObserver = function(subject) {
-  this._subject = subject;
+    this._subject = subject;
 }
 Observer.prototype.update = function() {}
 

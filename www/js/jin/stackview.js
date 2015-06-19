@@ -2,7 +2,7 @@
 //использую вызов create* функций
 function createStackView(CodeView) {
     function C(subject) {
-        this.initCodeView(subject, 'stackview');
+        CodeView.apply(this, [subject, 'stackview']);
         this.instrTpl = '<div class="left">{{vtype}}</div><div class="left">{{vname}}</div><div class="left">{{value}}</div><div class="left">{{fname}}</div><div class="clearfix"></div>';
     }
     extend(C, CodeView);

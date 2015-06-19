@@ -2,19 +2,13 @@
 //использую вызов create* функций
 function createCodeView() {
     function C(subject, divId) {
-        this.initCodeView(subject, divId);
-    }
-    extend(C, Observer);
-    /**
-     * @param {Subject} subject
-     */
-    C.prototype.initCodeView = function(subject, divId) {
-        this.initObserver(subject);
+        Observer.apply(this, arguments);
         this.div = $('#' + divId);
         this.functionTpl = '{{ftype}} {{fname}}() {\n<br>{{fbody}}}';
         this.instrTpl = '\t&nbsp;&nbsp;&nbsp;&nbsp;{{vtype}} {{vname}} = {{value}};';
         this.code = [];
     }
+    extend(C, Observer);
     /**
      * @param {Subject} subject
     */

@@ -2,7 +2,7 @@
 //использую вызов create* функций
 function createCppView(CodeView) {
     function C(subject) {
-        this.initCodeView(subject, 'cppview');
+        CodeView.apply(this, [subject, 'cppview']);
     }
     extend(C, CodeView);
     /**
