@@ -1,0 +1,3 @@
+function nlib() {
+	alert('nlib');
+}
