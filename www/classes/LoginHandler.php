@@ -43,24 +43,28 @@ class LoginHandler extends CBaseHandler {
 	
 	private function _logout(){
 		$_SESSION = array();
+		setcookie('guest_id', 0, time(), '/');
 		utils_302(WEB_ROOT . '/');
 	}
 	
 	private function _login() {
-		$email = @$_POST['email'];
+		$email = db_escape(@$_POST['email']);
 		$password = $this->_getHash(@$_POST["password"]);
-		$sql_query = "SELECT u.id FROM users AS u
+		$sql_query = "SELECT u.id, u.guest_id FROM users AS u
 						WHERE u.email = '$email' AND u.pwd = '$password'";
 		$data = query($sql_query, $nR);
 		$id = 0;
+		$guestId = 0;
 		if ($nR) {
 			$row = $data[0];
 			$id = $row['id'];
+			$guestId = $row['guest_id'];
 		}
 		if ($id) {
 			$_SESSION["authorize"] = true;
 			$_SESSION["uid"] = $id;
 			$_SESSION["email"] = $email;
+			setcookie('guest_id', $guestId, time() + 365 * 24 * 3600, '/');
 			print json_encode(array("success"=>'1'));
 		} else {
 			print json_encode(array("success"=>'0'));

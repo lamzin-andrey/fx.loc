@@ -14,10 +14,6 @@ class CApplication {
 	//public $reg_captcha = true;
 	//public $comm_captcha = true;
 	
-	protected $_title = '';
-	protected $_base_title = '';
-	protected $_title_separator = '|';
-	
 	public function __construct() {
 		@session_start();
 		@date_default_timezone_set("Europe/Moscow");
@@ -31,11 +27,17 @@ class CApplication {
 		$work_folder = WORK_FOLDER;
 		//die("26 W_F = '$work_folder', url = '$url'");
 		switch ($url) {
+			case $work_folder . '/phpinfo':
+				phpinfo();
+				die;
 			case $work_folder . '/console':
 				$this->_consolePageActions();
 				break;
 			case $work_folder . '/quick_start':
 				$this->_quickStartActions();
+				break;
+			case $work_folder . '/php7':
+				$this->_php7Actions();
 				break;
 			case $work_folder . '/tasklist':
 				$this->_tasklistActions();
@@ -64,10 +66,6 @@ class CApplication {
 				break;
 			case $work_folder . '/gateup':
 				$this->_getLastEDataActions();
-				break;
-			case $work_folder . '/observer':
-				$this->layout = 'tpl/jin/simple_page.master.tpl.php';
-				$this->handler = $h = $this->_load('JIHandler');
 				break;
 			default:
 				if (strpos($url, '/quick_start/') !== false) {
@@ -153,6 +151,15 @@ class CApplication {
 		}
 	}
 	/**
+	 * @desc Обработка возможных действий на странице php7
+	**/
+	private function _php7Actions() {
+		$this->handler = $h = $this->_load('Php7Handler');
+		if (is_ajax()) {
+			$h->ajaxAction();
+		}
+	}
+	/**
 	 * @desc Обработка возможных действий на странице модерирования комментариев
 	**/
 	private function _editCommentsActions() {
@@ -215,7 +222,7 @@ class CApplication {
 	 * @param $access_level = 0 - минимально необходимые права
 	**/
 	private function _load($class_name, $level = 0) {
-		if (intval($this->role) < $level) {
+		if ($this->role < $level) {
 			utils_302(WEB_ROOT);
 			return;
 		}
@@ -309,35 +316,28 @@ class CApplication {
 	 * @desc Получить мыло имя и фамилию неанонимного пользователя
 	*/
 	private function _loadAuthUserData() {
-		if ($uid = (int)sess('uid')) {
+		$uid = (int)sess('uid');
+		if (!$uid) {
+			if (trim(a($_COOKIE, 'guest_id'))) {
+				$guid = trim(a($_COOKIE, 'guest_id'));
+				$row = dbrow("SELECT id, pwd FROM users WHERE guest_id = '{$guid}' LIMIT 1", $nR);
+				if ($nR && trim($row['pwd'])) {
+					$uid = $row['id'];
+				}
+			}
+		}
+		if ($uid) {
 			$data = dbrow("SELECT id, email, name, surname, role FROM users WHERE id = '{$uid}'", $nR);
 			//$guid = 0;
 			if ($nR) {
 				$this->user_email = $data['email'];
 				$this->user_name = $data['name'];
 				$this->user_surname = $data['surname'];
+				$_SESSION["authorize"] = true;
+				$_SESSION["uid"] = $uid;
+				$_SESSION["email"] = $data['email'];
 				$this->role = $data['role'];
 			}
 		}
-	}
-	/**
-	 * @return title
-	*/
-	public function title($title = '', $base_title = '', $title_separator = '') {
-		$s = '';
-		if ($title) {
-			$this->_title = $title;
-		}
-		if ($base_title) {
-			$this->_base_title = $base_title;
-		}
-		if ($title_separator) {
-			$this->_title_separator = $title_separator;
-		}
-		$s = $this->_title;
-		if ($this->_base_title) {
-			$s = $this->_base_title . ' ' . $this->_title_separator . $this->_title;
-		}
-		return $s;
 	}
 }

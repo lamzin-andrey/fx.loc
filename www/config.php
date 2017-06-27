@@ -6,12 +6,6 @@ $web_root = str_replace("\\", "/", $web_root);
 define ("WEB_ROOT", $web_root);
 define ("WORK_FOLDER", "");
 define ("APP_CACHE_LIFE", 15 * 60);
-define ("SUMMER_TIME", -3600);
+define ("SUMMER_TIME", 0);
 define ("DEV_MODE", true);
-define ("STATIC_VERSION", '2');
-
-
-define ("DB_HOST", 'localhost');
-define ("DB_NAME", 'fx');
-define ("DB_USER", 'root');
-define ("DB_PASSWORD", '');
+define ("STATIC_VERSION", '5');

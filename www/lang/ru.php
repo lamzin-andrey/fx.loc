@@ -134,7 +134,7 @@ $lang['vote'] = 'голос';
 $lang['Your_task'] = 'Ваша задача';
 $lang['you_has_no_tasks'] = 'Вы пока не выбрали задачу';
 $lang['Objects)'] = 'Объекты';
-$lang['user_with_email_not_found)'] = 'Пользователь с таким email не найден';
+$lang['user_with_email_not_found'] = 'Пользователь с таким email не найден';
 $lang['fail_send_mail)'] = 'Не удалось отправить письмо';
 $lang['PasswordRecoveryLabel'] = 'Восстановить пароль';
 $lang['success_send_mail'] = 'Ссылка для восстановления пароля отправена на ваш email';
@@ -175,7 +175,3 @@ $lang['snake'] = 'Змейка';
 
 $lang['delete_errors_and_try_again'] = "\n-----------------\nудалите ошибки и попробуйте снова";
 $lang['on_execute_your_script_was_errors'] = "При попытке запустить вашу программу возникли проблемы:\n-----------------\n";
-
-
-//js interpretator
-$lang['Enter_js_code'] = "Введите код javascript";

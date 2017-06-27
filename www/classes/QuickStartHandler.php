@@ -82,21 +82,7 @@ class QuickStartHandler extends CBaseHandler{
 			$this->test_buttons['patternTestRun'] = 'Тест по паттернам проектирования';
 			$this->tests['qs-test-patterns'] = 'qs_test_patterns_view.tpl';
 			$this->css[] = 'test_patterns';
-			
-			//тест по симфони
-			$this->js[] = 'usertest/symphony2/testSymphony2ConfigBase.js';      	//Основной конфиг теста по симфони
-			$this->js[] = 'usertest/symphony2/testSymphony2.js';      			//Окно тестов
-			$this->test_buttons['symphony2TestRun'] = 'Тест по symphony 2';
-			$this->tests['qs-test-symphony2'] = 'qs_test_symphony2_view.tpl';
-			$this->css[] = 'test_symphony';
 		}
-		/*if ($url == "***") {
-			$this->js[] = 'usertest/patterns/testPatternsConfigBase.js';      	//Основной конфиг теста по
-			$this->js[] = 'usertest/patterns/testPatterns.js';      			//Окно тестов
-			$this->test_buttons['patternTestRun'] = 'Тест по паттернам проектирования';
-			$this->tests['qs-test-patterns'] = 'qs_test_patterns_view.tpl';
-			$this->css[] = 'test_patterns';
-		}*/
 	}
 	static public function tim($variant, $task, $subtask) {
 		return '<img src="'.WEB_ROOT.'/files/tasks/'.$variant.'/'.$task.'.'.$subtask.'.png" />';
