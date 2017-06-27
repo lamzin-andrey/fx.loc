@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/local.js.php"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/lib.js?v=<?=STATIC_VERSION?>"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/app.js?v=<?=STATIC_VERSION?>"></script>
+	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/qs.js?v=<?=STATIC_VERSION?>"></script>
 	<script type="text/javascript" >
 		var WEB_ROOT = '<?=WEB_ROOT?>';
 	</script>

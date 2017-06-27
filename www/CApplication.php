@@ -318,8 +318,8 @@ class CApplication {
 	private function _loadAuthUserData() {
 		$uid = (int)sess('uid');
 		if (!$uid) {
-			if (trim(a($_COOKIE, 'guest_id'))) {
-				$guid = trim(a($_COOKIE, 'guest_id'));
+			if (trim(a($_COOKIE, 'guest_idf'))) {
+				$guid = trim(a($_COOKIE, 'guest_idf'));
 				$row = dbrow("SELECT id, pwd FROM users WHERE guest_id = '{$guid}' LIMIT 1", $nR);
 				if ($nR && trim($row['pwd'])) {
 					$uid = $row['id'];

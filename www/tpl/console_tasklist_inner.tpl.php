@@ -1,5 +1,6 @@
 <? if (o($handler, 'file_list')):?>
-<ul class="scroll-y">
+<input id="searchApp" style="width:235px;">
+<ul class="scroll-y" id="appsList">
 	<? foreach($handler->file_list as $task): ?>
 	<li>
 		<a href="#" class="taskname" data-id="<?=$task['id']?>" data-srcfn="<?=$task['src_file_name']?>" data-fn="<?=str_replace('.js', '', $task['src_file_name'])?>"><?=utils_capitalize($task['display_file_name'] ? $task['display_file_name'] : str_replace('.js', '', $task['src_file_name'])  )  ?></a>

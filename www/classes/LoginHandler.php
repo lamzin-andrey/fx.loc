@@ -43,7 +43,7 @@ class LoginHandler extends CBaseHandler {
 	
 	private function _logout(){
 		$_SESSION = array();
-		setcookie('guest_id', 0, time(), '/');
+		setcookie('guest_idf', 0, time(), '/');
 		utils_302(WEB_ROOT . '/');
 	}
 	
@@ -64,7 +64,7 @@ class LoginHandler extends CBaseHandler {
 			$_SESSION["authorize"] = true;
 			$_SESSION["uid"] = $id;
 			$_SESSION["email"] = $email;
-			setcookie('guest_id', $guestId, time() + 365 * 24 * 3600, '/');
+			setcookie('guest_idf', $guestId, time() + 365 * 24 * 3600, '/');
 			print json_encode(array("success"=>'1'));
 		} else {
 			print json_encode(array("success"=>'0'));
