@@ -36,6 +36,9 @@ class CApplication {
 			case $work_folder . '/quick_start':
 				$this->_quickStartActions();
 				break;
+			case $work_folder . '/links':
+				$this->_helpfulLinksAction();
+				break;
 			case $work_folder . '/php7':
 				$this->_php7Actions();
 				break;
@@ -173,6 +176,12 @@ class CApplication {
 	**/
 	private function _promoPageActions() {
 		$this->handler = $h = $this->_load('MainPageHandler');
+	}
+	/**
+	 * @desc Обработка страницы полезных ссылок
+	**/
+	private function _helpfulLinksAction() {
+		$this->handler = $h = $this->_load('HelpfulHandler');
 	}
 	/**
 	 * @desc Обработка возможных действий на странице консоли
