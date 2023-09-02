@@ -48,7 +48,7 @@ class LoginHandler extends CBaseHandler {
 	}
 	
 	private function _login() {
-		$email = $_POST['email'] ?? '';
+		$email = $_POST['email'] ? $_POST['email'] :'';
 		$email = db_escape($email);
 		$password = $this->_getHash(@$_POST["password"]);
 		$sql_query = "SELECT u.id, u.guest_id FROM users AS u
@@ -149,7 +149,9 @@ class LoginHandler extends CBaseHandler {
 		];
 		$allow = $allowList;
 		
-		if (in_array($domain, $allow)) {
+		$allowList[] = 'qwe.ru';
+		
+		if (in_array($domain, $allowList)) {
 			return true;
 		}
 		
