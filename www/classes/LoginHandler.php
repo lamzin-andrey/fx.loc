@@ -48,7 +48,8 @@ class LoginHandler extends CBaseHandler {
 	}
 	
 	private function _login() {
-		$email = db_escape(@$_POST['email']);
+		$email = $_POST['email'] ?? '';
+		$email = db_escape($email);
 		$password = $this->_getHash(@$_POST["password"]);
 		$sql_query = "SELECT u.id, u.guest_id FROM users AS u
 						WHERE u.email = '$email' AND u.pwd = '$password'";
@@ -95,6 +96,11 @@ class LoginHandler extends CBaseHandler {
 		if (!checkMail($email)) {
 			json_error('sError', $lang['email_is_not_valid']);
 		}
+		
+		if (!$this->_isRussianEmail($email, $allow)) {
+			json_error('sError', $lang['email_must_be_russian'] . "\n" . implode("\n", $allow));
+		}
+		
 		//die("SELECT id FROM users WHERE email = '{$email}'");
 		$exists = dbvalue("SELECT id FROM users WHERE email = '{$email}'");
 		if ($exists) {
@@ -119,6 +125,35 @@ class LoginHandler extends CBaseHandler {
 		} else{
 			json_error('sError', $lang['default_error']);
 		}
+	}
+	/*
+	 * @desc Проверяем, относится ли email к одному из российских почтовых сервисов?
+	*/
+	private function _isRussianEmail($email, &$allow = null)
+	{
+		$domain = explode('@', strtolower($email))[1];
+		$allowList = [
+			'mail.ru',
+			'list.ru',
+			'internet.ru',
+			'inbox.ru',
+			'bk.ru',
+			'yandex.ru',
+			'ya.ru',
+			'narod.ru',
+			'autorambler.ru',
+			'myrambler.ru',
+			'rambler.ru',
+			'rambler.ua',
+			'ro.ru',
+		];
+		$allow = $allowList;
+		
+		if (in_array($domain, $allow)) {
+			return true;
+		}
+		
+		return false;
 	}
 	/*
 	 * 
