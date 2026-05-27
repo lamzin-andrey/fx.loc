@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
-	<title>Основы программирования - веб-консоль</title>
+	<title> Основы программирования - веб-консоль</title>
 	<link rel="stylesheet" type="text/css" href="<?=WEB_ROOT ?>/css/style.css?v=<?=STATIC_VERSION?>" />
 	<link rel="stylesheet" type="text/css" href="<?=WEB_ROOT ?>/css/popupwin.css?v=<?=STATIC_VERSION?>" /><?
 	if (isset($handler->css) && is_array($handler->css) && count($handler->css)) {
@@ -17,6 +17,7 @@
 	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/lib.js?v=<?=STATIC_VERSION?>"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/app.js?v=<?=STATIC_VERSION?>"></script>
 	<script type="text/javascript" src="<?=WEB_ROOT ?>/js/qs.js?v=<?=STATIC_VERSION?>"></script>
+	
 	<script type="text/javascript" >
 		var WEB_ROOT = '<?=WEB_ROOT?>';
 	</script>
@@ -147,5 +148,31 @@ function myFirstProgram() {
 	</div>
 	<? include APP_ROOT . '/tpl/show_your_task.tpl.php'?>
 	<? include APP_ROOT . '/tpl/form_reg.tpl.php' ?>
+	<footer>
+		<ul>
+			<li style="margin-top:10px;">
+				<!--LiveInternet counter--><script type="text/javascript">
+document.write("<a href='//www.liveinternet.ru/click' "+
+"target=_blank><img src='//counter.yadro.ru/hit?t42.1;r"+
+escape(document.referrer)+((typeof(screen)=="undefined")?"":
+";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+";h"+escape(document.title.substring(0,150))+";"+Math.random()+
+"' alt='' title='LiveInternet' "+
+"border='0' width='31' height='31'><\/a>")
+</script><!--/LiveInternet-->
+			</li>
+			<li>
+				<a href="/files/Politika_zashity_i_obrabotki_personalnyh_dannyh_2026-05-26.doc">Политика конфиденциальности</a>
+			</li>
+			<li>
+				<a href="/files/Polzovatelskoe_soglashenie_2026-05-27.docx">Пользовательское соглашение</a>
+			</li>
+			<li>
+				<a href="/files/Soglasie_na_obrabotku_personalnyh_dannyh.docx">Согласие на обработку персональных данных</a>
+			</li>
+		</ul>
+	</footer>
 </body>
+<script type="text/javascript" src="<?=WEB_ROOT ?>/js/coo.js?v=<?=STATIC_VERSION?>"></script>
 </html> 
