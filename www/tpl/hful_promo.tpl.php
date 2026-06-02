@@ -18,7 +18,7 @@
 		
 		
 		<p>
-			<a href="/files/2018/05/pav.zip" target="_blank">Т. А. Павловская Turbo Pascal</a>
+			<a href="https://www.ozon.ru/product/t-a-pavlovskaya-paskal-programmirovanie-na-yazyke-vysokogo-urovnya-3009920328/" target="_blank">Т. А. Павловская Turbo Pascal</a>
 			Первая книга по программированию которую прочел.
 			Прямого отношения к web не имеет, 
 			но тем не менее все языки, 

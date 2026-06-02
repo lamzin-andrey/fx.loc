@@ -36,9 +36,9 @@ class CApplication {
 			case $work_folder . '/quick_start':
 				$this->_quickStartActions();
 				break;
-			case $work_folder . '/links':
+			/*case $work_folder . '/links':
 				$this->_helpfulLinksAction();
-				break;
+				break;*/
 			case $work_folder . '/php7':
 				$this->_php7Actions();
 				break;
